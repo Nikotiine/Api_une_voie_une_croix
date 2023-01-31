@@ -6,7 +6,7 @@ import { UserRegisterDto } from './dto/UserRegister.dto';
 import * as bcrypt from 'bcrypt';
 import * as process from 'process';
 import { UserProfileDto } from './dto/UserProfile.dto';
-import { UserCredentialsDto } from './dto/UserCredentials.dto';
+import { UserCredentialsDto } from '../auth/dto/UserCredentials.dto';
 
 @Injectable()
 export class UserService {
@@ -48,18 +48,10 @@ export class UserService {
         });
       });
   }
-  public findOne(email: string): Promise<UserCredentialsDto | null> {
-    return this.userRepository
-      .findOneBy({
-        email: email,
-        isActive: true,
-      })
-      .then((user) => {
-        const crendential: UserCredentialsDto = {
-          email: user.email,
-          password: user.password,
-        };
-        return crendential;
-      });
+  public findOne(email: string): Promise<User | null> {
+    return this.userRepository.findOneBy({
+      email: email,
+      isActive: true,
+    });
   }
 }

@@ -1,9 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { UserCredentialsDto } from '../user/dto/UserCredentials.dto';
+import { UserCredentialsDto } from './dto/UserCredentials.dto';
 import { AuthService } from './auth.service';
 import { UserProfileDto } from '../user/dto/UserProfile.dto';
 import { UserRegisterDto } from '../user/dto/UserRegister.dto';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { TokenDto } from './dto/Token.dto';
+
 @ApiTags('auth')
 @Controller('api/auth')
 export class AuthController {
@@ -11,9 +13,13 @@ export class AuthController {
   @ApiOperation({
     description: 'login path',
   })
+  @ApiCreatedResponse({
+    description: 'return access token',
+    type: TokenDto,
+  })
   @Post('login')
-  login(@Body() credential: UserCredentialsDto) {
-    return this.authService.login(credential);
+  login(@Body() credential: UserCredentialsDto): Promise<TokenDto> {
+    return this.authService.validateUser(credential);
   }
   @Post('register')
   @ApiCreatedResponse({
