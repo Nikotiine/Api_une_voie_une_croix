@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserCredentialsDto } from './dto/UserCredentials.dto';
+
 import { UserService } from '../user/user.service';
-import { UserRegisterDto } from '../user/dto/UserRegister.dto';
+
 import * as bcrypt from 'bcrypt';
 import * as process from 'process';
 import { JwtService } from '@nestjs/jwt';
@@ -32,7 +32,6 @@ export class AuthService {
       });
     }
     return user;
-    //return this.login(user);
   }
   async generateToken(user: User): Promise<TokenDto> {
     const payload = { email: user.email, sub: user.id };
@@ -41,12 +40,6 @@ export class AuthService {
     };
   }
 
-  public register(userRegister: UserRegisterDto): Promise<UserProfileDto> {
-    return bcrypt.hash(userRegister.password, this.salt).then((hash) => {
-      userRegister.password = hash;
-      return this.userService.createUser(userRegister);
-    });
-  }
   public getProfile(id: number): Promise<UserProfileDto> {
     return this.userService.findById(id);
   }

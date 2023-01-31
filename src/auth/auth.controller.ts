@@ -1,18 +1,10 @@
-import {
-  Body,
-  Request,
-  Controller,
-  Post,
-  UseGuards,
-  Get,
-} from '@nestjs/common';
+import { Request, Controller, Post, UseGuards, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserProfileDto } from '../user/dto/UserProfile.dto';
-import { UserRegisterDto } from '../user/dto/UserRegister.dto';
+
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
-  ApiHeader,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -36,23 +28,10 @@ export class AuthController {
   async login(@Request() req): Promise<TokenDto> {
     return this.authService.generateToken(req.user);
   }
-  @Post('register')
-  @ApiCreatedResponse({
-    description: 'The user has been successfully created.',
-    type: UserProfileDto,
-  })
-  createUser(
-    @Body() userRegisterDto: UserRegisterDto,
-  ): Promise<UserProfileDto> {
-    return this.authService.register(userRegisterDto);
-  }
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('Authorization')
-  @ApiHeader({
-    name: 'Authorization: Bearer',
-  })
   @ApiCreatedResponse({
     description: 'The access token is validate',
     type: UserProfileDto,
