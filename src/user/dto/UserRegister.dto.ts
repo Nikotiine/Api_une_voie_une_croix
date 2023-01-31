@@ -6,9 +6,9 @@ export class UserRegisterDto {
   @ApiProperty()
   lastName: string;
   @ApiProperty()
-  password: string;
-  @ApiProperty()
   birthday: Date;
   @ApiProperty()
   email: string;
+  @ApiProperty()
+  password: string;
 }

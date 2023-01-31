@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserDto {
+export class UserProfileDto {
   @ApiProperty()
   fistName: string;
   @ApiProperty()
@@ -9,4 +9,6 @@ export class UserDto {
   birthday: Date;
   @ApiProperty()
   email: string;
+  @ApiProperty()
+  isActive: boolean;
 }
