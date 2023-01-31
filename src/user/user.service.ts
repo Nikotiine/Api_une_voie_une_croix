@@ -16,7 +16,6 @@ export class UserService {
   ) {
     this.salt = parseInt(process.env.BCRYPT_SALT);
   }
-  findUsers() {}
 
   public async createUser(user: UserRegisterDto): Promise<UserProfileDto> {
     const isExist = await this.findByEmail(user.email);
@@ -54,7 +53,7 @@ export class UserService {
     });
   }
 
-  public findById(id: number) {
+  public findById(id: number): Promise<UserProfileDto> {
     return this.userRepository
       .findOneBy({
         id: id,
@@ -69,5 +68,10 @@ export class UserService {
         };
         return userProfile;
       });
+  }
+  public async edit(user: any): Promise<any> {
+    return this.userRepository.update({ id: user.id }, user).then((res) => {
+      console.log(res);
+    });
   }
 }
