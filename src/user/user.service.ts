@@ -3,10 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../orm/entity/User';
 import { Repository } from 'typeorm';
 import { UserRegisterDto } from './dto/UserRegister.dto';
-import * as bcrypt from 'bcrypt';
-import * as process from 'process';
+
 import { UserProfileDto } from './dto/UserProfile.dto';
-import { UserCredentialsDto } from '../auth/dto/UserCredentials.dto';
 
 @Injectable()
 export class UserService {
@@ -33,7 +31,7 @@ export class UserService {
           lastName: user.lastName,
           birthday: user.birthday,
           email: user.email,
-          isActive: user.isActive,
+          id: user.id,
         };
         return newUser;
       })
@@ -48,10 +46,27 @@ export class UserService {
         });
       });
   }
-  public findOne(email: string): Promise<User | null> {
+  public findByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOneBy({
       email: email,
       isActive: true,
     });
+  }
+
+  findById(id: number) {
+    return this.userRepository
+      .findOneBy({
+        id: id,
+      })
+      .then((user) => {
+        const userProfile: UserProfileDto = {
+          email: user.email,
+          fistName: user.firstName,
+          lastName: user.lastName,
+          birthday: user.birthday,
+          id: user.id,
+        };
+        return userProfile;
+      });
   }
 }

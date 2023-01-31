@@ -18,28 +18,24 @@ export class AuthService {
   ) {
     this.salt = parseInt(process.env.BCRYPT_SALT);
   }
-  async validateUser(userCredential: UserCredentialsDto): Promise<TokenDto> {
-    const user = await this.userService.findOne(userCredential.email);
-    console.log(user);
+  async validateUser(email: string, password: string): Promise<User> {
+    const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new HttpException(this.errorMessage, HttpStatus.BAD_REQUEST, {
         cause: new Error(),
       });
-    } else {
-      const passwordIsValid = await bcrypt.compare(
-        userCredential.password,
-        user.password,
-      );
-      if (!passwordIsValid) {
-        throw new HttpException(this.errorMessage, HttpStatus.BAD_REQUEST, {
-          cause: new Error(),
-        });
-      }
-      return this.login(user);
     }
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new HttpException(this.errorMessage, HttpStatus.BAD_REQUEST, {
+        cause: new Error(),
+      });
+    }
+    return user;
+    //return this.login(user);
   }
-  async login(user: User): Promise<TokenDto> {
-    const payload = { username: user.email, sub: user.id };
+  async generateToken(user: User): Promise<TokenDto> {
+    const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -50,5 +46,8 @@ export class AuthService {
       userRegister.password = hash;
       return this.userService.createUser(userRegister);
     });
+  }
+  public getProfile(id: number): Promise<UserProfileDto> {
+    return this.userService.findById(id);
   }
 }
