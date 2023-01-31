@@ -8,7 +8,7 @@ import { UserRegisterDto } from './dto/UserRegister.dto';
 @ApiTags('user')
 @Controller('api/user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
   @Get()
   getUsers() {}
   @Post('register')

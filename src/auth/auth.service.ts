@@ -13,8 +13,8 @@ export class AuthService {
   private salt: number;
   private errorMessage = 'Invalid credentials';
   constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {
     this.salt = parseInt(process.env.BCRYPT_SALT);
   }
