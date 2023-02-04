@@ -4,7 +4,7 @@ import { IsDateString, IsEmail, IsString } from 'class-validator';
 export class UserRegisterDto {
   @ApiProperty()
   @IsString()
-  fistName: string;
+  firstName: string;
   @ApiProperty()
   @IsString()
   lastName: string;

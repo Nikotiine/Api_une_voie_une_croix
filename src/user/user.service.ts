@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../orm/entity/User';
 import { Repository } from 'typeorm';
@@ -11,13 +16,14 @@ import * as process from 'process';
 export class UserService {
   private salt: number;
   private mailIsUsed = 'Email is already used';
+  private invalidPassword = 'Invalid password';
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {
     this.salt = parseInt(process.env.BCRYPT_SALT);
   }
 
-  public async createUser(user: UserRegisterDto): Promise<UserProfileDto> {
+  public async create(user: UserRegisterDto): Promise<UserProfileDto> {
     const isExist = await this.findByEmail(user.email);
     if (isExist) {
       throw new HttpException(this.mailIsUsed, HttpStatus.BAD_REQUEST, {
@@ -26,7 +32,7 @@ export class UserService {
     }
     return bcrypt.hash(user.password, this.salt).then((hash) => {
       const newUser = this.userRepository.create({
-        firstName: user.fistName,
+        firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
         password: hash,
@@ -36,7 +42,7 @@ export class UserService {
       });
       return this.userRepository.save(newUser).then((profile) => {
         const userProfile: UserProfileDto = {
-          fistName: profile.firstName,
+          firstName: profile.firstName,
           lastName: profile.lastName,
           birthday: profile.birthday,
           id: profile.id,
@@ -61,7 +67,7 @@ export class UserService {
       .then((user) => {
         const userProfile: UserProfileDto = {
           email: user.email,
-          fistName: user.firstName,
+          firstName: user.firstName,
           lastName: user.lastName,
           birthday: user.birthday,
           id: user.id,
@@ -69,9 +75,44 @@ export class UserService {
         return userProfile;
       });
   }
-  public async edit(user: any): Promise<any> {
-    return this.userRepository.update({ id: user.id }, user).then((res) => {
-      console.log(res);
-    });
+  public async edit(
+    id: number,
+    user: UserRegisterDto,
+  ): Promise<void | UserProfileDto> {
+    return this.userRepository
+      .findOneBy({
+        id: id,
+      })
+      .then((u) => {
+        return bcrypt.compare(user.password, u.password).then((validate) => {
+          if (validate) {
+            this.userRepository
+              .update(
+                {
+                  id: id,
+                },
+                {
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  birthday: user.birthday,
+                  updatedAt: new Date(),
+                },
+              )
+              .then((update) => {
+                if (update.affected > 0) {
+                  return this.findById(id);
+                }
+              });
+          } else {
+            throw new HttpException(
+              this.invalidPassword,
+              HttpStatus.UNAUTHORIZED,
+              {
+                cause: new Error(),
+              },
+            );
+          }
+        });
+      });
   }
 }

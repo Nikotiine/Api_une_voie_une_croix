@@ -10,7 +10,6 @@ import { AuthService } from './auth.service';
 import { UserProfileDto } from '../user/dto/UserProfile.dto';
 
 import {
-  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
   ApiSecurity,

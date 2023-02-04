@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
@@ -18,15 +18,27 @@ export class UserController {
   async createUser(
     @Body() userRegisterDto: UserRegisterDto,
   ): Promise<UserProfileDto> {
-    return this.userService.createUser(userRegisterDto);
+    return this.userService.create(userRegisterDto);
   }
 
-  @Put()
+  @Put(':id')
   @ApiCreatedResponse({
     description: 'The user has been successfully updated',
     type: UserProfileDto,
   })
-  public async editUser(user: any): Promise<UserProfileDto> {
-    return this.userService.edit(user);
+  public async editUser(
+    @Param('id') id: number,
+    @Body() user: UserRegisterDto,
+  ): Promise<void | UserProfileDto> {
+    return this.userService.edit(id, user);
+  }
+
+  @Get(':id')
+  @ApiCreatedResponse({
+    description: 'Get user profile',
+    type: UserProfileDto,
+  })
+  public async getUser(@Param('id') id: number): Promise<UserProfileDto> {
+    return this.userService.findById(id);
   }
 }
