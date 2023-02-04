@@ -1,9 +1,21 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Request,
+  Post,
+  Put,
+  UseGuards,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { ApiCreatedResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { UserProfileDto } from './dto/UserProfile.dto';
 import { UserRegisterDto } from './dto/UserRegister.dto';
+import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
+import { LocalAuthGuard } from '../auth/strategy/local-auth.guard';
 
 @ApiTags('user')
 @Controller('api/user')
@@ -34,11 +46,20 @@ export class UserController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
   @ApiCreatedResponse({
     description: 'Get user profile',
     type: UserProfileDto,
   })
-  public async getUser(@Param('id') id: number): Promise<UserProfileDto> {
-    return this.userService.findById(id);
+  public async getUser(
+    @Request() req,
+    @Param('id') id: number,
+  ): Promise<UserProfileDto> {
+    if (req.user.id === id) {
+      return this.userService.findById(id);
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 }

@@ -86,7 +86,7 @@ export class UserService {
       .then((u) => {
         return bcrypt.compare(user.password, u.password).then((validate) => {
           if (validate) {
-            this.userRepository
+            return this.userRepository
               .update(
                 {
                   id: id,
