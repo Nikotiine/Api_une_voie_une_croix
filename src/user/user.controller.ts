@@ -16,6 +16,7 @@ import { UserProfileDto } from './dto/UserProfile.dto';
 import { UserRegisterDto } from './dto/UserRegister.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
 import { LocalAuthGuard } from '../auth/strategy/local-auth.guard';
+import { UserEditPasswordDto } from './dto/UserEditPassword.dto';
 
 @ApiTags('user')
 @Controller('api/user')
@@ -58,6 +59,25 @@ export class UserController {
   ): Promise<UserProfileDto> {
     if (req.user.id === id) {
       return this.userService.findById(id);
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
+  @Put('password/:id')
+  @ApiCreatedResponse({
+    description: 'edit password',
+    type: UserProfileDto,
+  })
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
+  public async editUserPassword(
+    @Request() req,
+    @Param('id') id: number,
+    @Body() passwords: UserEditPasswordDto,
+  ): Promise<void | UserProfileDto> {
+    if (req.user.id === id) {
+      return this.userService.editPassword(id, passwords);
     } else {
       throw new UnauthorizedException();
     }

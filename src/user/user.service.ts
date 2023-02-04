@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../orm/entity/User';
 import { Repository } from 'typeorm';
@@ -11,6 +6,7 @@ import { UserRegisterDto } from './dto/UserRegister.dto';
 import * as bcrypt from 'bcrypt';
 import { UserProfileDto } from './dto/UserProfile.dto';
 import * as process from 'process';
+import { UserEditPasswordDto } from './dto/UserEditPassword.dto';
 
 @Injectable()
 export class UserService {
@@ -113,6 +109,50 @@ export class UserService {
             );
           }
         });
+      });
+  }
+
+  public async editPassword(
+    id: number,
+    passwords: UserEditPasswordDto,
+  ): Promise<void | UserProfileDto> {
+    return this.userRepository
+      .findOneBy({
+        id: id,
+      })
+      .then((u) => {
+        return bcrypt
+          .compare(passwords.oldPassword, u.password)
+          .then((validate) => {
+            if (validate) {
+              return bcrypt
+                .hash(passwords.newPassword, this.salt)
+                .then((hash) => {
+                  return this.userRepository
+                    .update(
+                      {
+                        id: id,
+                      },
+                      {
+                        password: hash,
+                      },
+                    )
+                    .then((update) => {
+                      if (update.affected > 0) {
+                        return this.findById(id);
+                      }
+                    });
+                });
+            } else {
+              throw new HttpException(
+                this.invalidPassword,
+                HttpStatus.UNAUTHORIZED,
+                {
+                  cause: new Error(),
+                },
+              );
+            }
+          });
       });
   }
 }
