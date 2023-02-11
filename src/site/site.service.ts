@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Site } from '../orm/entity/Site';
 import { CreateSiteDto } from './dto/CreateSite.dto';
-import { Point } from 'geojson';
 
 @Injectable()
 export class SiteService {
@@ -11,7 +10,7 @@ export class SiteService {
     @InjectRepository(Site) private siteRepository: Repository<Site>,
   ) {}
 
-  public async getAll() {
+  public async findAll() {
     return this.siteRepository.find({
       where: {
         isActive: true,
@@ -19,13 +18,20 @@ export class SiteService {
     });
   }
   public async create(createSiteDto: CreateSiteDto) {
-    const point = `POINT(${createSiteDto.longitudeP1} ${createSiteDto.latitudeP1})`;
+    const mainParkingPoint = `POINT(${createSiteDto.mainParkingLng} ${createSiteDto.mainParkingLat})`;
+    const secondaryParkingPoint = `POINT(${createSiteDto.secondaryParkingLng} ${createSiteDto.secondaryParkingLat})`;
     const site = this.siteRepository.create({
       name: createSiteDto.name,
       approachTime: createSiteDto.approachTime,
-      location: point,
+      mainParking: mainParkingPoint,
+      secondaryParking: secondaryParkingPoint,
+      minLevel: createSiteDto.minLevel,
       averageRouteHeight: createSiteDto.averageRouteHeight,
       averageRouteNumber: createSiteDto.averageRouteNumber,
+      maxLevel: createSiteDto.maxLevel,
+      engagement: createSiteDto.engagement,
+      approachType: createSiteDto.approachType,
+      equipment: createSiteDto.equipment,
     });
     console.log(site);
     return this.siteRepository.save(site);

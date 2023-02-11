@@ -3,8 +3,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateSiteDto } from './dto/CreateSite.dto';
 import { SiteService } from './site.service';
 
-@Controller('site')
-@ApiTags('site')
+@Controller('api/site')
+@ApiTags('Site')
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
   @Post()

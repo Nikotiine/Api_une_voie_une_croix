@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsPositive, IsString } from 'class-validator';
-import { Geometry, Point } from 'geojson';
-import { PointDto } from './Point.dto';
+import { Level } from '../../orm/entity/Level';
+import { RouteProfile } from '../../orm/entity/RouteProfile';
+import { Equipment } from '../../orm/entity/Equipment';
+import { Engagement } from '../../orm/entity/Engagement';
+import { ApproachType } from '../../orm/entity/ApproachType';
 
 export class CreateSiteDto {
   @ApiProperty()
@@ -19,9 +22,24 @@ export class CreateSiteDto {
   @IsNumber()
   @IsPositive()
   averageRouteNumber: number;
-  // @ApiProperty()
+
   @ApiProperty()
-  latitudeP1: string;
+  mainParkingLat: string;
   @ApiProperty()
-  longitudeP1: string;
+  mainParkingLng: string;
+  @ApiProperty()
+  secondaryParkingLat: string;
+  @ApiProperty()
+  secondaryParkingLng: string;
+  @ApiProperty()
+  minLevel: Level;
+  @ApiProperty()
+  maxLevel: Level;
+
+  @ApiProperty()
+  equipment: Equipment;
+  @ApiProperty()
+  engagement: Engagement;
+  @ApiProperty()
+  approachType: ApproachType;
 }

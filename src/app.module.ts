@@ -16,6 +16,13 @@ import { Engagement } from './orm/entity/Engagement';
 import { RockType } from './orm/entity/RockType';
 import { Secteur } from './orm/entity/Secteur';
 import { SiteModule } from './site/site.module';
+import { ExpositionModule } from './exposition/exposition.module';
+import { LevelModule } from './level/level.module';
+import { RockTypeModule } from './rock-type/rock-type.module';
+import { RouteProfileModule } from './route-profile/route-profile.module';
+import { EquipmentModule } from './equipment/equipment.module';
+import { EngagementModule } from './engagement/engagement.module';
+import { ApproachTypeModule } from './approach-type/approach-type.module';
 
 @Module({
   imports: [
@@ -45,6 +52,13 @@ import { SiteModule } from './site/site.module';
     UserModule,
     AuthModule,
     SiteModule,
+    ExpositionModule,
+    LevelModule,
+    RockTypeModule,
+    RouteProfileModule,
+    EquipmentModule,
+    EngagementModule,
+    ApproachTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
