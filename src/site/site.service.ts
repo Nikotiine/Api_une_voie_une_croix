@@ -19,7 +19,14 @@ export class SiteService {
   }
   public async create(createSiteDto: CreateSiteDto) {
     const mainParkingPoint = `POINT(${createSiteDto.mainParkingLng} ${createSiteDto.mainParkingLat})`;
-    const secondaryParkingPoint = `POINT(${createSiteDto.secondaryParkingLng} ${createSiteDto.secondaryParkingLat})`;
+    let secondaryParkingPoint = `POINT(${createSiteDto.secondaryParkingLng} ${createSiteDto.secondaryParkingLat})`;
+    if (
+      createSiteDto.secondaryParkingLat === 'undefined' &&
+      createSiteDto.secondaryParkingLng === 'undefined'
+    ) {
+      secondaryParkingPoint = mainParkingPoint;
+    }
+
     const site = this.siteRepository.create({
       name: createSiteDto.name,
       approachTime: createSiteDto.approachTime,
@@ -32,6 +39,9 @@ export class SiteService {
       engagement: createSiteDto.engagement,
       approachType: createSiteDto.approachType,
       equipment: createSiteDto.equipment,
+      rockType: createSiteDto.rockType,
+      routeProfiles: createSiteDto.routeProfiles,
+      expositions: createSiteDto.expositions,
     });
     console.log(site);
     return this.siteRepository.save(site);

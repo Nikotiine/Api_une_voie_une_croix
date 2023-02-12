@@ -5,6 +5,8 @@ import { RouteProfile } from '../../orm/entity/RouteProfile';
 import { Equipment } from '../../orm/entity/Equipment';
 import { Engagement } from '../../orm/entity/Engagement';
 import { ApproachType } from '../../orm/entity/ApproachType';
+import { Exposition } from '../../orm/entity/Exposition';
+import { RockType } from '../../orm/entity/RockType';
 
 export class CreateSiteDto {
   @ApiProperty()
@@ -42,4 +44,10 @@ export class CreateSiteDto {
   engagement: Engagement;
   @ApiProperty()
   approachType: ApproachType;
+  @ApiProperty()
+  expositions: Exposition[];
+  @ApiProperty()
+  routeProfiles: RouteProfile[];
+  @ApiProperty()
+  rockType: RockType;
 }

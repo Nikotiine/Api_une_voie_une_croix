@@ -16,6 +16,7 @@ import { Engagement } from './Engagement';
 import { ApproachType } from './ApproachType';
 import { RockType } from './RockType';
 import { Secteur } from './Secteur';
+import { Geometry, Point } from 'geojson';
 
 @Entity()
 @Unique(['name'])
@@ -47,7 +48,7 @@ export class Site {
   @ManyToOne(() => ApproachType, (approachType) => approachType.label)
   approachType: ApproachType;
   @ManyToOne(() => RockType, (rockType) => rockType.label)
-  rockType: RockType[];
+  rockType: RockType;
   @ManyToMany(() => Secteur)
   @JoinTable()
   secteurs: Secteur[];
@@ -56,6 +57,9 @@ export class Site {
 
   @Column('point')
   mainParking: string;
-  @Column('point')
+  @Column({
+    type: 'point',
+    nullable: true,
+  })
   secondaryParking: string;
 }
