@@ -7,6 +7,8 @@ import {
   Unique,
   ManyToOne,
   Index,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Exposition } from './Exposition';
 import { RouteProfile } from './RouteProfile';
@@ -49,8 +51,10 @@ export class Site {
   approachType: ApproachType;
   @ManyToOne(() => RockType, (rockType) => rockType.label)
   rockType: RockType;
-  @ManyToMany(() => Secteur)
-  @JoinTable()
+  @OneToMany(() => Secteur, (secteur) => secteur.site, {
+    cascade: true,
+  })
+  @JoinColumn()
   secteurs: Secteur[];
   @Column({ default: true })
   isActive: boolean;
@@ -62,4 +66,16 @@ export class Site {
     nullable: true,
   })
   secondaryParking: string;
+  @Column()
+  zipCode: string;
+  @Column()
+  regionCode: string;
+  @Column({ default: false })
+  water: boolean;
+  @Column({ default: false })
+  wc: boolean;
+  @Column({ default: false })
+  river: boolean;
+  @Column({ default: false })
+  network: boolean;
 }

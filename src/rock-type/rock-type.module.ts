@@ -8,5 +8,6 @@ import { RockType } from '../orm/entity/RockType';
   imports: [TypeOrmModule.forFeature([RockType])],
   providers: [RockTypeService],
   controllers: [RockTypeController],
+  exports: [RockTypeService],
 })
 export class RockTypeModule {}

@@ -8,5 +8,6 @@ import { ApproachType } from '../orm/entity/ApproachType';
   imports: [TypeOrmModule.forFeature([ApproachType])],
   providers: [ApproachTypeService],
   controllers: [ApproachTypeController],
+  exports: [ApproachTypeService],
 })
 export class ApproachTypeModule {}

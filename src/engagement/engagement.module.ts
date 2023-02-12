@@ -8,5 +8,6 @@ import { Engagement } from '../orm/entity/Engagement';
   imports: [TypeOrmModule.forFeature([Engagement])],
   providers: [EngagementService],
   controllers: [EngagementController],
+  exports: [EngagementService],
 })
 export class EngagementModule {}

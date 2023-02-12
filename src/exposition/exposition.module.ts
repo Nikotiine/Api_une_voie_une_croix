@@ -8,5 +8,6 @@ import { Exposition } from '../orm/entity/Exposition';
   imports: [TypeOrmModule.forFeature([Exposition])],
   providers: [ExpositionService],
   controllers: [ExpositionController],
+  exports: [ExpositionService],
 })
 export class ExpositionModule {}

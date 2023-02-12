@@ -8,5 +8,6 @@ import { RouteProfile } from '../orm/entity/RouteProfile';
   imports: [TypeOrmModule.forFeature([RouteProfile])],
   providers: [RouteProfileService],
   controllers: [RouteProfileController],
+  exports: [RouteProfileService],
 })
 export class RouteProfileModule {}

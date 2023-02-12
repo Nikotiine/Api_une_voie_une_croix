@@ -23,6 +23,7 @@ import { RouteProfileModule } from './route-profile/route-profile.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { EngagementModule } from './engagement/engagement.module';
 import { ApproachTypeModule } from './approach-type/approach-type.module';
+import { SecteurModule } from './secteur/secteur.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { ApproachTypeModule } from './approach-type/approach-type.module';
     EquipmentModule,
     EngagementModule,
     ApproachTypeModule,
+    SecteurModule,
   ],
   controllers: [AppController],
   providers: [AppService],

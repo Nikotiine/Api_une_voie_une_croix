@@ -8,5 +8,6 @@ import { Equipment } from '../orm/entity/Equipment';
   imports: [TypeOrmModule.forFeature([Equipment])],
   providers: [EquipmentService],
   controllers: [EquipmentController],
+  exports: [EquipmentService],
 })
 export class EquipmentModule {}
