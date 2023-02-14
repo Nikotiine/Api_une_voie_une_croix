@@ -7,7 +7,7 @@ export class SiteListDto {
   id: number;
   @ApiProperty()
   name: string;
-  @ApiProperty()
+  @ApiProperty({ type: [ExpositionsDto] })
   expositions: ExpositionsDto[];
   @ApiProperty()
   averageRouteNumber: number;
@@ -15,4 +15,10 @@ export class SiteListDto {
   minLevel: Level;
   @ApiProperty()
   maxLevel: Level;
+  @ApiProperty()
+  zipCode: string;
+  @ApiProperty()
+  approachTime: number;
+  @ApiProperty()
+  averageRouteHeight: number;
 }

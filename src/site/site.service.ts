@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Site } from '../orm/entity/Site';
@@ -12,9 +12,11 @@ import { EngagementService } from '../engagement/engagement.service';
 import { ApproachTypeService } from '../approach-type/approach-type.service';
 import { EquipmentService } from '../equipment/equipment.service';
 import { SiteListDto } from './dto/SiteList.dto';
+import { SiteViewDto } from './dto/SiteView.dto';
 
 @Injectable()
 export class SiteService {
+  private nameIsUsed = 'Name is used';
   constructor(
     @InjectRepository(Site) private siteRepository: Repository<Site>,
     private readonly expositionService: ExpositionService,
@@ -35,12 +37,12 @@ export class SiteService {
         relations: {
           expositions: true,
           minLevel: true,
+          maxLevel: true,
         },
       })
       .then((sites) => {
         const list: SiteListDto[] = [];
         for (let i = 0; i < sites.length; i++) {
-          console.log(i);
           const site: SiteListDto = {
             id: sites[i].id,
             name: sites[i].name,
@@ -48,14 +50,27 @@ export class SiteService {
             averageRouteNumber: sites[i].averageRouteNumber,
             maxLevel: sites[i].maxLevel,
             minLevel: sites[i].minLevel,
+            zipCode: sites[i].zipCode,
+            approachTime: sites[i].approachTime,
+            averageRouteHeight: sites[i].averageRouteHeight,
           };
           list.push(site);
         }
-        console.log(list);
         return list;
       });
   }
-  public async create(createSiteDto: CreateSiteDto) {
+  public async findByName(name: string): Promise<Site | null> {
+    return this.siteRepository.findOneBy({
+      name: name,
+    });
+  }
+  public async create(createSiteDto: CreateSiteDto): Promise<SiteListDto> {
+    const isExist = await this.findByName(createSiteDto.name);
+    if (isExist) {
+      throw new HttpException(this.nameIsUsed, HttpStatus.BAD_REQUEST, {
+        cause: new Error(),
+      });
+    }
     const mainParkingPoint = `POINT(${createSiteDto.mainParkingLng} ${createSiteDto.mainParkingLat})`;
     let secondaryParkingPoint = `POINT(${createSiteDto.secondaryParkingLng} ${createSiteDto.secondaryParkingLat})`;
     if (
@@ -101,5 +116,51 @@ export class SiteService {
       routeProfiles: await this.routeProfileService.findAll(),
       rockTypes: await this.rockTypeService.findAll(),
     };
+  }
+
+  public async findOneById(id: number) {
+    return this.siteRepository
+      .findOne({
+        where: {
+          id: id,
+        },
+        relations: {
+          expositions: true,
+          routeProfiles: true,
+          maxLevel: true,
+          minLevel: true,
+          engagement: true,
+          equipment: true,
+          rockType: true,
+          secteurs: true,
+          approachType: true,
+        },
+      })
+      .then((s) => {
+        const site: SiteViewDto = {
+          id: s.id,
+          name: s.name,
+          expositions: s.expositions,
+          averageRouteNumber: s.averageRouteNumber,
+          minLevel: s.minLevel,
+          maxLevel: s.maxLevel,
+          zipCode: s.zipCode,
+          approachTime: s.approachTime,
+          averageRouteHeight: s.averageRouteHeight,
+          routeProfiles: s.routeProfiles,
+          equipment: s.equipment,
+          engagement: s.engagement,
+          approachType: s.approachType,
+          rockType: s.rockType,
+          secteurs: s.secteurs,
+          mainParking: s.mainParking,
+          secondaryParking: s.secondaryParking,
+          water: s.water,
+          wc: s.wc,
+          river: s.river,
+          network: s.network,
+        };
+        return site;
+      });
   }
 }

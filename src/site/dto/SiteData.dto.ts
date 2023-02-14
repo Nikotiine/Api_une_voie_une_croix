@@ -9,18 +9,18 @@ import { ApproachTypeDto } from '../../approach-type/dto/ApproachType.dto';
 import { EngagementDto } from '../../engagement/dto/Engagement.dto';
 
 export class SiteDataDto {
-  @ApiProperty()
+  @ApiProperty({ type: [ExpositionsDto] })
   expositions: ExpositionsDto[];
-  @ApiProperty()
+  @ApiProperty({ type: [LevelsDto] })
   levels: LevelsDto[];
-  @ApiProperty()
+  @ApiProperty({ type: [RockTypeDto] })
   rockTypes: RockTypeDto[];
-  @ApiProperty()
+  @ApiProperty({ type: [RouteProfileDto] })
   routeProfiles: RouteProfileDto[];
-  @ApiProperty()
+  @ApiProperty({ type: [EquipmentDto] })
   equipments: EquipmentDto[];
-  @ApiProperty()
+  @ApiProperty({ type: [EngagementDto] })
   engagements: EngagementDto[];
-  @ApiProperty()
+  @ApiProperty({ type: [ApproachTypeDto] })
   approachTypes: ApproachTypeDto[];
 }

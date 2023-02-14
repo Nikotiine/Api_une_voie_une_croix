@@ -13,6 +13,16 @@ export class LevelController {
     description: 'List of levels',
   })
   public async getAllLevels(): Promise<LevelsDto[]> {
-    return this.levelService.findAll();
+    return this.levelService.findAll().then((levels) => {
+      const levelList: LevelsDto[] = [];
+      for (let i = 0; i < levels.length; i++) {
+        const level: LevelsDto = {
+          id: levels[i].id,
+          label: levels[i].label,
+        };
+        levelList.push(level);
+      }
+      return levelList;
+    });
   }
 }
