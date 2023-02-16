@@ -11,6 +11,8 @@ import { EquipmentModule } from '../equipment/equipment.module';
 import { LevelModule } from '../level/level.module';
 import { ApproachTypeModule } from '../approach-type/approach-type.module';
 
+import { RegionModule } from '../region/region.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Site]),
@@ -21,6 +23,7 @@ import { ApproachTypeModule } from '../approach-type/approach-type.module';
     EquipmentModule,
     LevelModule,
     ApproachTypeModule,
+    RegionModule,
   ],
   controllers: [SiteController],
   providers: [SiteService],

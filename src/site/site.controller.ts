@@ -28,12 +28,13 @@ export class SiteController {
   public async getAllSites(): Promise<SiteListDto[]> {
     return this.siteService.findAll();
   }
-  @Get(':id')
+  @Get('one/:id')
   @ApiCreatedResponse({
     type: SiteViewDto,
     description: 'get resource site',
   })
   public async getSite(@Param('id') id: number): Promise<SiteViewDto> {
+    console.log('ici');
     return this.siteService.findOneById(id);
   }
 

@@ -7,6 +7,7 @@ import { EquipmentDto } from '../../equipment/dto/Equipment.dto';
 
 import { ApproachTypeDto } from '../../approach-type/dto/ApproachType.dto';
 import { EngagementDto } from '../../engagement/dto/Engagement.dto';
+import { RegionDto } from '../../region/dto/Region.dto';
 
 export class SiteDataDto {
   @ApiProperty({ type: [ExpositionsDto] })
@@ -23,4 +24,6 @@ export class SiteDataDto {
   engagements: EngagementDto[];
   @ApiProperty({ type: [ApproachTypeDto] })
   approachTypes: ApproachTypeDto[];
+  @ApiProperty({ type: [RegionDto] })
+  regions: RegionDto[];
 }

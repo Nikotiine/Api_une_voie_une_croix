@@ -24,6 +24,10 @@ import { EquipmentModule } from './equipment/equipment.module';
 import { EngagementModule } from './engagement/engagement.module';
 import { ApproachTypeModule } from './approach-type/approach-type.module';
 import { SecteurModule } from './secteur/secteur.module';
+import { Region } from './orm/entity/Region';
+import { RegionModule } from './region/region.module';
+import { Department } from './orm/entity/Department';
+import { DepartmentModule } from './department/department.module';
 
 @Module({
   imports: [
@@ -47,6 +51,8 @@ import { SecteurModule } from './secteur/secteur.module';
         Engagement,
         RockType,
         Secteur,
+        Region,
+        Department,
       ],
       synchronize: true,
     }),
@@ -61,6 +67,8 @@ import { SecteurModule } from './secteur/secteur.module';
     EngagementModule,
     ApproachTypeModule,
     SecteurModule,
+    RegionModule,
+    DepartmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

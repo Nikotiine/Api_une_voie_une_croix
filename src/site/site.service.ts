@@ -13,6 +13,7 @@ import { ApproachTypeService } from '../approach-type/approach-type.service';
 import { EquipmentService } from '../equipment/equipment.service';
 import { SiteListDto } from './dto/SiteList.dto';
 import { SiteViewDto } from './dto/SiteView.dto';
+import { RegionService } from '../region/region.service';
 
 @Injectable()
 export class SiteService {
@@ -26,6 +27,7 @@ export class SiteService {
     private readonly engagementService: EngagementService,
     private readonly approachTypeService: ApproachTypeService,
     private readonly equipmentService: EquipmentService,
+    private readonly regionService: RegionService,
   ) {}
 
   public async findAll(): Promise<SiteListDto[]> {
@@ -50,7 +52,8 @@ export class SiteService {
             averageRouteNumber: sites[i].averageRouteNumber,
             maxLevel: sites[i].maxLevel,
             minLevel: sites[i].minLevel,
-            zipCode: sites[i].zipCode,
+            department: sites[i].department,
+            region: sites[i].region,
             approachTime: sites[i].approachTime,
             averageRouteHeight: sites[i].averageRouteHeight,
           };
@@ -95,8 +98,8 @@ export class SiteService {
       rockType: createSiteDto.rockType,
       routeProfiles: createSiteDto.routeProfiles,
       expositions: createSiteDto.expositions,
-      zipCode: createSiteDto.zipCode,
-      regionCode: createSiteDto.regionCode,
+      department: createSiteDto.department,
+      region: createSiteDto.region,
       water: createSiteDto.water,
       network: createSiteDto.network,
       wc: createSiteDto.wc,
@@ -115,6 +118,7 @@ export class SiteService {
       equipments: await this.equipmentService.findAll(),
       routeProfiles: await this.routeProfileService.findAll(),
       rockTypes: await this.rockTypeService.findAll(),
+      regions: await this.regionService.findAll(),
     };
   }
 
@@ -144,7 +148,7 @@ export class SiteService {
           averageRouteNumber: s.averageRouteNumber,
           minLevel: s.minLevel,
           maxLevel: s.maxLevel,
-          zipCode: s.zipCode,
+          department: s.department,
           approachTime: s.approachTime,
           averageRouteHeight: s.averageRouteHeight,
           routeProfiles: s.routeProfiles,
@@ -159,6 +163,7 @@ export class SiteService {
           wc: s.wc,
           river: s.river,
           network: s.network,
+          region: s.region,
         };
         return site;
       });

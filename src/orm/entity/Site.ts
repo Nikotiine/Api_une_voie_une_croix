@@ -67,9 +67,9 @@ export class Site {
   })
   secondaryParking: string;
   @Column()
-  zipCode: string;
+  department: string;
   @Column()
-  regionCode: string;
+  region: string;
   @Column({ default: false })
   water: boolean;
   @Column({ default: false })

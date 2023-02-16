@@ -16,7 +16,9 @@ export class SiteListDto {
   @ApiProperty()
   maxLevel: Level;
   @ApiProperty()
-  zipCode: string;
+  department: string;
+  @ApiProperty()
+  region: string;
   @ApiProperty()
   approachTime: number;
   @ApiProperty()

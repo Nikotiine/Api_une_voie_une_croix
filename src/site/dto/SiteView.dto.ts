@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ExpositionsDto } from '../../exposition/dto/Expositions.dto';
-import { Level } from '../../orm/entity/Level';
 import { RouteProfileDto } from '../../route-profile/dto/RouteProfile.dto';
 import { EquipmentDto } from '../../equipment/dto/Equipment.dto';
 import { EngagementDto } from '../../engagement/dto/Engagement.dto';
 import { ApproachTypeDto } from '../../approach-type/dto/ApproachType.dto';
 import { RockTypeDto } from '../../rock-type/dto/RockType.dto';
 import { SecteurDto } from '../../secteur/dto/Secteur.dto';
+import { LevelsDto } from '../../level/dto/Levels.dto';
 
 export class SiteViewDto {
   @ApiProperty()
@@ -18,11 +18,11 @@ export class SiteViewDto {
   @ApiProperty()
   averageRouteNumber: number;
   @ApiProperty()
-  minLevel: Level;
+  minLevel: LevelsDto;
   @ApiProperty()
-  maxLevel: Level;
+  maxLevel: LevelsDto;
   @ApiProperty()
-  zipCode: string;
+  department: string;
   @ApiProperty()
   approachTime: number;
   @ApiProperty()
@@ -51,4 +51,6 @@ export class SiteViewDto {
   river: boolean;
   @ApiProperty()
   network: boolean;
+  @ApiProperty()
+  region: string;
 }

@@ -38,10 +38,10 @@ export class CreateSiteDto {
   secondaryParkingLng: string;
   @ApiProperty()
   @IsString()
-  zipCode: string;
+  department: string;
   @ApiProperty()
   @IsString()
-  regionCode: string;
+  region: string;
   @ApiProperty()
   minLevel: Level;
   @ApiProperty()
