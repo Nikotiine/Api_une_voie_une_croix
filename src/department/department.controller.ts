@@ -1,7 +1,12 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { DepartmentDto } from './dto/Department.dto';
 
 @Controller('api/department')
@@ -13,6 +18,15 @@ export class DepartmentController {
   @ApiCreatedResponse({
     type: [DepartmentDto],
     description: 'Return depart by region',
+  })
+  @ApiParam({
+    name: 'region',
+    allowEmptyValue: false,
+    description: 'id of region where are department',
+  })
+  @ApiOperation({
+    summary: 'Get filtered collection department resource',
+    description: 'Filter department with region id',
   })
   public async findByRegion(
     @Param('region') regionId: number,

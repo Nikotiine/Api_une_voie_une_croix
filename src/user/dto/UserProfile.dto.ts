@@ -1,14 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserProfileDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 'john',
+  })
   firstName: string;
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Doe',
+  })
   lastName: string;
   @ApiProperty()
   birthday: Date;
-  @ApiProperty()
+  @ApiProperty({
+    example: 'john.doe@gmail.com',
+  })
   email: string;
-  @ApiProperty()
+  @ApiProperty({
+    example: 1,
+  })
   id: number;
 }

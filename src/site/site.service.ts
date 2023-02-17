@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Site } from '../orm/entity/Site';
-import { CreateSiteDto } from './dto/CreateSite.dto';
+import { SiteCreateDto } from './dto/SiteCreate.dto';
 import { ExpositionService } from '../exposition/exposition.service';
 import { SiteDataDto } from './dto/SiteData.dto';
 import { LevelService } from '../level/level.service';
@@ -40,6 +40,8 @@ export class SiteService {
           expositions: true,
           minLevel: true,
           maxLevel: true,
+          department: true,
+          region: true,
         },
       })
       .then((sites) => {
@@ -67,44 +69,38 @@ export class SiteService {
       name: name,
     });
   }
-  public async create(createSiteDto: CreateSiteDto): Promise<SiteListDto> {
+  public async create(createSiteDto: SiteCreateDto): Promise<Site> {
     const isExist = await this.findByName(createSiteDto.name);
     if (isExist) {
       throw new HttpException(this.nameIsUsed, HttpStatus.BAD_REQUEST, {
         cause: new Error(),
       });
     }
-    const mainParkingPoint = `POINT(${createSiteDto.mainParkingLng} ${createSiteDto.mainParkingLat})`;
-    let secondaryParkingPoint = `POINT(${createSiteDto.secondaryParkingLng} ${createSiteDto.secondaryParkingLat})`;
-    if (
-      createSiteDto.secondaryParkingLat === 'undefined' &&
-      createSiteDto.secondaryParkingLng === 'undefined'
-    ) {
-      secondaryParkingPoint = mainParkingPoint;
-    }
 
     const site = this.siteRepository.create({
       name: createSiteDto.name,
       approachTime: createSiteDto.approachTime,
-      mainParking: mainParkingPoint,
-      secondaryParking: secondaryParkingPoint,
-      minLevel: createSiteDto.minLevel,
       averageRouteHeight: createSiteDto.averageRouteHeight,
       averageRouteNumber: createSiteDto.averageRouteNumber,
+      expositions: createSiteDto.expositions,
+      routeProfiles: createSiteDto.routeProfiles,
+      minLevel: createSiteDto.minLevel,
       maxLevel: createSiteDto.maxLevel,
+      equipment: createSiteDto.equipment,
       engagement: createSiteDto.engagement,
       approachType: createSiteDto.approachType,
-      equipment: createSiteDto.equipment,
       rockType: createSiteDto.rockType,
-      routeProfiles: createSiteDto.routeProfiles,
-      expositions: createSiteDto.expositions,
+      secteurs: createSiteDto.secteurs,
+      mainParkingLat: createSiteDto.mainParkingLat,
+      mainParkingLng: createSiteDto.mainParkingLng,
+      secondaryParkingLat: createSiteDto.secondaryParkingLat,
+      secondaryParkingLng: createSiteDto.secondaryParkingLng,
       department: createSiteDto.department,
       region: createSiteDto.region,
       water: createSiteDto.water,
       network: createSiteDto.network,
       wc: createSiteDto.wc,
       river: createSiteDto.river,
-      secteurs: createSiteDto.secteurs,
     });
     return this.siteRepository.save(site);
   }
@@ -138,6 +134,8 @@ export class SiteService {
           rockType: true,
           secteurs: true,
           approachType: true,
+          region: true,
+          department: true,
         },
       })
       .then((s) => {
@@ -157,8 +155,10 @@ export class SiteService {
           approachType: s.approachType,
           rockType: s.rockType,
           secteurs: s.secteurs,
-          mainParking: s.mainParking,
-          secondaryParking: s.secondaryParking,
+          mainParkingLat: s.mainParkingLat,
+          mainParkingLng: s.mainParkingLng,
+          secondaryParkingLat: s.secondaryParkingLat,
+          secondaryParkingLng: s.secondaryParkingLng,
           water: s.water,
           wc: s.wc,
           river: s.river,

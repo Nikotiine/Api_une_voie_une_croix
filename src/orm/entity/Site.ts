@@ -19,6 +19,8 @@ import { ApproachType } from './ApproachType';
 import { RockType } from './RockType';
 import { Secteur } from './Secteur';
 import { Geometry, Point } from 'geojson';
+import { Department } from './Department';
+import { Region } from './Region';
 
 @Entity()
 @Unique(['name'])
@@ -59,17 +61,24 @@ export class Site {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column('point')
-  mainParking: string;
+  @Column({ type: 'double' })
+  mainParkingLat: number;
+  @Column({ type: 'double' })
+  mainParkingLng: number;
   @Column({
-    type: 'point',
+    type: 'double',
     nullable: true,
   })
-  secondaryParking: string;
-  @Column()
-  department: string;
-  @Column()
-  region: string;
+  secondaryParkingLat: number;
+  @Column({
+    type: 'double',
+    nullable: true,
+  })
+  secondaryParkingLng: number;
+  @ManyToOne(() => Department, (department) => department.name)
+  department: Department;
+  @ManyToOne(() => Region, (region) => region.name)
+  region: Region;
   @Column({ default: false })
   water: boolean;
   @Column({ default: false })

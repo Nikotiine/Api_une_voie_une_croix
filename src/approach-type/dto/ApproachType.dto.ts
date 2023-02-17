@@ -3,6 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export class ApproachTypeDto {
   @ApiProperty()
   id: number;
-  @ApiProperty()
+  @ApiProperty({
+    example: 'En montée raide',
+  })
   label: string;
 }

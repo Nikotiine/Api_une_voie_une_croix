@@ -10,8 +10,12 @@ export class Department {
   region: Region;
   @Column()
   name: string;
-  @Column()
-  lat: string;
-  @Column()
-  lng: string;
+  @Column({
+    type: 'double',
+  })
+  lat: number;
+  @Column({
+    type: 'double',
+  })
+  lng: number;
 }

@@ -3,6 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export class RouteProfileDto {
   @ApiProperty()
   id: number;
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Gros devers',
+  })
   label: string;
 }
