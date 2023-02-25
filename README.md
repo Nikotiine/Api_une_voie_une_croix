@@ -28,11 +28,25 @@
 
 ## Installation
 * Creer un .env avec les information de configuration de la bdd (my sql)
-* PORT_DEV=[votre port localhost de dev]
-* DATABASE_HOST=[localhost si docker-compose]
-* DATABASE_PORT=[3306 si docker-compose]
-* DATABASE_USER=[user de la database , si docker-compose pas de mdp pour la bdd]
-* DATABASE_NAME=[le nom de votre bdd]
+  * PORT_DEV=[votre port localhost de dev]
+  * DATABASE_HOST=[localhost si docker-compose]
+  * DATABASE_PORT=[3306 si docker-compose]
+  * DATABASE_USER=[user de la database , si docker-compose pas de mdp pour la bdd]
+  * DATABASE_NAME=[le nom de votre bdd]
+  * ACCESS_TOKEN_SECRET_KEY=[]
+  * BCRYPT_SALT=[]
+
+Exemple :
+```bash
+PORT_DEV=3000
+DATABASE_HOST=localhost
+DATABASE_PORT=3306
+DATABASE_USER=root
+DATABASE_NAME=climbing
+DATABASE_PASSWORD=''
+ACCESS_TOKEN_SECRET_KEY=key
+BCRYPT_SALT=10
+```
   
 ```bash
 # install dependencies
