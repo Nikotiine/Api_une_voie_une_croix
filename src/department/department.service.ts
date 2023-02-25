@@ -25,9 +25,6 @@ export class DepartmentService {
       where: {
         region: region,
       },
-      relations: {
-        region: true,
-      },
     });
   }
 }

@@ -14,6 +14,7 @@ import { EquipmentService } from '../equipment/equipment.service';
 import { SiteListDto } from './dto/SiteList.dto';
 import { SiteViewDto } from './dto/SiteView.dto';
 import { RegionService } from '../region/region.service';
+import { SecteurService } from '../secteur/secteur.service';
 
 @Injectable()
 export class SiteService {
@@ -76,7 +77,6 @@ export class SiteService {
         cause: new Error(),
       });
     }
-
     const site = this.siteRepository.create({
       name: createSiteDto.name,
       approachTime: createSiteDto.approachTime,
@@ -167,5 +167,37 @@ export class SiteService {
         };
         return site;
       });
+  }
+  public async update(
+    id: number,
+    createSiteDto: SiteCreateDto,
+  ): Promise<SiteViewDto> {
+    const entity = await this.siteRepository.preload({
+      id,
+      name: createSiteDto.name,
+      approachTime: createSiteDto.approachTime,
+      averageRouteHeight: createSiteDto.averageRouteHeight,
+      averageRouteNumber: createSiteDto.averageRouteNumber,
+      expositions: createSiteDto.expositions,
+      routeProfiles: createSiteDto.routeProfiles,
+      minLevel: createSiteDto.minLevel,
+      maxLevel: createSiteDto.maxLevel,
+      equipment: createSiteDto.equipment,
+      engagement: createSiteDto.engagement,
+      approachType: createSiteDto.approachType,
+      rockType: createSiteDto.rockType,
+      secteurs: createSiteDto.secteurs,
+      mainParkingLat: createSiteDto.mainParkingLat,
+      mainParkingLng: createSiteDto.mainParkingLng,
+      secondaryParkingLat: createSiteDto.secondaryParkingLat,
+      secondaryParkingLng: createSiteDto.secondaryParkingLng,
+      department: createSiteDto.department,
+      region: createSiteDto.region,
+      water: createSiteDto.water,
+      network: createSiteDto.network,
+      wc: createSiteDto.wc,
+      river: createSiteDto.river,
+    });
+    return this.siteRepository.save(entity);
   }
 }

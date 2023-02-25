@@ -15,6 +15,7 @@ export class UserRegisterDto {
   @ApiProperty()
   @IsDateString()
   birthday: Date;
+
   @ApiProperty({
     example: 'john.doe@gmail.com',
   })

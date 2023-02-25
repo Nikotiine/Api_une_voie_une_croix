@@ -12,6 +12,7 @@ import { LevelModule } from '../level/level.module';
 import { ApproachTypeModule } from '../approach-type/approach-type.module';
 
 import { RegionModule } from '../region/region.module';
+import { SecteurModule } from '../secteur/secteur.module';
 
 @Module({
   imports: [

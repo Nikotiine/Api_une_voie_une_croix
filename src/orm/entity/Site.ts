@@ -35,10 +35,19 @@ export class Site {
   averageRouteHeight: number;
   @Column()
   averageRouteNumber: number;
-  @ManyToMany(() => Exposition)
+  @ManyToMany(() => Exposition, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinTable()
   expositions: Exposition[];
-  @ManyToMany(() => RouteProfile)
+  @ManyToMany(() => RouteProfile, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    eager: true,
+  })
   @JoinTable()
   routeProfiles: RouteProfile[];
   @ManyToOne(() => Level, (level) => level.label)
@@ -54,7 +63,10 @@ export class Site {
   @ManyToOne(() => RockType, (rockType) => rockType.label)
   rockType: RockType;
   @OneToMany(() => Secteur, (secteur) => secteur.site, {
-    cascade: true,
+    cascade: ['insert', 'update'],
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    eager: true,
   })
   @JoinColumn()
   secteurs: Secteur[];

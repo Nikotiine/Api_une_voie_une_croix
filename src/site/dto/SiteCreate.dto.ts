@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsPositive, IsString } from 'class-validator';
-
 import { SecteurDto } from '../../secteur/dto/Secteur.dto';
-
 import { DepartmentDto } from '../../department/dto/Department.dto';
 import { RegionDto } from '../../region/dto/Region.dto';
 import { LevelsDto } from '../../level/dto/Levels.dto';

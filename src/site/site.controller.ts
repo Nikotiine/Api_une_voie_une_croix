@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -31,9 +31,9 @@ export class SiteController {
     description: 'Return new site resource',
   })
   public createSite(
-    @Body() createSiteDto: SiteCreateDto,
+    @Body() siteCreateDto: SiteCreateDto,
   ): Promise<SiteListDto> {
-    return this.siteService.create(createSiteDto);
+    return this.siteService.create(siteCreateDto);
   }
   @Get()
   @ApiOperation({
@@ -76,5 +76,27 @@ export class SiteController {
   })
   public async getData(): Promise<SiteDataDto> {
     return this.siteService.getAllData();
+  }
+
+  @Put('edit/:id')
+  @ApiParam({
+    name: 'id',
+    allowEmptyValue: false,
+    description: 'id of site resource',
+  })
+  @ApiBody({
+    type: SiteCreateDto,
+    description:
+      'The Description for the Post Body. Please look into the DTO SiteCreateDto',
+  })
+  @ApiCreatedResponse({
+    type: SiteViewDto,
+    description: 'Return the update data with SiteViewDto',
+  })
+  public async editSite(
+    @Param('id') id: number,
+    @Body() site: SiteCreateDto,
+  ): Promise<SiteViewDto> {
+    return this.siteService.update(id, site);
   }
 }
