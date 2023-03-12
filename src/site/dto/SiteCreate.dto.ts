@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsPositive, IsString } from 'class-validator';
-import { SecteurDto } from '../../secteur/dto/Secteur.dto';
-import { DepartmentDto } from '../../department/dto/Department.dto';
-import { RegionDto } from '../../region/dto/Region.dto';
-import { LevelsDto } from '../../level/dto/Levels.dto';
-import { EquipmentDto } from '../../equipment/dto/Equipment.dto';
-import { EngagementDto } from '../../engagement/dto/Engagement.dto';
-import { ApproachTypeDto } from '../../approach-type/dto/ApproachType.dto';
-import { ExpositionsDto } from '../../exposition/dto/Expositions.dto';
-import { RouteProfileDto } from '../../route-profile/dto/RouteProfile.dto';
-import { RockTypeDto } from '../../rock-type/dto/RockType.dto';
+import { DepartmentListDto } from '../../location/dto/DepartmentList.dto';
+import { RegionListDto } from '../../location/dto/RegionList.dto';
+import { LevelListDto } from '../../general-informations/dto/LevelList.dto';
+import { EquipmentListDto } from '../../general-informations/dto/EquipmentList.dto';
+import { EngagementListDto } from '../../general-informations/dto/EngagementList.dto';
+import { ApproachTypeListDto } from '../../general-informations/dto/ApproachTypeList.dto';
+import { ExpositionListDto } from '../../general-informations/dto/ExpositionList.dto';
+import { RouteProfileListDto } from '../../general-informations/dto/RouteProfileList.dto';
+import { RockTypeListDto } from '../../general-informations/dto/RockTypeList.dto';
+import { SecteurListDto } from './SecteurList.dto';
 
 export class SiteCreateDto {
   @ApiProperty({
@@ -57,30 +57,30 @@ export class SiteCreateDto {
   @IsNumber()
   secondaryParkingLng: number;
   @ApiProperty()
-  department: DepartmentDto;
+  department: DepartmentListDto;
   @ApiProperty()
-  region: RegionDto;
+  region: RegionListDto;
   @ApiProperty()
-  minLevel: LevelsDto;
+  minLevel: LevelListDto;
   @ApiProperty()
-  maxLevel: LevelsDto;
+  maxLevel: LevelListDto;
 
   @ApiProperty()
-  equipment: EquipmentDto;
+  equipment: EquipmentListDto;
   @ApiProperty()
-  engagement: EngagementDto;
+  engagement: EngagementListDto;
   @ApiProperty()
-  approachType: ApproachTypeDto;
+  approachType: ApproachTypeListDto;
   @ApiProperty({
-    type: [ExpositionsDto],
+    type: [ExpositionListDto],
   })
-  expositions: ExpositionsDto[];
+  expositions: ExpositionListDto[];
   @ApiProperty({
-    type: [RouteProfileDto],
+    type: [RouteProfileListDto],
   })
-  routeProfiles: RouteProfileDto[];
+  routeProfiles: RouteProfileListDto[];
   @ApiProperty()
-  rockType: RockTypeDto;
+  rockType: RockTypeListDto;
   @ApiProperty()
   @IsBoolean()
   river: boolean;
@@ -94,5 +94,5 @@ export class SiteCreateDto {
   @IsBoolean()
   water: boolean;
   @ApiProperty()
-  secteurs: SecteurDto[];
+  secteurs: SecteurListDto[];
 }

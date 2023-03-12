@@ -1,15 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ExpositionsDto } from '../../exposition/dto/Expositions.dto';
-import { RouteProfileDto } from '../../route-profile/dto/RouteProfile.dto';
-import { EquipmentDto } from '../../equipment/dto/Equipment.dto';
-import { EngagementDto } from '../../engagement/dto/Engagement.dto';
-import { ApproachTypeDto } from '../../approach-type/dto/ApproachType.dto';
-import { RockTypeDto } from '../../rock-type/dto/RockType.dto';
-import { SecteurDto } from '../../secteur/dto/Secteur.dto';
-import { LevelsDto } from '../../level/dto/Levels.dto';
-import { DepartmentDto } from '../../department/dto/Department.dto';
-import { RegionDto } from '../../region/dto/Region.dto';
+
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { ExpositionListDto } from '../../general-informations/dto/ExpositionList.dto';
+import { LevelListDto } from '../../general-informations/dto/LevelList.dto';
+import { DepartmentListDto } from '../../location/dto/DepartmentList.dto';
+import { RouteProfileListDto } from '../../general-informations/dto/RouteProfileList.dto';
+import { EquipmentListDto } from '../../general-informations/dto/EquipmentList.dto';
+import { EngagementListDto } from '../../general-informations/dto/EngagementList.dto';
+import { ApproachTypeListDto } from '../../general-informations/dto/ApproachTypeList.dto';
+import { RockTypeListDto } from '../../general-informations/dto/RockTypeList.dto';
+import { SecteurListDto } from './SecteurList.dto';
+import { RegionListDto } from '../../location/dto/RegionList.dto';
 
 export class SiteViewDto {
   @ApiProperty()
@@ -18,35 +19,35 @@ export class SiteViewDto {
   @ApiProperty()
   @IsString()
   name: string;
-  @ApiProperty({ type: [ExpositionsDto] })
-  expositions: ExpositionsDto[];
+  @ApiProperty({ type: [ExpositionListDto] })
+  expositions: ExpositionListDto[];
   @ApiProperty()
   @IsNumber()
   averageRouteNumber: number;
   @ApiProperty()
-  minLevel: LevelsDto;
+  minLevel: LevelListDto;
   @ApiProperty()
-  maxLevel: LevelsDto;
+  maxLevel: LevelListDto;
   @ApiProperty()
-  department: DepartmentDto;
+  department: DepartmentListDto;
   @ApiProperty()
   @IsNumber()
   approachTime: number;
   @ApiProperty()
   @IsNumber()
   averageRouteHeight: number;
-  @ApiProperty({ type: [RouteProfileDto] })
-  routeProfiles: RouteProfileDto[];
+  @ApiProperty({ type: [RouteProfileListDto] })
+  routeProfiles: RouteProfileListDto[];
   @ApiProperty()
-  equipment: EquipmentDto;
+  equipment: EquipmentListDto;
   @ApiProperty()
-  engagement: EngagementDto;
+  engagement: EngagementListDto;
   @ApiProperty()
-  approachType: ApproachTypeDto;
+  approachType: ApproachTypeListDto;
   @ApiProperty()
-  rockType: RockTypeDto;
-  @ApiProperty({ type: [SecteurDto] })
-  secteurs: SecteurDto[];
+  rockType: RockTypeListDto;
+  @ApiProperty({ type: [SecteurListDto] })
+  secteurs: SecteurListDto[];
   @ApiProperty()
   @IsNumber()
   mainParkingLat: number;
@@ -72,5 +73,5 @@ export class SiteViewDto {
   @IsBoolean()
   network: boolean;
   @ApiProperty()
-  region: RegionDto;
+  region: RegionListDto;
 }

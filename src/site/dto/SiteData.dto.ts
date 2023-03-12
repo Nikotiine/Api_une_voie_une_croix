@@ -1,29 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LevelsDto } from '../../level/dto/Levels.dto';
-import { ExpositionsDto } from '../../exposition/dto/Expositions.dto';
-import { RockTypeDto } from '../../rock-type/dto/RockType.dto';
-import { RouteProfileDto } from '../../route-profile/dto/RouteProfile.dto';
-import { EquipmentDto } from '../../equipment/dto/Equipment.dto';
-
-import { ApproachTypeDto } from '../../approach-type/dto/ApproachType.dto';
-import { EngagementDto } from '../../engagement/dto/Engagement.dto';
-import { RegionDto } from '../../region/dto/Region.dto';
+import { ExpositionListDto } from '../../general-informations/dto/ExpositionList.dto';
+import { LevelListDto } from '../../general-informations/dto/LevelList.dto';
+import { RockTypeListDto } from '../../general-informations/dto/RockTypeList.dto';
+import { RouteProfileListDto } from '../../general-informations/dto/RouteProfileList.dto';
+import { EquipmentListDto } from '../../general-informations/dto/EquipmentList.dto';
+import { EngagementListDto } from '../../general-informations/dto/EngagementList.dto';
+import { ApproachTypeListDto } from '../../general-informations/dto/ApproachTypeList.dto';
+import { RegionListDto } from '../../location/dto/RegionList.dto';
 
 export class SiteDataDto {
-  @ApiProperty({ type: [ExpositionsDto] })
-  expositions: ExpositionsDto[];
-  @ApiProperty({ type: [LevelsDto] })
-  levels: LevelsDto[];
-  @ApiProperty({ type: [RockTypeDto] })
-  rockTypes: RockTypeDto[];
-  @ApiProperty({ type: [RouteProfileDto] })
-  routeProfiles: RouteProfileDto[];
-  @ApiProperty({ type: [EquipmentDto] })
-  equipments: EquipmentDto[];
-  @ApiProperty({ type: [EngagementDto] })
-  engagements: EngagementDto[];
-  @ApiProperty({ type: [ApproachTypeDto] })
-  approachTypes: ApproachTypeDto[];
-  @ApiProperty({ type: [RegionDto] })
-  regions: RegionDto[];
+  @ApiProperty({ type: [ExpositionListDto] })
+  expositions: ExpositionListDto[];
+  @ApiProperty({ type: [LevelListDto] })
+  levels: LevelListDto[];
+  @ApiProperty({ type: [RockTypeListDto] })
+  rockTypes: RockTypeListDto[];
+  @ApiProperty({ type: [RouteProfileListDto] })
+  routeProfiles: RouteProfileListDto[];
+  @ApiProperty({ type: [EquipmentListDto] })
+  equipments: EquipmentListDto[];
+  @ApiProperty({ type: [EngagementListDto] })
+  engagements: EngagementListDto[];
+  @ApiProperty({ type: [ApproachTypeListDto] })
+  approachTypes: ApproachTypeListDto[];
+  @ApiProperty({ type: [RegionListDto] })
+  regions: RegionListDto[];
 }

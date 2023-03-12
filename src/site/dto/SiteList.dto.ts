@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ExpositionsDto } from '../../exposition/dto/Expositions.dto';
-import { Level } from '../../orm/entity/Level';
 
-import { RegionDto } from '../../region/dto/Region.dto';
-import { DepartmentDto } from '../../department/dto/Department.dto';
+import { Level } from '../../orm/entity/Level.entity';
+
 import { IsNumber, IsString } from 'class-validator';
+import { ExpositionListDto } from '../../general-informations/dto/ExpositionList.dto';
+import { DepartmentListDto } from '../../location/dto/DepartmentList.dto';
+import { RegionListDto } from '../../location/dto/RegionList.dto';
 
 export class SiteListDto {
   @ApiProperty()
@@ -13,8 +14,8 @@ export class SiteListDto {
   @ApiProperty()
   @IsString()
   name: string;
-  @ApiProperty({ type: [ExpositionsDto] })
-  expositions: ExpositionsDto[];
+  @ApiProperty({ type: [ExpositionListDto] })
+  expositions: ExpositionListDto[];
   @ApiProperty()
   @IsNumber()
   averageRouteNumber: number;
@@ -23,9 +24,9 @@ export class SiteListDto {
   @ApiProperty()
   maxLevel: Level;
   @ApiProperty()
-  department: DepartmentDto;
+  department: DepartmentListDto;
   @ApiProperty()
-  region: RegionDto;
+  region: RegionListDto;
   @ApiProperty()
   @IsNumber()
   approachTime: number;
