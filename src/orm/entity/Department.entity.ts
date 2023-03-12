@@ -18,4 +18,8 @@ export class Department {
     type: 'double',
   })
   lng: number;
+  @Column({ default: true })
+  isActive: boolean;
+  @Column()
+  createdAt: Date;
 }

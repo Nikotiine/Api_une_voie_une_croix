@@ -16,4 +16,8 @@ export class Secteur {
   name: string;
   @ManyToOne(() => Site, (site) => site.secteurs)
   site: Site;
+  @Column({ default: true })
+  isActive: boolean;
+  @Column()
+  createdAt: Date;
 }

@@ -7,4 +7,8 @@ export class ApproachType {
   id: number;
   @Column()
   label: string;
+  @Column({ default: true })
+  isActive: boolean;
+  @Column()
+  createdAt: Date;
 }

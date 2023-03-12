@@ -10,4 +10,8 @@ export class Region {
   name: string;
   @OneToMany(() => Department, (department) => department.region)
   departments: Department[];
+  @Column({ default: true })
+  isActive: boolean;
+  @Column()
+  createdAt: Date;
 }
