@@ -102,7 +102,13 @@ export class SiteService {
       network: createSiteDto.network,
       wc: createSiteDto.wc,
       river: createSiteDto.river,
+      isActive: true,
     });
+    site.secteurs.forEach((secteur) => {
+      secteur.isActive = true;
+      secteur.createdAt = new Date();
+    });
+
     return this.siteRepository.save(site);
   }
 
