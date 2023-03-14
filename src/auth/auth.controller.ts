@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { UserProfileDto } from '../user/dto/UserProfile.dto';
 
 import {
+  ApiBody,
   ApiCreatedResponse,
   ApiOperation,
   ApiSecurity,
@@ -25,17 +26,23 @@ import { UserCredentialsDto } from './dto/UserCredentials.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @ApiOperation({
-    description: 'login path',
+    description: "Point d'entree de la connexion",
+    summary: 'login path',
   })
   @ApiCreatedResponse({
     description: 'return access token',
     type: TokenDto,
   })
+  @ApiBody({
+    type: UserCredentialsDto,
+    description:
+      'The Description for the Post Body. Please look into the DTO UserCredentialDto',
+  })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(
     @Request() req,
-    @Body() crendential: UserCredentialsDto,
+    @Body() credential: UserCredentialsDto,
   ): Promise<TokenDto> {
     return this.authService.generateToken(req.user);
   }
@@ -43,6 +50,10 @@ export class AuthController {
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
+  @ApiOperation({
+    summary: 'Jwt authentifacation',
+    description: "Point d'entree pour l'autentification du token",
+  })
   @ApiCreatedResponse({
     description: 'The access token is validate',
     type: UserProfileDto,

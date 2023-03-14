@@ -4,24 +4,24 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
-import { User } from './orm/entity/User';
+
 import { AuthModule } from './auth/auth.module';
+
+import { SiteModule } from './site/site.module';
+
+import { typeOrmAsyncConfig } from './config/typeorm.config';
+import { GeneralInformationsModule } from './general-informations/general-informations.module';
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT),
-      username: process.env.DATABASE_USER,
-      password: '',
-      database: process.env.DATABASE_NAME,
-      entities: [User],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     UserModule,
     AuthModule,
+    SiteModule,
+    GeneralInformationsModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

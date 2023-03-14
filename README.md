@@ -28,17 +28,41 @@
 
 ## Installation
 * Creer un .env avec les information de configuration de la bdd (my sql)
-* PORT_DEV=[votre port localhost de dev]
-* DATABASE_HOST=[localhost si docker-compose]
-* DATABASE_PORT=[3306 si docker-compose]
-* DATABASE_USER=[user de la database , si docker-compose pas de mdp pour la bdd]
-* DATABASE_NAME=[le nom de votre bdd]
+  * PORT_DEV=[votre port localhost de dev]
+  * DATABASE_HOST=[localhost si docker-compose]
+  * DATABASE_PORT=[3306 si docker-compose]
+  * DATABASE_USER=[user de la database , si docker-compose pas de mdp pour la bdd]
+  * DATABASE_NAME=[le nom de votre bdd]
+  * ACCESS_TOKEN_SECRET_KEY=[]
+  * BCRYPT_SALT=[]
+
+Exemple :
+```bash
+PORT_DEV=3000
+DATABASE_HOST=localhost
+DATABASE_PORT=3306
+DATABASE_USER=root
+DATABASE_NAME=climbing
+DATABASE_PASSWORD=''
+ACCESS_TOKEN_SECRET_KEY=key
+BCRYPT_SALT=10
+```
   
 ```bash
 # install dependencies
 $ npm install
-# start database
+
+# start database container docker first time
 $ docker-compose up -d
+
+# create database
+$ npm run db:create
+
+# run migration
+$ npm run migration:run
+
+# run seed
+$ npm run seed:run
 ```
 
 ## Running the app
@@ -57,10 +81,55 @@ $ npm run start:prod
 ```bash
 # Verifie que le serveur tournne
 $ localhost:[PORT_DEV] => hello world
+
 # Verfie que Swagger tourne et affiche les routes disponibles
 $ localhost:[PORT_DEV]/api => swagger
+
 # Php My admin pour gestion de la bdd 
 $ localhost:8080 => phpMyAdmin
+```
+
+## CLI Docker
+```bash
+# Start your docker engine and run the command line ( just one time )
+$ docker-compose up -d 
+
+# if you run docker-compose up -d after you have just do 
+# start database
+$ docker-compose start
+
+# stop database
+$ docker-compose stop
+
+# Destroy the container
+$ docker-compose down
+```
+
+## CLI TypeORM
+```bash
+# create database
+$ npm run db:create
+
+# drop database
+$ npm run db:drop
+
+# Generate mrigration for entity change
+$ npm run migration:generate
+
+# Generate your own migration 
+$ npm run migration:create
+
+# Run the mirgration 
+$ npm run migration:run
+
+# Revert last migration 
+$ npm run migration:revert
+```
+
+## CLI Seed
+```bash
+# Run the seed
+$ npm run seed:run
 ```
 ## Test
 
