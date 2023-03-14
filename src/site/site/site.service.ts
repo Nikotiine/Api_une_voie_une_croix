@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Site } from '../../orm/entity/Site.entity';
@@ -146,6 +151,9 @@ export class SiteService {
         },
       })
       .then((s) => {
+        if (!s) {
+          throw new UnauthorizedException();
+        }
         const site: SiteViewDto = {
           id: s.id,
           name: s.name,
