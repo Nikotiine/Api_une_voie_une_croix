@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Department } from '../../orm/entity/Department.entity';
 import { Repository } from 'typeorm';
 import { RegionService } from '../region/region.service';
-
 import { DepartmentListDto } from '../../dto/DepartmentList.dto';
 
 @Injectable()

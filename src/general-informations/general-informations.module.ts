@@ -21,6 +21,12 @@ import { ApproachTypeController } from './approach-type/approach-type.controller
 import { ApproachTypeService } from './approach-type/approach-type.service';
 import { ApproachType } from '../orm/entity/ApproachType.entity';
 import { RockType } from '../orm/entity/RockType.entity';
+import { Department } from '../orm/entity/Department.entity';
+import { Region } from '../orm/entity/Region.entity';
+import { DepartmentService } from './department/department.service';
+import { RegionService } from './region/region.service';
+import { DepartmentController } from './department/department.controller';
+import { RegionController } from './region/region.controller';
 
 @Module({
   controllers: [
@@ -31,6 +37,8 @@ import { RockType } from '../orm/entity/RockType.entity';
     LevelController,
     RockTypeController,
     ApproachTypeController,
+    DepartmentController,
+    RegionController,
   ],
   providers: [
     RouteProfileService,
@@ -40,6 +48,8 @@ import { RockType } from '../orm/entity/RockType.entity';
     LevelService,
     RockTypeService,
     ApproachTypeService,
+    DepartmentService,
+    RegionService,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -50,6 +60,8 @@ import { RockType } from '../orm/entity/RockType.entity';
       Level,
       ApproachType,
       RockType,
+      Department,
+      Region,
     ]),
   ],
   exports: [
@@ -60,6 +72,8 @@ import { RockType } from '../orm/entity/RockType.entity';
     LevelService,
     RockTypeService,
     ApproachTypeService,
+    DepartmentService,
+    RegionService,
   ],
 })
 export class GeneralInformationsModule {}

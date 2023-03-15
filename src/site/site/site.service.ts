@@ -13,7 +13,7 @@ import { SiteDataDto } from '../../dto/SiteData.dto';
 
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
-import { RegionService } from '../../location/region/region.service';
+import { RegionService } from '../../general-informations/region/region.service';
 import { ExpositionService } from '../../general-informations/exposition/exposition.service';
 import { LevelService } from '../../general-informations/level/level.service';
 import { RouteProfileService } from '../../general-informations/route-profile/route-profile.service';

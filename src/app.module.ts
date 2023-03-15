@@ -11,7 +11,6 @@ import { SiteModule } from './site/site.module';
 
 import { typeOrmAsyncConfig } from './config/typeorm.config';
 import { GeneralInformationsModule } from './general-informations/general-informations.module';
-import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { LocationModule } from './location/location.module';
     AuthModule,
     SiteModule,
     GeneralInformationsModule,
-    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
