@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsPositive, IsString } from 'class-validator';
-import { DepartmentListDto } from '../../location/dto/DepartmentList.dto';
-import { RegionListDto } from '../../location/dto/RegionList.dto';
-import { LevelListDto } from '../../general-informations/dto/LevelList.dto';
-import { EquipmentListDto } from '../../general-informations/dto/EquipmentList.dto';
-import { EngagementListDto } from '../../general-informations/dto/EngagementList.dto';
-import { ApproachTypeListDto } from '../../general-informations/dto/ApproachTypeList.dto';
-import { ExpositionListDto } from '../../general-informations/dto/ExpositionList.dto';
-import { RouteProfileListDto } from '../../general-informations/dto/RouteProfileList.dto';
-import { RockTypeListDto } from '../../general-informations/dto/RockTypeList.dto';
+import { DepartmentListDto } from './DepartmentList.dto';
+import { RegionListDto } from './RegionList.dto';
+import { LevelListDto } from './LevelList.dto';
+import { EquipmentListDto } from './EquipmentList.dto';
+import { EngagementListDto } from './EngagementList.dto';
+import { ApproachTypeListDto } from './ApproachTypeList.dto';
+import { ExpositionListDto } from './ExpositionList.dto';
+import { RouteProfileListDto } from './RouteProfileList.dto';
+import { RockTypeListDto } from './RockTypeList.dto';
 import { SecteurListDto } from './SecteurList.dto';
 
 export class SiteCreateDto {

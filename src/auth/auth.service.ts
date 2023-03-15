@@ -5,9 +5,9 @@ import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import * as process from 'process';
 import { JwtService } from '@nestjs/jwt';
-import { UserProfileDto } from '../user/dto/UserProfile.dto';
+import { UserProfileDto } from '../dto/UserProfile.dto';
 import { User } from '../orm/entity/User.entity';
-import { TokenDto } from './dto/Token.dto';
+import { TokenDto } from '../dto/Token.dto';
 @Injectable()
 export class AuthService {
   private salt: number;

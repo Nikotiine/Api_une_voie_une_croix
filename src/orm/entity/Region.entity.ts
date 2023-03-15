@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Department } from './Department.entity';
+import { Site } from './Site.entity';
 
 @Entity()
 export class Region {
@@ -14,4 +15,6 @@ export class Region {
   isActive: boolean;
   @Column()
   createdAt: Date;
+  @OneToMany(() => Site, (site) => site.region)
+  sites: Site[];
 }

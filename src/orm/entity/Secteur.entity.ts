@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { Site } from './Site.entity';
+import { Route } from './Route.entity';
 
 @Entity()
 @Unique(['name', 'site'])
@@ -20,4 +22,6 @@ export class Secteur {
   isActive: boolean;
   @Column()
   createdAt: Date;
+  @OneToMany(() => Route, (route) => route.secteur)
+  routes: Route[];
 }

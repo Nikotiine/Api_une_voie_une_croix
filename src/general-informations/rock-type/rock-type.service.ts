@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RockType } from '../../orm/entity/RockType.entity';
 import { Repository } from 'typeorm';
-import { RockTypeListDto } from '../dto/RockTypeList.dto';
+import { RockTypeListDto } from '../../dto/RockTypeList.dto';
 
 @Injectable()
 export class RockTypeService {

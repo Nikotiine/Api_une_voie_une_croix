@@ -4,7 +4,7 @@ import { Department } from '../../orm/entity/Department.entity';
 import { Repository } from 'typeorm';
 import { RegionService } from '../region/region.service';
 
-import { DepartmentListDto } from '../dto/DepartmentList.dto';
+import { DepartmentListDto } from '../../dto/DepartmentList.dto';
 
 @Injectable()
 export class DepartmentService {

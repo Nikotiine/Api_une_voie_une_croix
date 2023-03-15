@@ -8,7 +8,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { DepartmentListDto } from '../dto/DepartmentList.dto';
+import { DepartmentListDto } from '../../dto/DepartmentList.dto';
 
 @Controller('api/department')
 @ApiTags('Department')

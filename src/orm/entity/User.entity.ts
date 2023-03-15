@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { UserRole } from '../../user/enum/UserRole.enum';
+import { UserRole } from '../../enum/UserRole.enum';
 
 @Entity()
 @Unique(['email'])

@@ -3,7 +3,7 @@ import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { RegionService } from './region.service';
 
-import { RegionListDto } from '../dto/RegionList.dto';
+import { RegionListDto } from '../../dto/RegionList.dto';
 
 @Controller('api/region')
 @ApiTags('Region')

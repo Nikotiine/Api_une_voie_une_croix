@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ApproachType } from '../../orm/entity/ApproachType.entity';
 import { Repository } from 'typeorm';
-import { ApproachTypeListDto } from '../dto/ApproachTypeList.dto';
+import { ApproachTypeListDto } from '../../dto/ApproachTypeList.dto';
 
 @Injectable()
 export class ApproachTypeService {

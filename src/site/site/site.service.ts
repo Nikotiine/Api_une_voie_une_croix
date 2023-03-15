@@ -7,12 +7,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Site } from '../../orm/entity/Site.entity';
-import { SiteCreateDto } from '../dto/SiteCreate.dto';
+import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 
-import { SiteDataDto } from '../dto/SiteData.dto';
+import { SiteDataDto } from '../../dto/SiteData.dto';
 
-import { SiteListDto } from '../dto/SiteList.dto';
-import { SiteViewDto } from '../dto/SiteView.dto';
+import { SiteListDto } from '../../dto/SiteList.dto';
+import { SiteViewDto } from '../../dto/SiteView.dto';
 import { RegionService } from '../../location/region/region.service';
 import { ExpositionService } from '../../general-informations/exposition/exposition.service';
 import { LevelService } from '../../general-informations/level/level.service';
@@ -108,6 +108,7 @@ export class SiteService {
       wc: createSiteDto.wc,
       river: createSiteDto.river,
       isActive: true,
+      createdAt: new Date(),
     });
     site.secteurs.forEach((secteur) => {
       secteur.isActive = true;
@@ -212,7 +213,15 @@ export class SiteService {
       network: createSiteDto.network,
       wc: createSiteDto.wc,
       river: createSiteDto.river,
+      updatedAt: new Date(),
     });
+    entity.secteurs.forEach((s) => {
+      if (!s.id) {
+        s.createdAt = new Date();
+        s.isActive = true;
+      }
+    });
+    console.log(entity);
     return this.siteRepository.save(entity);
   }
 }

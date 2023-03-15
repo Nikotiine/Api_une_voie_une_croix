@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Level } from '../../orm/entity/Level.entity';
 import { Repository } from 'typeorm';
-import { LevelListDto } from '../dto/LevelList.dto';
+import { LevelListDto } from '../../dto/LevelList.dto';
 
 @Injectable()
 export class LevelService {

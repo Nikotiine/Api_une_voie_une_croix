@@ -6,11 +6,11 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { SiteCreateDto } from '../dto/SiteCreate.dto';
+import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 import { SiteService } from './site.service';
-import { SiteDataDto } from '../dto/SiteData.dto';
-import { SiteListDto } from '../dto/SiteList.dto';
-import { SiteViewDto } from '../dto/SiteView.dto';
+import { SiteDataDto } from '../../dto/SiteData.dto';
+import { SiteListDto } from '../../dto/SiteList.dto';
+import { SiteViewDto } from '../../dto/SiteView.dto';
 
 @Controller('api/site')
 @ApiTags('Site')

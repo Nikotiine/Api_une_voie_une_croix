@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Region } from '../../orm/entity/Region.entity';
 import { Repository } from 'typeorm';
-import { RegionListDto } from '../dto/RegionList.dto';
+import { RegionListDto } from '../../dto/RegionList.dto';
 
 @Injectable()
 export class RegionService {

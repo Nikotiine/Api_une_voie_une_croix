@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RouteProfile } from '../../orm/entity/RouteProfile.entity';
 import { Repository } from 'typeorm';
-import { RouteProfileListDto } from '../dto/RouteProfileList.dto';
+import { RouteProfileListDto } from '../../dto/RouteProfileList.dto';
 
 @Injectable()
 export class RouteProfileService {

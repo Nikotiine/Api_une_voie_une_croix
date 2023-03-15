@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
+import { Site } from './Site.entity';
 
 @Entity()
 @Unique(['label'])
@@ -11,4 +18,6 @@ export class RockType {
   isActive: boolean;
   @Column()
   createdAt: Date;
+  @OneToMany(() => Site, (site) => site.rockType)
+  sites: Site[];
 }

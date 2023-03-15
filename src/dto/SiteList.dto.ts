@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Level } from '../../orm/entity/Level.entity';
+import { Level } from '../orm/entity/Level.entity';
 
 import { IsNumber, IsString } from 'class-validator';
-import { ExpositionListDto } from '../../general-informations/dto/ExpositionList.dto';
-import { DepartmentListDto } from '../../location/dto/DepartmentList.dto';
-import { RegionListDto } from '../../location/dto/RegionList.dto';
+import { ExpositionListDto } from './ExpositionList.dto';
+import { DepartmentListDto } from './DepartmentList.dto';
+import { RegionListDto } from './RegionList.dto';
 
 export class SiteListDto {
   @ApiProperty()
