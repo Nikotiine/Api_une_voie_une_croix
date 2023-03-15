@@ -10,10 +10,11 @@ import { GeneralInformationsModule } from '../general-informations/general-infor
 
 import { RouteController } from './route/route.controller';
 import { RouteService } from './route/route.service';
+import { Route } from '../orm/entity/Route.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Site, Secteur]),
+    TypeOrmModule.forFeature([Site, Secteur, Route]),
     GeneralInformationsModule,
   ],
   controllers: [SiteController, SecteurController, RouteController],
