@@ -1,53 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
-import { ExpositionListDto } from './ExpositionList.dto';
-import { LevelListDto } from './LevelList.dto';
-import { DepartmentListDto } from './DepartmentList.dto';
-import { RouteProfileListDto } from './RouteProfileList.dto';
-import { EquipmentListDto } from './EquipmentList.dto';
-import { EngagementListDto } from './EngagementList.dto';
-import { ApproachTypeListDto } from './ApproachTypeList.dto';
-import { RockTypeListDto } from './RockTypeList.dto';
-import { SecteurListDto } from './SecteurList.dto';
-import { RegionListDto } from './RegionList.dto';
+import { IsBoolean, IsNumber } from 'class-validator';
 
-export class SiteViewDto {
+import { RouteProfileDto } from './RouteProfile.dto';
+import { EquipmentDto } from './Equipment.dto';
+import { EngagementDto } from './Engagement.dto';
+import { ApproachTypeDto } from './ApproachType.dto';
+import { RockTypeDto } from './RockType.dto';
+import { SecteurDto } from './Secteur.dto';
+
+import { SiteListDto } from './SiteList.dto';
+
+export class SiteViewDto extends SiteListDto {
+  @ApiProperty({ type: [RouteProfileDto] })
+  routeProfiles: RouteProfileDto[];
   @ApiProperty()
-  @IsNumber()
-  id: number;
+  equipment: EquipmentDto;
   @ApiProperty()
-  @IsString()
-  name: string;
-  @ApiProperty({ type: [ExpositionListDto] })
-  expositions: ExpositionListDto[];
+  engagement: EngagementDto;
   @ApiProperty()
-  @IsNumber()
-  averageRouteNumber: number;
+  approachType: ApproachTypeDto;
   @ApiProperty()
-  minLevel: LevelListDto;
-  @ApiProperty()
-  maxLevel: LevelListDto;
-  @ApiProperty()
-  department: DepartmentListDto;
-  @ApiProperty()
-  @IsNumber()
-  approachTime: number;
-  @ApiProperty()
-  @IsNumber()
-  averageRouteHeight: number;
-  @ApiProperty({ type: [RouteProfileListDto] })
-  routeProfiles: RouteProfileListDto[];
-  @ApiProperty()
-  equipment: EquipmentListDto;
-  @ApiProperty()
-  engagement: EngagementListDto;
-  @ApiProperty()
-  approachType: ApproachTypeListDto;
-  @ApiProperty()
-  rockType: RockTypeListDto;
-  @ApiProperty({ type: [SecteurListDto] })
-  secteurs: SecteurListDto[];
+  rockType: RockTypeDto;
+  @ApiProperty({ type: [SecteurDto] })
+  secteurs: SecteurDto[];
   @ApiProperty()
   @IsNumber()
   mainParkingLat: number;
@@ -72,6 +48,4 @@ export class SiteViewDto {
   @ApiProperty()
   @IsBoolean()
   network: boolean;
-  @ApiProperty()
-  region: RegionListDto;
 }

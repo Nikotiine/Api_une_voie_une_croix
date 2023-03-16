@@ -21,7 +21,7 @@ import { LocalAuthGuard } from './strategy/local-auth.guard';
 import { JwtAuthGuard } from './strategy/jwt-auth.guard';
 import { UserCredentialsDto } from '../dto/UserCredentials.dto';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

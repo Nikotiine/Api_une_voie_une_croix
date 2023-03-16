@@ -10,10 +10,15 @@ import { RouteService } from './route.service';
 import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { RouteListDto } from '../../dto/RouteList.dto';
 
+import { SiteService } from '../site/site.service';
+
 @Controller('api/route')
 @ApiTags('Route')
 export class RouteController {
-  constructor(private readonly routeService: RouteService) {}
+  constructor(
+    private readonly routeService: RouteService,
+    private readonly siteService: SiteService,
+  ) {}
   @Post()
   @ApiOperation({
     summary: 'Create route resource',

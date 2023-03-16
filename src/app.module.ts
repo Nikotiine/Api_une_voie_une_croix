@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { SiteModule } from './site/site.module';
 
 import { typeOrmAsyncConfig } from './config/typeorm.config';
-import { GeneralInformationsModule } from './general-informations/general-informations.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { GeneralInformationsModule } from './general-informations/general-inform
     UserModule,
     AuthModule,
     SiteModule,
-    GeneralInformationsModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

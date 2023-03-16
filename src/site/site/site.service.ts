@@ -9,32 +9,14 @@ import { Repository } from 'typeorm';
 import { Site } from '../../orm/entity/Site.entity';
 import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 
-import { SiteDataDto } from '../../dto/SiteData.dto';
-
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
-import { RegionService } from '../../general-informations/region/region.service';
-import { ExpositionService } from '../../general-informations/exposition/exposition.service';
-import { LevelService } from '../../general-informations/level/level.service';
-import { RouteProfileService } from '../../general-informations/route-profile/route-profile.service';
-import { RockTypeService } from '../../general-informations/rock-type/rock-type.service';
-import { EngagementService } from '../../general-informations/engagement/engagement.service';
-import { ApproachTypeService } from '../../general-informations/approach-type/approach-type.service';
-import { EquipmentService } from '../../general-informations/equipment/equipment.service';
 
 @Injectable()
 export class SiteService {
   private nameIsUsed = 'Name is used';
   constructor(
     @InjectRepository(Site) private siteRepository: Repository<Site>,
-    private readonly expositionService: ExpositionService,
-    private readonly levelService: LevelService,
-    private readonly routeProfileService: RouteProfileService,
-    private readonly rockTypeService: RockTypeService,
-    private readonly engagementService: EngagementService,
-    private readonly approachTypeService: ApproachTypeService,
-    private readonly equipmentService: EquipmentService,
-    private readonly regionService: RegionService,
   ) {}
 
   public async findAll(): Promise<SiteListDto[]> {
@@ -116,19 +98,6 @@ export class SiteService {
     });
 
     return this.siteRepository.save(site);
-  }
-
-  public async getAllData(): Promise<SiteDataDto> {
-    return {
-      expositions: await this.expositionService.findAll(),
-      levels: await this.levelService.findAll(),
-      approachTypes: await this.approachTypeService.findAll(),
-      engagements: await this.engagementService.findAll(),
-      equipments: await this.equipmentService.findAll(),
-      routeProfiles: await this.routeProfileService.findAll(),
-      rockTypes: await this.rockTypeService.findAll(),
-      regions: await this.regionService.findAll(),
-    };
   }
 
   public async findOneById(id: number) {

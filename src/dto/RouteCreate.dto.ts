@@ -1,31 +1,37 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { LevelListDto } from './LevelList.dto';
-import { EquipmentListDto } from './EquipmentList.dto';
-import { EngagementListDto } from './EngagementList.dto';
-import { SecteurListDto } from './SecteurList.dto';
+import { LevelDto } from './Level.dto';
+import { EquipmentDto } from './Equipment.dto';
+import { EngagementDto } from './Engagement.dto';
+import { SecteurDto } from './Secteur.dto';
 
 export class RouteCreateDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Space Crique',
+  })
   name: string;
-  @ApiProperty()
+  @ApiProperty({
+    example: 33,
+  })
   height: number;
-  @ApiProperty()
+  @ApiProperty({
+    example: 15,
+  })
   quickdraw: number;
   @ApiProperty({
-    type: LevelListDto,
+    type: LevelDto,
   })
-  level: LevelListDto;
+  level: LevelDto;
   @ApiProperty({
-    type: EquipmentListDto,
+    type: EquipmentDto,
   })
-  equipment: EquipmentListDto;
+  equipment: EquipmentDto;
   @ApiProperty({
-    type: EngagementListDto,
+    type: EngagementDto,
   })
-  engagement: EngagementListDto;
+  engagement: EngagementDto;
   @ApiProperty({
-    type: SecteurListDto,
+    type: SecteurDto,
   })
-  secteur: SecteurListDto;
+  secteur: SecteurDto;
 }

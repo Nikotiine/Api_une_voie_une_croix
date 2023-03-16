@@ -8,7 +8,6 @@ import {
 } from '@nestjs/swagger';
 import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 import { SiteService } from './site.service';
-import { SiteDataDto } from '../../dto/SiteData.dto';
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
 
@@ -47,7 +46,7 @@ export class SiteController {
   public async getAllSites(): Promise<SiteListDto[]> {
     return this.siteService.findAll();
   }
-  @Get('one/:id')
+  @Get(':id')
   @ApiOperation({
     summary: 'Get one site resource',
     description: 'Mettre la description',
@@ -65,20 +64,7 @@ export class SiteController {
     return this.siteService.findOneById(id);
   }
 
-  @Get('data')
-  @ApiOperation({
-    summary: 'Get data for create site resource',
-    description: 'Returns all the data necessary for the creation of a site ',
-  })
-  @ApiCreatedResponse({
-    type: SiteDataDto,
-    description: 'Return all data . Please look into the DTO SiteDataDto',
-  })
-  public async getData(): Promise<SiteDataDto> {
-    return this.siteService.getAllData();
-  }
-
-  @Put('edit/:id')
+  @Put(':id')
   @ApiParam({
     name: 'id',
     allowEmptyValue: false,

@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsPositive, IsString } from 'class-validator';
-import { DepartmentListDto } from './DepartmentList.dto';
-import { RegionListDto } from './RegionList.dto';
-import { LevelListDto } from './LevelList.dto';
-import { EquipmentListDto } from './EquipmentList.dto';
-import { EngagementListDto } from './EngagementList.dto';
-import { ApproachTypeListDto } from './ApproachTypeList.dto';
-import { ExpositionListDto } from './ExpositionList.dto';
-import { RouteProfileListDto } from './RouteProfileList.dto';
-import { RockTypeListDto } from './RockTypeList.dto';
-import { SecteurListDto } from './SecteurList.dto';
+import { DepartmentDto } from './Department.dto';
+import { RegionDto } from './Region.dto';
+import { LevelDto } from './Level.dto';
+import { EquipmentDto } from './Equipment.dto';
+import { EngagementDto } from './Engagement.dto';
+import { ApproachTypeDto } from './ApproachType.dto';
+import { ExpositionDto } from './Exposition.dto';
+import { RouteProfileDto } from './RouteProfile.dto';
+import { RockTypeDto } from './RockType.dto';
+import { SecteurDto } from './Secteur.dto';
 
 export class SiteCreateDto {
   @ApiProperty({
@@ -57,30 +57,30 @@ export class SiteCreateDto {
   @IsNumber()
   secondaryParkingLng: number;
   @ApiProperty()
-  department: DepartmentListDto;
+  department: DepartmentDto;
   @ApiProperty()
-  region: RegionListDto;
+  region: RegionDto;
   @ApiProperty()
-  minLevel: LevelListDto;
+  minLevel: LevelDto;
   @ApiProperty()
-  maxLevel: LevelListDto;
+  maxLevel: LevelDto;
 
   @ApiProperty()
-  equipment: EquipmentListDto;
+  equipment: EquipmentDto;
   @ApiProperty()
-  engagement: EngagementListDto;
+  engagement: EngagementDto;
   @ApiProperty()
-  approachType: ApproachTypeListDto;
+  approachType: ApproachTypeDto;
   @ApiProperty({
-    type: [ExpositionListDto],
+    type: [ExpositionDto],
   })
-  expositions: ExpositionListDto[];
+  expositions: ExpositionDto[];
   @ApiProperty({
-    type: [RouteProfileListDto],
+    type: [RouteProfileDto],
   })
-  routeProfiles: RouteProfileListDto[];
+  routeProfiles: RouteProfileDto[];
   @ApiProperty()
-  rockType: RockTypeListDto;
+  rockType: RockTypeDto;
   @ApiProperty()
   @IsBoolean()
   river: boolean;
@@ -94,5 +94,5 @@ export class SiteCreateDto {
   @IsBoolean()
   water: boolean;
   @ApiProperty()
-  secteurs: SecteurListDto[];
+  secteurs: SecteurDto[];
 }
