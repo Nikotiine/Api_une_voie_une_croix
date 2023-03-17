@@ -12,16 +12,12 @@ export class EngagementService {
   ) {}
 
   public async findAll(): Promise<EngagementDto[]> {
-    return this.engagementRepository.find().then((engagements) => {
-      const list: EngagementDto[] = [];
-      for (const engagement of engagements) {
-        const engagementDto: EngagementDto = {
-          id: engagement.id,
-          label: engagement.label,
-        };
-        list.push(engagementDto);
-      }
-      return list;
+    const engagements = await this.engagementRepository.find();
+    return engagements.map((engagement) => {
+      return {
+        id: engagement.id,
+        label: engagement.label,
+      };
     });
   }
 }

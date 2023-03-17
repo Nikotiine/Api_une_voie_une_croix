@@ -29,7 +29,7 @@ export class SiteController {
     type: SiteListDto,
     description: 'Return new site resource',
   })
-  public createSite(
+  public async createSite(
     @Body() siteCreateDto: SiteCreateDto,
   ): Promise<SiteListDto> {
     return this.siteService.create(siteCreateDto);

@@ -11,16 +11,12 @@ export class RockTypeService {
     private rockTypeRepository: Repository<RockType>,
   ) {}
   public async findAll(): Promise<RockTypeDto[]> {
-    return this.rockTypeRepository.find().then((rockTypes) => {
-      const list: RockTypeDto[] = [];
-      for (const rockType of rockTypes) {
-        const rockTypeDto: RockTypeDto = {
-          id: rockType.id,
-          label: rockType.label,
-        };
-        list.push(rockTypeDto);
-      }
-      return list;
+    const rockTypes = await this.rockTypeRepository.find();
+    return rockTypes.map((rockType) => {
+      return {
+        id: rockType.id,
+        label: rockType.label,
+      };
     });
   }
 }

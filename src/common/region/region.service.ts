@@ -11,16 +11,12 @@ export class RegionService {
   ) {}
 
   public async findAll(): Promise<RegionDto[]> {
-    return this.regionRepository.find().then((regions) => {
-      const list: RegionDto[] = [];
-      for (const region of regions) {
-        const regionDto: RegionDto = {
-          id: region.id,
-          name: region.name,
-        };
-        list.push(regionDto);
-      }
-      return list;
+    const regions = await this.regionRepository.find();
+    return regions.map((region) => {
+      return {
+        id: region.id,
+        name: region.name,
+      };
     });
   }
 

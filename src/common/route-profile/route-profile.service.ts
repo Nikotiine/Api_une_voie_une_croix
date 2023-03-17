@@ -11,16 +11,12 @@ export class RouteProfileService {
     private routeProfileRepository: Repository<RouteProfile>,
   ) {}
   public async findAll(): Promise<RouteProfileDto[]> {
-    return this.routeProfileRepository.find().then((routeProfiles) => {
-      const list: RouteProfileDto[] = [];
-      for (const routeProfile of routeProfiles) {
-        const routeProfileDto: RouteProfileDto = {
-          id: routeProfile.id,
-          label: routeProfile.label,
-        };
-        list.push(routeProfileDto);
-      }
-      return list;
+    const routeProfiles = await this.routeProfileRepository.find();
+    return routeProfiles.map((routeProfile) => {
+      return {
+        id: routeProfile.id,
+        label: routeProfile.label,
+      };
     });
   }
 }

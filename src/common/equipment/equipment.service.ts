@@ -12,16 +12,12 @@ export class EquipmentService {
     private equipmentRepository: Repository<Equipment>,
   ) {}
   public async findAll(): Promise<EquipmentDto[]> {
-    return this.equipmentRepository.find().then((equipments) => {
-      const list: EquipmentDto[] = [];
-      for (const equipment of equipments) {
-        const equipmentDto: EquipmentDto = {
-          id: equipment.id,
-          label: equipment.label,
-        };
-        list.push(equipmentDto);
-      }
-      return list;
+    const equipments = await this.equipmentRepository.find();
+    return equipments.map((equipment) => {
+      return {
+        id: equipment.id,
+        label: equipment.label,
+      };
     });
   }
 }

@@ -11,16 +11,12 @@ export class ExpositionService {
     private expositionRepository: Repository<Exposition>,
   ) {}
   public async findAll(): Promise<ExpositionDto[]> {
-    return this.expositionRepository.find().then((expositions) => {
-      const list: ExpositionDto[] = [];
-      for (const exposition of expositions) {
-        const expositionDto: ExpositionDto = {
-          id: exposition.id,
-          label: exposition.label,
-        };
-        list.push(expositionDto);
-      }
-      return list;
+    const expositions = await this.expositionRepository.find();
+    return expositions.map((exposition) => {
+      return {
+        id: exposition.id,
+        label: exposition.label,
+      };
     });
   }
 }

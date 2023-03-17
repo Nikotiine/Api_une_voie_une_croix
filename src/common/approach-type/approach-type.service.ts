@@ -11,16 +11,12 @@ export class ApproachTypeService {
     private approachTypeRepository: Repository<ApproachType>,
   ) {}
   public async findAll(): Promise<ApproachTypeDto[]> {
-    return this.approachTypeRepository.find().then((approachType) => {
-      const list: ApproachTypeDto[] = [];
-      for (const approach of approachType) {
-        const approachTypeDto: ApproachTypeDto = {
-          id: approach.id,
-          label: approach.label,
-        };
-        list.push(approachTypeDto);
-      }
-      return list;
+    const approachTypes = await this.approachTypeRepository.find();
+    return approachTypes.map((approachType) => {
+      return {
+        id: approachType.id,
+        label: approachType.label,
+      };
     });
   }
 }

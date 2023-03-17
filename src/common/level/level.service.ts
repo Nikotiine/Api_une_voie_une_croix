@@ -10,16 +10,12 @@ export class LevelService {
     @InjectRepository(Level) private levelRepository: Repository<Level>,
   ) {}
   public async findAll(): Promise<LevelDto[]> {
-    return this.levelRepository.find().then((levels) => {
-      const list: LevelDto[] = [];
-      for (const level of levels) {
-        const levelDto: LevelDto = {
-          id: level.id,
-          label: level.label,
-        };
-        list.push(levelDto);
-      }
-      return list;
+    const levels = await this.levelRepository.find();
+    return levels.map((level) => {
+      return {
+        id: level.id,
+        label: level.label,
+      };
     });
   }
 }
