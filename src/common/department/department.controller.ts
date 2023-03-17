@@ -8,7 +8,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { DepartmentDto } from '../../dto/Department.dto';
+import { DepartmentDataDto } from '../../dto/DepartmentData.dto';
 
 @Controller('api/department')
 @ApiTags('Department')
@@ -17,7 +17,7 @@ export class DepartmentController {
 
   @Get(':region')
   @ApiCreatedResponse({
-    type: [DepartmentDto],
+    type: [DepartmentDataDto],
     description: 'Return depart by region',
   })
   @ApiParam({
@@ -31,7 +31,7 @@ export class DepartmentController {
   })
   public async findByRegion(
     @Param('region') regionId: number,
-  ): Promise<DepartmentDto[]> {
+  ): Promise<DepartmentDataDto[]> {
     return this.departmentService.findByCodeRegion(regionId);
   }
 }

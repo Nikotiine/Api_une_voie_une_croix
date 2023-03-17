@@ -11,6 +11,7 @@ import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
+import { SiteDto } from '../../dto/Site.dto';
 
 @Injectable()
 export class SiteService {
@@ -20,38 +21,52 @@ export class SiteService {
   ) {}
 
   public async findAll(): Promise<SiteListDto[]> {
-    return this.siteRepository
-      .find({
-        where: {
-          isActive: true,
-        },
-        relations: {
-          expositions: true,
-          minLevel: true,
-          maxLevel: true,
-          department: true,
-          region: true,
-        },
-      })
-      .then((sites) => {
-        const list: SiteListDto[] = [];
-        for (let i = 0; i < sites.length; i++) {
-          const site: SiteListDto = {
-            id: sites[i].id,
-            name: sites[i].name,
-            expositions: sites[i].expositions,
-            averageRouteNumber: sites[i].averageRouteNumber,
-            maxLevel: sites[i].maxLevel,
-            minLevel: sites[i].minLevel,
-            department: sites[i].department,
-            region: sites[i].region,
-            approachTime: sites[i].approachTime,
-            averageRouteHeight: sites[i].averageRouteHeight,
+    const sites = await this.siteRepository.find({
+      where: {
+        isActive: true,
+      },
+      relations: {
+        expositions: true,
+        minLevel: true,
+        maxLevel: true,
+        department: true,
+        region: true,
+      },
+    });
+    return sites.map((site) => {
+      return {
+        id: site.id,
+        name: site.name,
+        expositions: site.expositions.map((e) => {
+          return {
+            id: e.id,
+            label: e.label,
           };
-          list.push(site);
-        }
-        return list;
-      });
+        }),
+        approachTime: site.approachTime,
+        averageRouteNumber: site.averageRouteNumber,
+        averageRouteHeight: site.averageRouteHeight,
+        region: {
+          id: site.region.id,
+          name: site.region.name,
+        },
+        department: {
+          id: site.department.id,
+          name: site.department.name,
+          lat: site.department.lat,
+          lng: site.department.lng,
+          region: site.department.region,
+        },
+        maxLevel: {
+          id: site.maxLevel.id,
+          label: site.maxLevel.label,
+        },
+        minLevel: {
+          id: site.minLevel.id,
+          label: site.minLevel.label,
+        },
+      };
+    });
   }
   public async findByName(name: string): Promise<Site | null> {
     return this.siteRepository.findOneBy({
@@ -100,58 +115,100 @@ export class SiteService {
     return this.siteRepository.save(site);
   }
 
-  public async findOneById(id: number) {
-    return this.siteRepository
-      .findOne({
-        where: {
-          id: id,
+  public async findOneById(id: number): Promise<SiteViewDto> {
+    const site = await this.siteRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        expositions: true,
+        routeProfiles: true,
+        maxLevel: true,
+        minLevel: true,
+        engagement: true,
+        equipment: true,
+        rockType: true,
+        secteurs: {
+          routes: true,
         },
-        relations: {
-          expositions: true,
-          routeProfiles: true,
-          maxLevel: true,
-          minLevel: true,
-          engagement: true,
-          equipment: true,
-          rockType: true,
-          secteurs: true,
-          approachType: true,
-          region: true,
-          department: true,
-        },
-      })
-      .then((s) => {
-        if (!s) {
-          throw new UnauthorizedException();
-        }
-        const site: SiteViewDto = {
+        approachType: true,
+        region: true,
+        department: true,
+      },
+    });
+
+    if (!site) {
+      throw new UnauthorizedException();
+    }
+
+    return {
+      id: site.id,
+      name: site.name,
+      expositions: site.expositions.map((e) => {
+        return {
+          id: e.id,
+          label: e.label,
+        };
+      }),
+      averageRouteHeight: site.averageRouteHeight,
+      averageRouteNumber: site.averageRouteNumber,
+      minLevel: {
+        id: site.minLevel.id,
+        label: site.minLevel.label,
+      },
+      maxLevel: {
+        id: site.maxLevel.id,
+        label: site.maxLevel.label,
+      },
+      department: {
+        id: site.department.id,
+        name: site.department.name,
+        lat: site.department.lat,
+        lng: site.department.lng,
+        region: site.department.region,
+      },
+      region: {
+        id: site.region.id,
+        name: site.region.name,
+      },
+      approachTime: site.approachTime,
+      routeProfiles: site.routeProfiles.map((r) => {
+        return {
+          id: r.id,
+          label: r.label,
+        };
+      }),
+      equipment: {
+        id: site.equipment.id,
+        label: site.equipment.label,
+      },
+      engagement: {
+        id: site.engagement.id,
+        label: site.engagement.label,
+      },
+      approachType: {
+        id: site.approachType.id,
+        label: site.approachType.label,
+      },
+      rockType: {
+        id: site.rockType.id,
+        label: site.rockType.label,
+      },
+      secteurs: site.secteurs.map((s) => {
+        return {
           id: s.id,
           name: s.name,
-          expositions: s.expositions,
-          averageRouteNumber: s.averageRouteNumber,
-          minLevel: s.minLevel,
-          maxLevel: s.maxLevel,
-          department: s.department,
-          approachTime: s.approachTime,
-          averageRouteHeight: s.averageRouteHeight,
-          routeProfiles: s.routeProfiles,
-          equipment: s.equipment,
-          engagement: s.engagement,
-          approachType: s.approachType,
-          rockType: s.rockType,
-          secteurs: s.secteurs,
-          mainParkingLat: s.mainParkingLat,
-          mainParkingLng: s.mainParkingLng,
-          secondaryParkingLat: s.secondaryParkingLat,
-          secondaryParkingLng: s.secondaryParkingLng,
-          water: s.water,
-          wc: s.wc,
-          river: s.river,
-          network: s.network,
-          region: s.region,
         };
-        return site;
-      });
+      }),
+      mainParkingLat: site.mainParkingLat,
+      mainParkingLng: site.mainParkingLng,
+      secondaryParkingLat: site.secondaryParkingLat,
+      secondaryParkingLng: site.secondaryParkingLng,
+      water: site.water,
+      wc: site.wc,
+      network: site.network,
+      river: site.river,
+    };
   }
   public async update(
     id: number,
@@ -190,7 +247,16 @@ export class SiteService {
         s.isActive = true;
       }
     });
-    console.log(entity);
     return this.siteRepository.save(entity);
+  }
+
+  public async findAllForRoute(): Promise<SiteDto[]> {
+    const sites = await this.siteRepository.find();
+    return sites.map((site) => {
+      return {
+        id: site.id,
+        name: site.name,
+      };
+    });
   }
 }

@@ -15,10 +15,12 @@ import { SiteViewDto } from '../../dto/SiteView.dto';
 @ApiTags('Site')
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
+
+  // ********** POST OPERATION *************
   @Post()
   @ApiOperation({
     summary: 'Create site resource',
-    description: 'Mettre la description',
+    description: 'Entry point for create new site resource',
   })
   @ApiBody({
     type: SiteCreateDto,
@@ -27,21 +29,23 @@ export class SiteController {
   })
   @ApiCreatedResponse({
     type: SiteListDto,
-    description: 'Return new site resource',
+    description: 'Return the new site resource',
   })
   public async createSite(
     @Body() siteCreateDto: SiteCreateDto,
   ): Promise<SiteListDto> {
     return this.siteService.create(siteCreateDto);
   }
+  // ********** GET OPERATIONS *************
   @Get()
   @ApiOperation({
-    summary: 'Get all site resource',
-    description: 'Mettre la description',
+    summary: 'Get all sites resources',
+    description: 'Entry point for get all sites resources with many datas',
   })
   @ApiCreatedResponse({
     type: [SiteListDto],
-    description: 'Return collection of sites resource',
+    description:
+      'Return collection of sites resource. Please look into the DTO SiteListDto',
   })
   public async getAllSites(): Promise<SiteListDto[]> {
     return this.siteService.findAll();
@@ -49,7 +53,7 @@ export class SiteController {
   @Get(':id')
   @ApiOperation({
     summary: 'Get one site resource',
-    description: 'Mettre la description',
+    description: 'Entry point for get a site resource',
   })
   @ApiParam({
     name: 'id',
@@ -63,7 +67,7 @@ export class SiteController {
   public async getSite(@Param('id') id: number): Promise<SiteViewDto> {
     return this.siteService.findOneById(id);
   }
-
+  // ********** PUT OPERATION *************
   @Put(':id')
   @ApiParam({
     name: 'id',
@@ -79,10 +83,15 @@ export class SiteController {
     type: SiteViewDto,
     description: 'Return the update data with SiteViewDto',
   })
+  @ApiOperation({
+    summary: 'Edit site resource',
+    description: 'Entry point for edit site resource',
+  })
   public async editSite(
     @Param('id') id: number,
     @Body() site: SiteCreateDto,
   ): Promise<SiteViewDto> {
     return this.siteService.update(id, site);
   }
+  // ********** DELETE OPERATION *************
 }

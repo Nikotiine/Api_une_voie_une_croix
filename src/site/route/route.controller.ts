@@ -11,6 +11,7 @@ import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { RouteListDto } from '../../dto/RouteList.dto';
 
 import { SiteService } from '../site/site.service';
+import { SiteDto } from '../../dto/Site.dto';
 
 @Controller('api/route')
 @ApiTags('Route')
@@ -71,5 +72,19 @@ export class RouteController {
   })
   public async getRoute(@Param('id') id: number): Promise<RouteListDto> {
     return this.routeService.findById(id);
+  }
+
+  @Get('site/list')
+  @ApiCreatedResponse({
+    type: [SiteDto],
+    description:
+      'Return array of site resource,Please look into the DTO SiteDto',
+  })
+  @ApiOperation({
+    summary: 'Entry point to get sites resource',
+    description: 'Get all sites resource with minimum necesary datas',
+  })
+  public async getSites(): Promise<SiteDto[]> {
+    return this.siteService.findAllForRoute();
   }
 }

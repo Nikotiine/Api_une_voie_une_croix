@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Department } from '../../orm/entity/Department.entity';
 import { Repository } from 'typeorm';
 import { RegionService } from '../region/region.service';
-import { DepartmentDto } from '../../dto/Department.dto';
+import { DepartmentDataDto } from '../../dto/DepartmentData.dto';
 
 @Injectable()
 export class DepartmentService {
@@ -14,7 +14,9 @@ export class DepartmentService {
     private regionService: RegionService,
   ) {}
 
-  public async findByCodeRegion(regionId: number): Promise<DepartmentDto[]> {
+  public async findByCodeRegion(
+    regionId: number,
+  ): Promise<DepartmentDataDto[]> {
     const region = await this.regionService.findById(regionId);
     if (!region) {
       throw new HttpException(this.invalidId, HttpStatus.BAD_REQUEST, {

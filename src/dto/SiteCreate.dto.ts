@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsPositive, IsString } from 'class-validator';
-import { DepartmentDto } from './Department.dto';
+import { DepartmentDataDto } from './DepartmentData.dto';
 import { RegionDto } from './Region.dto';
 import { LevelDto } from './Level.dto';
 import { EquipmentDto } from './Equipment.dto';
@@ -57,7 +57,7 @@ export class SiteCreateDto {
   @IsNumber()
   secondaryParkingLng: number;
   @ApiProperty()
-  department: DepartmentDto;
+  department: DepartmentDataDto;
   @ApiProperty()
   region: RegionDto;
   @ApiProperty()

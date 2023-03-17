@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RegionDto } from './Region.dto';
 
 export class DepartmentDto {
   @ApiProperty()
@@ -8,14 +7,4 @@ export class DepartmentDto {
     example: 'Isere',
   })
   name: string;
-  @ApiProperty({
-    example: 45.200001,
-  })
-  lat: number;
-  @ApiProperty({
-    example: 5.66667,
-  })
-  lng: number;
-  @ApiProperty()
-  region: RegionDto;
 }
