@@ -10,6 +10,8 @@ import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 import { SiteService } from './site.service';
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
+import { SiteRouteDto } from '../../dto/SiteRoute.dto';
+import { isNumber } from 'class-validator';
 
 @Controller('api/site')
 @ApiTags('Site')
@@ -66,6 +68,26 @@ export class SiteController {
   })
   public async getSite(@Param('id') id: number): Promise<SiteViewDto> {
     return this.siteService.findOneById(id);
+  }
+
+  @Get('route/:id')
+  @ApiParam({
+    name: 'id',
+    allowEmptyValue: false,
+    description: 'id of site resource',
+  })
+  @ApiOperation({
+    summary: 'Get routes site resource',
+    description: 'Entry point for get a site resource',
+  })
+  @ApiCreatedResponse({
+    type: [SiteRouteDto],
+    description: 'Return site resource',
+  })
+  public async getRoutesOfSite(
+    @Param('id') id: number,
+  ): Promise<SiteRouteDto[]> {
+    return this.siteService.findRoutes(id);
   }
   // ********** PUT OPERATION *************
   @Put(':id')

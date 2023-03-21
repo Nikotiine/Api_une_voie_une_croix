@@ -302,7 +302,6 @@ export default class AppSeedSeed implements Seeder {
         depart: deptPACA,
       },
     ];
-
     for (const region of regions) {
       await factory(Region)()
         .map(async (r) => {

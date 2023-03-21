@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -12,6 +12,7 @@ import { RouteListDto } from '../../dto/RouteList.dto';
 
 import { SiteService } from '../site/site.service';
 import { SiteDto } from '../../dto/Site.dto';
+import { RouteViewDto } from '../../dto/RouteView.dto';
 
 @Controller('api/route')
 @ApiTags('Route')
@@ -41,6 +42,32 @@ export class RouteController {
     return this.routeService.create(routeCreate);
   }
 
+  @Put(':id')
+  @ApiParam({
+    name: 'id',
+    allowEmptyValue: false,
+    description: 'id of the route',
+  })
+  @ApiBody({
+    type: RouteCreateDto,
+    description:
+      'The Description for the Post Body. Please look into the DTO RouteCreateDto',
+  })
+  @ApiOperation({
+    summary: 'Create route resource',
+    description: 'Add new route for a site',
+  })
+  @ApiCreatedResponse({
+    type: RouteViewDto,
+    description:
+      'The Description for the Post Body. Please look into the DTO RouteViewDto',
+  })
+  public async editRoute(
+    @Param('id') id: number,
+    @Body() route: RouteCreateDto,
+  ): Promise<RouteViewDto> {
+    return this.routeService.update(id, route);
+  }
   @Get()
   @ApiOperation({
     summary: 'get all route resource',
@@ -62,15 +89,15 @@ export class RouteController {
     description: 'id of the route',
   })
   @ApiCreatedResponse({
-    type: RouteListDto,
+    type: RouteViewDto,
     description:
-      'The Description for the Post Body. Please look into the DTO RouteListDto',
+      'The Description for the Post Body. Please look into the DTO RouteViewDto',
   })
   @ApiOperation({
     summary: 'get route resource',
     description: 'find route resource by id',
   })
-  public async getRoute(@Param('id') id: number): Promise<RouteListDto> {
+  public async getRoute(@Param('id') id: number): Promise<RouteViewDto> {
     return this.routeService.findById(id);
   }
 

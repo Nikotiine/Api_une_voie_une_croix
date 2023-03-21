@@ -4,6 +4,7 @@ import { Department } from '../../orm/entity/Department.entity';
 import { Repository } from 'typeorm';
 import { RegionService } from '../region/region.service';
 import { DepartmentDataDto } from '../../dto/DepartmentData.dto';
+import { DepartmentDto } from '../../dto/Department.dto';
 
 @Injectable()
 export class DepartmentService {
@@ -27,6 +28,16 @@ export class DepartmentService {
       where: {
         region: region,
       },
+    });
+  }
+
+  public async findAll(): Promise<DepartmentDto[]> {
+    const departments = await this.departmentRepository.find();
+    return departments.map((d) => {
+      return {
+        id: d.id,
+        name: d.name,
+      };
     });
   }
 }

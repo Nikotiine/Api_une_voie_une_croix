@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ExpositionDto } from './Exposition.dto';
 import { LevelDto } from './Level.dto';
-import { RockTypeDto } from './RockType.dto';
 import { RouteProfileDto } from './RouteProfile.dto';
 import { EquipmentDto } from './Equipment.dto';
 import { EngagementDto } from './Engagement.dto';

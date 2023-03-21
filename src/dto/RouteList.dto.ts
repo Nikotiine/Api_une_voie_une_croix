@@ -1,33 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LevelDto } from './Level.dto';
-import { EquipmentDto } from './Equipment.dto';
-import { EngagementDto } from './Engagement.dto';
-import { SecteurDto } from './Secteur.dto';
+
 import { RouteDto } from './Route.dto';
+import { SecteurSiteDto } from './SecteurSite.dto';
+import { ExpositionDto } from './Exposition.dto';
 
 export class RouteListDto extends RouteDto {
   @ApiProperty({
     example: 33,
   })
   height: number;
-  @ApiProperty({
-    example: 30,
-  })
-  quickdraw: number;
+
   @ApiProperty({
     type: LevelDto,
   })
   level: LevelDto;
+
   @ApiProperty({
-    type: EquipmentDto,
+    type: SecteurSiteDto,
   })
-  equipment: EquipmentDto;
+  secteur: SecteurSiteDto;
+  @ApiProperty()
+  createdAt: Date;
   @ApiProperty({
-    type: EngagementDto,
+    type: ExpositionDto,
   })
-  engagement: EngagementDto;
-  @ApiProperty({
-    type: SecteurDto,
-  })
-  secteur: SecteurDto;
+  exposition: ExpositionDto;
 }

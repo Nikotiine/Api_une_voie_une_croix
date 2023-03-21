@@ -12,12 +12,15 @@ import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
 import { SiteDto } from '../../dto/Site.dto';
+import { RouteService } from '../route/route.service';
+import { SiteRouteDto } from '../../dto/SiteRoute.dto';
 
 @Injectable()
 export class SiteService {
   private nameIsUsed = 'Name is used';
   constructor(
     @InjectRepository(Site) private siteRepository: Repository<Site>,
+    private readonly routeService: RouteService,
   ) {}
 
   public async findAll(): Promise<SiteListDto[]> {
@@ -256,6 +259,26 @@ export class SiteService {
       return {
         id: site.id,
         name: site.name,
+      };
+    });
+  }
+
+  public async findRoutes(id: number): Promise<SiteRouteDto[]> {
+    const routes = await this.routeService.findRouteBySite(id);
+
+    return routes.map((r) => {
+      return {
+        id: r.id,
+        level: {
+          id: r.level.id,
+          label: r.level.label,
+        },
+        height: r.height,
+        name: r.name,
+        secteur: {
+          id: r.secteur.id,
+          name: r.secteur.name,
+        },
       };
     });
   }
