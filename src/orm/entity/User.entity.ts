@@ -22,6 +22,6 @@ export class User {
   updatedAt: Date;
   @Column({ default: true })
   isActive: boolean;
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.ROLE_USER })
+  @Column({ type: 'enum', enum: () => UserRole, default: UserRole.ROLE_USER })
   role: UserRole;
 }
