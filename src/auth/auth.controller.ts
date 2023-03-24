@@ -7,7 +7,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserProfileDto } from '../user/dto/UserProfile.dto';
+import { UserProfileDto } from '../dto/UserProfile.dto';
 
 import {
   ApiBody,
@@ -16,12 +16,12 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
-import { TokenDto } from './dto/Token.dto';
+import { TokenDto } from '../dto/Token.dto';
 import { LocalAuthGuard } from './strategy/local-auth.guard';
 import { JwtAuthGuard } from './strategy/jwt-auth.guard';
-import { UserCredentialsDto } from './dto/UserCredentials.dto';
+import { UserCredentialsDto } from '../dto/UserCredentials.dto';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

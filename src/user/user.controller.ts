@@ -19,12 +19,12 @@ import {
 } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
-import { UserProfileDto } from './dto/UserProfile.dto';
-import { UserRegisterDto } from './dto/UserRegister.dto';
+import { UserProfileDto } from '../dto/UserProfile.dto';
+import { UserRegisterDto } from '../dto/UserRegister.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
-import { UserEditPasswordDto } from './dto/UserEditPassword.dto';
+import { UserEditPasswordDto } from '../dto/UserEditPassword.dto';
 
-@ApiTags('user')
+@ApiTags('User')
 @Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -82,6 +82,17 @@ export class UserController {
     }
   }
 
+  @Get()
+  @ApiOperation({
+    summary: 'Get collection of users resource',
+    description: 'PLease look into the dto UserProfileDto',
+  })
+  @ApiCreatedResponse({
+    type: [UserProfileDto],
+  })
+  public async getAllUsers(): Promise<UserProfileDto[]> {
+    return this.userService.findAll();
+  }
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')

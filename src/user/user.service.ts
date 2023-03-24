@@ -2,17 +2,18 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../orm/entity/User.entity';
 import { Repository } from 'typeorm';
-import { UserRegisterDto } from './dto/UserRegister.dto';
+import { UserRegisterDto } from '../dto/UserRegister.dto';
 import * as bcrypt from 'bcrypt';
-import { UserProfileDto } from './dto/UserProfile.dto';
+import { UserProfileDto } from '../dto/UserProfile.dto';
 import * as process from 'process';
-import { UserEditPasswordDto } from './dto/UserEditPassword.dto';
+import { UserEditPasswordDto } from '../dto/UserEditPassword.dto';
+import { ErrorMessage } from '../enum/ErrorMessage.enum';
 
 @Injectable()
 export class UserService {
   private salt: number;
-  private mailIsUsed = 'Email is already used';
-  private invalidPassword = 'Invalid password';
+  private mailIsUsed = ErrorMessage.USER;
+  private invalidPassword = ErrorMessage.WRONG_PASSWORD;
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {
@@ -43,6 +44,7 @@ export class UserService {
           birthday: profile.birthday,
           id: profile.id,
           email: profile.email,
+          role: profile.role,
         };
         return userProfile;
       });
@@ -55,21 +57,18 @@ export class UserService {
     });
   }
 
-  public findById(id: number): Promise<UserProfileDto> {
-    return this.userRepository
-      .findOneBy({
-        id: id,
-      })
-      .then((user) => {
-        const userProfile: UserProfileDto = {
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          birthday: user.birthday,
-          id: user.id,
-        };
-        return userProfile;
-      });
+  public async findById(id: number): Promise<UserProfileDto> {
+    const user = await this.userRepository.findOneBy({
+      id: id,
+    });
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      birthday: user.birthday,
+      role: user.role,
+    };
   }
   public async edit(
     id: number,
@@ -154,5 +153,19 @@ export class UserService {
             }
           });
       });
+  }
+
+  public async findAll(): Promise<UserProfileDto[]> {
+    const users = await this.userRepository.find();
+    return users.map((u) => {
+      return {
+        id: u.id,
+        firstName: u.firstName,
+        lastName: u.lastName,
+        role: u.role,
+        birthday: u.birthday,
+        email: u.email,
+      };
+    });
   }
 }

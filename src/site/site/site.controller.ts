@@ -6,20 +6,22 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { SiteCreateDto } from '../dto/SiteCreate.dto';
+import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 import { SiteService } from './site.service';
-import { SiteDataDto } from '../dto/SiteData.dto';
-import { SiteListDto } from '../dto/SiteList.dto';
-import { SiteViewDto } from '../dto/SiteView.dto';
+import { SiteListDto } from '../../dto/SiteList.dto';
+import { SiteViewDto } from '../../dto/SiteView.dto';
+import { SiteRouteDto } from '../../dto/SiteRoute.dto';
 
 @Controller('api/site')
 @ApiTags('Site')
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
+
+  // ********** POST OPERATION *************
   @Post()
   @ApiOperation({
     summary: 'Create site resource',
-    description: 'Mettre la description',
+    description: 'Entry point for create new site resource',
   })
   @ApiBody({
     type: SiteCreateDto,
@@ -28,29 +30,31 @@ export class SiteController {
   })
   @ApiCreatedResponse({
     type: SiteListDto,
-    description: 'Return new site resource',
+    description: 'Return the new site resource',
   })
-  public createSite(
+  public async createSite(
     @Body() siteCreateDto: SiteCreateDto,
   ): Promise<SiteListDto> {
     return this.siteService.create(siteCreateDto);
   }
+  // ********** GET OPERATIONS *************
   @Get()
   @ApiOperation({
-    summary: 'Get all site resource',
-    description: 'Mettre la description',
+    summary: 'Get all sites resources',
+    description: 'Entry point for get all sites resources with many datas',
   })
   @ApiCreatedResponse({
     type: [SiteListDto],
-    description: 'Return collection of sites resource',
+    description:
+      'Return collection of sites resource. Please look into the DTO SiteListDto',
   })
   public async getAllSites(): Promise<SiteListDto[]> {
     return this.siteService.findAll();
   }
-  @Get('one/:id')
+  @Get(':id')
   @ApiOperation({
     summary: 'Get one site resource',
-    description: 'Mettre la description',
+    description: 'Entry point for get a site resource',
   })
   @ApiParam({
     name: 'id',
@@ -65,20 +69,27 @@ export class SiteController {
     return this.siteService.findOneById(id);
   }
 
-  @Get('data')
+  @Get('route/:id')
+  @ApiParam({
+    name: 'id',
+    allowEmptyValue: false,
+    description: 'id of site resource',
+  })
   @ApiOperation({
-    summary: 'Get data for create site resource',
-    description: 'Returns all the data necessary for the creation of a site ',
+    summary: 'Get routes site resource',
+    description: 'Entry point for get a site resource',
   })
   @ApiCreatedResponse({
-    type: SiteDataDto,
-    description: 'Return all data . Please look into the DTO SiteDataDto',
+    type: [SiteRouteDto],
+    description: 'Return site resource',
   })
-  public async getData(): Promise<SiteDataDto> {
-    return this.siteService.getAllData();
+  public async getRoutesOfSite(
+    @Param('id') id: number,
+  ): Promise<SiteRouteDto[]> {
+    return this.siteService.findRoutes(id);
   }
-
-  @Put('edit/:id')
+  // ********** PUT OPERATION *************
+  @Put(':id')
   @ApiParam({
     name: 'id',
     allowEmptyValue: false,
@@ -93,10 +104,15 @@ export class SiteController {
     type: SiteViewDto,
     description: 'Return the update data with SiteViewDto',
   })
+  @ApiOperation({
+    summary: 'Edit site resource',
+    description: 'Entry point for edit site resource',
+  })
   public async editSite(
     @Param('id') id: number,
     @Body() site: SiteCreateDto,
   ): Promise<SiteViewDto> {
     return this.siteService.update(id, site);
   }
+  // ********** DELETE OPERATION *************
 }

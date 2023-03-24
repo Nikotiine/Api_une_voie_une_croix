@@ -50,17 +50,17 @@ export class Site {
   })
   @JoinTable()
   routeProfiles: RouteProfile[];
-  @ManyToOne(() => Level, (level) => level.label)
+  @ManyToOne(() => Level, (level) => level.minLevels)
   minLevel: Level;
-  @ManyToOne(() => Level, (level) => level.label)
+  @ManyToOne(() => Level, (level) => level.maxLevels)
   maxLevel: Level;
-  @ManyToOne(() => Equipment, (equipment) => equipment.label)
+  @ManyToOne(() => Equipment, (equipment) => equipment.sites)
   equipment: Equipment;
-  @ManyToOne(() => Engagement, (engagement) => engagement.label)
+  @ManyToOne(() => Engagement, (engagement) => engagement.sites)
   engagement: Engagement;
-  @ManyToOne(() => ApproachType, (approachType) => approachType.label)
+  @ManyToOne(() => ApproachType, (approachType) => approachType.sites)
   approachType: ApproachType;
-  @ManyToOne(() => RockType, (rockType) => rockType.label)
+  @ManyToOne(() => RockType, (rockType) => rockType.sites)
   rockType: RockType;
   @OneToMany(() => Secteur, (secteur) => secteur.site, {
     cascade: ['insert', 'update'],
@@ -87,9 +87,9 @@ export class Site {
     nullable: true,
   })
   secondaryParkingLng: number;
-  @ManyToOne(() => Department, (department) => department.name)
+  @ManyToOne(() => Department, (department) => department.sites)
   department: Department;
-  @ManyToOne(() => Region, (region) => region.name)
+  @ManyToOne(() => Region, (region) => region.sites)
   region: Region;
   @Column({ default: false })
   water: boolean;
@@ -99,4 +99,8 @@ export class Site {
   river: boolean;
   @Column({ default: false })
   network: boolean;
+  @Column()
+  createdAt: Date;
+  @Column({ nullable: true })
+  updatedAt: Date;
 }
