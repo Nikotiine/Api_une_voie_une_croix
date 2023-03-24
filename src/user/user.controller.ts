@@ -82,6 +82,17 @@ export class UserController {
     }
   }
 
+  @Get()
+  @ApiOperation({
+    summary: 'Get collection of users resource',
+    description: 'PLease look into the dto UserProfileDto',
+  })
+  @ApiCreatedResponse({
+    type: [UserProfileDto],
+  })
+  public async getAllUsers(): Promise<UserProfileDto[]> {
+    return this.userService.findAll();
+  }
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')

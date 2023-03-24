@@ -154,4 +154,18 @@ export class UserService {
           });
       });
   }
+
+  public async findAll(): Promise<UserProfileDto[]> {
+    const users = await this.userRepository.find();
+    return users.map((u) => {
+      return {
+        id: u.id,
+        firstName: u.firstName,
+        lastName: u.lastName,
+        role: u.role,
+        birthday: u.birthday,
+        email: u.email,
+      };
+    });
+  }
 }
