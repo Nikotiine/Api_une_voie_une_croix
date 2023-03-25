@@ -64,6 +64,9 @@ export class RouteService {
 
   public async findAll(): Promise<RouteListDto[]> {
     const routes = await this.routeRepository.find({
+      where: {
+        isActive: true,
+      },
       relations: {
         equipment: true,
         engagement: true,
@@ -107,6 +110,7 @@ export class RouteService {
     const route = await this.routeRepository.findOne({
       where: {
         id: id,
+        isActive: true,
       },
       relations: {
         equipment: true,
@@ -198,6 +202,7 @@ export class RouteService {
             id: id,
           },
         },
+        isActive: true,
       },
       relations: {
         level: true,
@@ -210,7 +215,9 @@ export class RouteService {
     return this.routeRepository.find({
       relations: {
         level: true,
-        secteur: true,
+        secteur: {
+          site: true,
+        },
         exposition: true,
       },
     });

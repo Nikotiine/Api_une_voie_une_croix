@@ -123,6 +123,7 @@ export class SiteService {
     const site = await this.siteRepository.findOne({
       where: {
         id: id,
+        isActive: true,
       },
       relations: {
         expositions: true,
@@ -301,15 +302,28 @@ export class SiteService {
       where: {
         id: id,
       },
+      relations: {
+        secteurs: {
+          site: true,
+        },
+        region: true,
+        department: true,
+        routeProfiles: true,
+        equipment: true,
+        expositions: true,
+        minLevel: true,
+        maxLevel: true,
+        approachType: true,
+      },
     });
     if (!site) {
       throw new UnauthorizedException();
     }
     site.isActive = !site.isActive;
     site.updatedAt = new Date();
-    const update = await this.siteRepository.update(id, site);
+    const update = await this.siteRepository.save(site);
     return {
-      isUpdated: update.affected === 1,
+      isUpdated: !!update,
     };
   }
 }

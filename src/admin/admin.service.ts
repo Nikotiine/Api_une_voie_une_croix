@@ -88,7 +88,10 @@ export class AdminService {
         secteur: {
           id: r.secteur.id,
           name: r.secteur.name,
-          site: r.secteur.site,
+          site: {
+            id: r.secteur.site.id,
+            name: r.secteur.site.name,
+          },
         },
         exposition: {
           id: r.exposition.id,
