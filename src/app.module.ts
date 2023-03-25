@@ -11,6 +11,7 @@ import { SiteModule } from './site/site.module';
 
 import { typeOrmAsyncConfig } from './config/typeorm.config';
 import { CommonModule } from './common/common.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CommonModule } from './common/common.module';
     AuthModule,
     SiteModule,
     CommonModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

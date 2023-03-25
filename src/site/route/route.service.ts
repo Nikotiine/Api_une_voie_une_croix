@@ -11,6 +11,8 @@ import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 import { RouteListDto } from '../../dto/RouteList.dto';
 import { RouteViewDto } from '../../dto/RouteView.dto';
+import { raw } from 'express';
+import { UpdateResponse } from '../../dto/UpdateResponse.dto';
 
 @Injectable()
 export class RouteService {
@@ -202,5 +204,32 @@ export class RouteService {
         secteur: true,
       },
     });
+  }
+
+  public async findAllForAdmin(): Promise<Route[]> {
+    return this.routeRepository.find({
+      relations: {
+        level: true,
+        secteur: true,
+        exposition: true,
+      },
+    });
+  }
+
+  public async toggleStatus(id: number): Promise<UpdateResponse> {
+    const route = await this.routeRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!route) {
+      throw new UnauthorizedException();
+    }
+    route.isActive = !route.isActive;
+    route.updatedAt = new Date();
+    const update = await this.routeRepository.update(id, route);
+    return {
+      isUpdated: update.affected === 1,
+    };
   }
 }

@@ -15,5 +15,6 @@ import { Route } from '../orm/entity/Route.entity';
   imports: [TypeOrmModule.forFeature([Site, Secteur, Route])],
   controllers: [SiteController, SecteurController, RouteController],
   providers: [SiteService, SecteurService, RouteService],
+  exports: [SiteService, RouteService],
 })
 export class SiteModule {}

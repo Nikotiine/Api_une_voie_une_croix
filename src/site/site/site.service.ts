@@ -14,6 +14,7 @@ import { SiteViewDto } from '../../dto/SiteView.dto';
 import { SiteDto } from '../../dto/Site.dto';
 import { RouteService } from '../route/route.service';
 import { SiteRouteDto } from '../../dto/SiteRoute.dto';
+import { UpdateResponse } from '../../dto/UpdateResponse.dto';
 
 @Injectable()
 export class SiteService {
@@ -281,5 +282,34 @@ export class SiteService {
         },
       };
     });
+  }
+
+  public async findAllSiteForAdmin(): Promise<Site[]> {
+    return this.siteRepository.find({
+      relations: {
+        expositions: true,
+        minLevel: true,
+        maxLevel: true,
+        department: true,
+        region: true,
+      },
+    });
+  }
+
+  public async toggleStatus(id: number): Promise<UpdateResponse> {
+    const site = await this.siteRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!site) {
+      throw new UnauthorizedException();
+    }
+    site.isActive = !site.isActive;
+    site.updatedAt = new Date();
+    const update = await this.siteRepository.update(id, site);
+    return {
+      isUpdated: update.affected === 1,
+    };
   }
 }
