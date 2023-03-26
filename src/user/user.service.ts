@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../orm/entity/User.entity';
 import { Repository } from 'typeorm';
@@ -8,6 +13,8 @@ import { UserProfileDto } from '../dto/UserProfile.dto';
 import * as process from 'process';
 import { UserEditPasswordDto } from '../dto/UserEditPassword.dto';
 import { ErrorMessage } from '../enum/ErrorMessage.enum';
+import { UpdateResponse } from '../dto/UpdateResponse.dto';
+import { AdminUsersDto } from '../dto/AdminUsers.dto';
 
 @Injectable()
 export class UserService {
@@ -155,17 +162,46 @@ export class UserService {
       });
   }
 
-  public async findAll(): Promise<UserProfileDto[]> {
-    const users = await this.userRepository.find();
-    return users.map((u) => {
-      return {
-        id: u.id,
-        firstName: u.firstName,
-        lastName: u.lastName,
-        role: u.role,
-        birthday: u.birthday,
-        email: u.email,
-      };
+  public async finAllForAdmin(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
+  public async toggleStatus(id: number): Promise<UpdateResponse> {
+    console.log(id);
+    const user = await this.userRepository.findOne({
+      where: {
+        id: id,
+      },
     });
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    user.isActive = !user.isActive;
+    user.updatedAt = new Date();
+    const update = await this.userRepository.update(id, user);
+    return {
+      isUpdated: update.affected === 1,
+    };
+  }
+
+  public async changeUserRole(
+    id: number,
+    user: AdminUsersDto,
+  ): Promise<UpdateResponse> {
+    console.log(id);
+    const isExist = await this.userRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    console.log(isExist);
+    if (!isExist) {
+      throw new UnauthorizedException();
+    }
+    user.updatedAt = new Date();
+    const update = await this.userRepository.update(id, user);
+    return {
+      isUpdated: update.affected === 1,
+    };
   }
 }

@@ -11,6 +11,8 @@ import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 import { RouteListDto } from '../../dto/RouteList.dto';
 import { RouteViewDto } from '../../dto/RouteView.dto';
+import { raw } from 'express';
+import { UpdateResponse } from '../../dto/UpdateResponse.dto';
 
 @Injectable()
 export class RouteService {
@@ -62,6 +64,9 @@ export class RouteService {
 
   public async findAll(): Promise<RouteListDto[]> {
     const routes = await this.routeRepository.find({
+      where: {
+        isActive: true,
+      },
       relations: {
         equipment: true,
         engagement: true,
@@ -105,6 +110,7 @@ export class RouteService {
     const route = await this.routeRepository.findOne({
       where: {
         id: id,
+        isActive: true,
       },
       relations: {
         equipment: true,
@@ -196,11 +202,41 @@ export class RouteService {
             id: id,
           },
         },
+        isActive: true,
       },
       relations: {
         level: true,
         secteur: true,
       },
     });
+  }
+
+  public async findAllForAdmin(): Promise<Route[]> {
+    return this.routeRepository.find({
+      relations: {
+        level: true,
+        secteur: {
+          site: true,
+        },
+        exposition: true,
+      },
+    });
+  }
+
+  public async toggleStatus(id: number): Promise<UpdateResponse> {
+    const route = await this.routeRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!route) {
+      throw new UnauthorizedException();
+    }
+    route.isActive = !route.isActive;
+    route.updatedAt = new Date();
+    const update = await this.routeRepository.update(id, route);
+    return {
+      isUpdated: update.affected === 1,
+    };
   }
 }
