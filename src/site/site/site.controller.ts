@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
   ApiOperation,
   ApiParam,
+  ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 import { SiteCreateDto } from '../../dto/SiteCreate.dto';
@@ -11,6 +21,7 @@ import { SiteService } from './site.service';
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
 import { SiteRouteDto } from '../../dto/SiteRoute.dto';
+import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
 
 @Controller('api/site')
 @ApiTags('Site')
@@ -32,7 +43,10 @@ export class SiteController {
     type: SiteListDto,
     description: 'Return the new site resource',
   })
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
   public async createSite(
+    @Request() req,
     @Body() siteCreateDto: SiteCreateDto,
   ): Promise<SiteListDto> {
     return this.siteService.create(siteCreateDto);
@@ -108,7 +122,10 @@ export class SiteController {
     summary: 'Edit site resource',
     description: 'Entry point for edit site resource',
   })
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
   public async editSite(
+    @Request() req,
     @Param('id') id: number,
     @Body() site: SiteCreateDto,
   ): Promise<SiteViewDto> {

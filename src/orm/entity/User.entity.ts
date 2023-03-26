@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { UserRole } from '../../enum/UserRole.enum';
+import { Site } from './Site.entity';
 
 @Entity()
 @Unique(['email'])
@@ -22,6 +30,8 @@ export class User {
   updatedAt: Date;
   @Column({ default: true })
   isActive: boolean;
-  @Column({ type: 'enum', enum: () => UserRole, default: UserRole.ROLE_USER })
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.ROLE_USER })
   role: UserRole;
+  @OneToMany(() => Site, (site) => site.author)
+  sites: Site[];
 }

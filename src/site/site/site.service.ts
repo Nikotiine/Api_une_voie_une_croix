@@ -109,6 +109,7 @@ export class SiteService {
       wc: createSiteDto.wc,
       river: createSiteDto.river,
       isActive: true,
+      author: createSiteDto.author,
       createdAt: new Date(),
     });
     site.secteurs.forEach((secteur) => {
@@ -293,6 +294,8 @@ export class SiteService {
         maxLevel: true,
         department: true,
         region: true,
+
+        author: true,
       },
     });
   }

@@ -20,6 +20,8 @@ export class UserProfileDto {
     example: 1,
   })
   id: number;
-  @ApiProperty()
-  role: UserRole;
+  @ApiProperty({
+    enum: UserRole,
+  })
+  readonly role?: UserRole;
 }

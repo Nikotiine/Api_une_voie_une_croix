@@ -23,15 +23,21 @@ import { UserProfileDto } from '../dto/UserProfile.dto';
 import { UserRegisterDto } from '../dto/UserRegister.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
 import { UserEditPasswordDto } from '../dto/UserEditPassword.dto';
+import { UserContributionDto } from '../dto/UserContribution.dto';
 
 @ApiTags('User')
 @Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  /**
+   * Creation d'un profil utilisateur
+   * @param userRegisterDto
+   */
   @Post('register')
   @ApiCreatedResponse({
-    description: 'The user has been successfully created.',
+    description:
+      'In case of success => return UserProfileDto, Please look into the DTO UserRegisterDto ',
     type: UserProfileDto,
   })
   @ApiOperation({
@@ -49,11 +55,18 @@ export class UserController {
     return this.userService.create(userRegisterDto);
   }
 
+  /**
+   * Editiion du profile utilisateur
+   * @param req json web token
+   * @param id de l'utilisateur
+   * @param user UserCreateDto
+   */
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
   @ApiCreatedResponse({
-    description: 'The user has been successfully updated',
+    description:
+      'In case of success => return updated UserProfileDto, Please look into the DTO UserRegisterDto',
     type: UserProfileDto,
   })
   @ApiParam({
@@ -62,7 +75,7 @@ export class UserController {
     description: 'id of user',
   })
   @ApiOperation({
-    summary: 'Edit user resource',
+    summary: 'Edit user profile',
     description: 'Mettre la description',
   })
   @ApiBody({
@@ -82,6 +95,12 @@ export class UserController {
     }
   }
 
+  /**
+   * Recupere le prodfil de l'utilisateur
+   * Si l'id du token ne correspond pas a celui passer en parametre => renvoie une 403
+   * @param req Json web token
+   * @param id de l'utilisateur
+   */
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
@@ -104,6 +123,34 @@ export class UserController {
   ): Promise<UserProfileDto> {
     if (req.user.id === id) {
       return this.userService.findById(id);
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
+  @Get('contribution/:id')
+  @ApiOperation({
+    summary: 'Get user contributions',
+    description: 'Retrieve all contributions of user (site/route/topo)',
+  })
+  @ApiCreatedResponse({
+    type: UserContributionDto,
+    description:
+      'Return all contribution of user, Please look into dto , UserContributionDto',
+  })
+  @ApiParam({
+    name: 'id',
+    allowEmptyValue: false,
+    description: 'id of user',
+  })
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
+  public async getUserContributions(
+    @Request() req,
+    @Param('id') id: number,
+  ): Promise<UserContributionDto> {
+    if (req.user.id === id) {
+      return this.userService.findContributions(id);
     } else {
       throw new UnauthorizedException();
     }

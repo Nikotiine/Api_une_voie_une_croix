@@ -21,6 +21,7 @@ import { Geometry, Point } from 'geojson';
 import { Department } from './Department.entity';
 import { Region } from './Region.entity';
 import { ApproachType } from './ApproachType.entity';
+import { User } from './User.entity';
 
 @Entity()
 @Unique(['name'])
@@ -103,4 +104,6 @@ export class Site {
   createdAt: Date;
   @Column({ nullable: true })
   updatedAt: Date;
+  @ManyToOne(() => User, (user) => user.sites)
+  author: User;
 }

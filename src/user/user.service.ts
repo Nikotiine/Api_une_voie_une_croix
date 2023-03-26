@@ -15,6 +15,7 @@ import { UserEditPasswordDto } from '../dto/UserEditPassword.dto';
 import { ErrorMessage } from '../enum/ErrorMessage.enum';
 import { UpdateResponse } from '../dto/UpdateResponse.dto';
 import { AdminUsersDto } from '../dto/AdminUsers.dto';
+import { UserContributionDto } from '../dto/UserContribution.dto';
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,7 @@ export class UserService {
     this.salt = parseInt(process.env.BCRYPT_SALT);
   }
 
+  //TODO:Metttre set password dans entity
   public async create(user: UserRegisterDto): Promise<UserProfileDto> {
     const isExist = await this.findByEmail(user.email);
     if (isExist) {
@@ -118,6 +120,7 @@ export class UserService {
       });
   }
 
+  //TODO : Refact la methode pour enlever le .then
   public async editPassword(
     id: number,
     passwords: UserEditPasswordDto,
@@ -162,12 +165,16 @@ export class UserService {
       });
   }
 
+  // Retrouve tous les utilisateur pour le adminService
   public async finAllForAdmin(): Promise<User[]> {
     return this.userRepository.find();
   }
 
+  /**
+   * Active ou desactive l'utlisateur / acces uniquement pour adminService
+   * @param id de l'utilisateur
+   */
   public async toggleStatus(id: number): Promise<UpdateResponse> {
-    console.log(id);
     const user = await this.userRepository.findOne({
       where: {
         id: id,
@@ -184,6 +191,11 @@ export class UserService {
     };
   }
 
+  /**
+   * Modifie le role de l'utilisateur / acces uniquement pour adminService
+   * @param id de l'utilisateur
+   * @param user AdminUserDto
+   */
   public async changeUserRole(
     id: number,
     user: AdminUsersDto,
@@ -194,7 +206,6 @@ export class UserService {
         id: id,
       },
     });
-    console.log(isExist);
     if (!isExist) {
       throw new UnauthorizedException();
     }
@@ -202,6 +213,25 @@ export class UserService {
     const update = await this.userRepository.update(id, user);
     return {
       isUpdated: update.affected === 1,
+    };
+  }
+
+  public async findContributions(id: number): Promise<UserContributionDto> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        sites: true,
+      },
+    });
+    return {
+      sites: user.sites.map((s) => {
+        return {
+          id: s.id,
+          name: s.name,
+        };
+      }),
     };
   }
 }
