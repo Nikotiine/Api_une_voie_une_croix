@@ -223,6 +223,13 @@ export class UserService {
       },
       relations: {
         sites: true,
+        routes: {
+          secteur: {
+            site: true,
+          },
+          level: true,
+          exposition: true,
+        },
       },
     });
     return {
@@ -230,6 +237,30 @@ export class UserService {
         return {
           id: s.id,
           name: s.name,
+        };
+      }),
+      routes: user.routes.map((r) => {
+        return {
+          id: r.id,
+          height: r.height,
+          name: r.name,
+          level: {
+            id: r.level.id,
+            label: r.level.label,
+          },
+          createdAt: r.createdAt,
+          exposition: {
+            id: r.exposition.id,
+            label: r.exposition.label,
+          },
+          secteur: {
+            id: r.secteur.id,
+            name: r.secteur.name,
+            site: {
+              id: r.secteur.site.id,
+              name: r.secteur.site.name,
+            },
+          },
         };
       }),
     };

@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { UserRole } from '../../enum/UserRole.enum';
 import { Site } from './Site.entity';
+import { Route } from './Route.entity';
 
 @Entity()
 @Unique(['email'])
@@ -34,4 +35,6 @@ export class User {
   role: UserRole;
   @OneToMany(() => Site, (site) => site.author)
   sites: Site[];
+  @OneToMany(() => Route, (route) => route.author)
+  routes: Route[];
 }

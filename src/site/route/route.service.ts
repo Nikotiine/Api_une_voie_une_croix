@@ -11,7 +11,6 @@ import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 import { RouteListDto } from '../../dto/RouteList.dto';
 import { RouteViewDto } from '../../dto/RouteView.dto';
-import { raw } from 'express';
 import { UpdateResponse } from '../../dto/UpdateResponse.dto';
 
 @Injectable()
@@ -35,6 +34,7 @@ export class RouteService {
       exposition: routeCreate.exposition,
       routeProfile: routeCreate.routeProfile,
       rockType: routeCreate.rockType,
+      author: routeCreate.author,
     });
     return this.routeRepository.save(route);
   }
@@ -219,6 +219,7 @@ export class RouteService {
           site: true,
         },
         exposition: true,
+        author: true,
       },
     });
   }

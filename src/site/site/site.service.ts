@@ -15,10 +15,10 @@ import { SiteDto } from '../../dto/Site.dto';
 import { RouteService } from '../route/route.service';
 import { SiteRouteDto } from '../../dto/SiteRoute.dto';
 import { UpdateResponse } from '../../dto/UpdateResponse.dto';
+import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 
 @Injectable()
 export class SiteService {
-  private nameIsUsed = 'Name is used';
   constructor(
     @InjectRepository(Site) private siteRepository: Repository<Site>,
     private readonly routeService: RouteService,
@@ -77,13 +77,21 @@ export class SiteService {
       name: name,
     });
   }
+
+  /**
+   * Methode pour la creation d'un nouveau site
+   * @param createSiteDto description dans dto => SiteCreateDto
+   */
   public async create(createSiteDto: SiteCreateDto): Promise<Site> {
+    //Verification prealable si il existe pas deja un site avec le meme nom
     const isExist = await this.findByName(createSiteDto.name);
     if (isExist) {
-      throw new HttpException(this.nameIsUsed, HttpStatus.BAD_REQUEST, {
+      //Les messages d'erreur sont dans enum/ErrorMessage.enum
+      throw new HttpException(ErrorMessage.SITE_EXIST, HttpStatus.BAD_REQUEST, {
         cause: new Error(),
       });
     }
+
     const site = this.siteRepository.create({
       name: createSiteDto.name,
       approachTime: createSiteDto.approachTime,
@@ -112,11 +120,13 @@ export class SiteService {
       author: createSiteDto.author,
       createdAt: new Date(),
     });
+    //Ajout des secteurs du nouveau site
     site.secteurs.forEach((secteur) => {
       secteur.isActive = true;
       secteur.createdAt = new Date();
     });
 
+    //TODO:A verifer au retour si c'est bien typer
     return this.siteRepository.save(site);
   }
 

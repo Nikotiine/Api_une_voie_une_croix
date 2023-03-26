@@ -7,6 +7,7 @@ import { SecteurDto } from './Secteur.dto';
 import { ExpositionDto } from './Exposition.dto';
 import { RockTypeDto } from './RockType.dto';
 import { RouteProfileDto } from './RouteProfile.dto';
+import { UserProfileDto } from './UserProfile.dto';
 
 export class RouteCreateDto {
   @ApiProperty({
@@ -49,4 +50,9 @@ export class RouteCreateDto {
     type: RouteProfileDto,
   })
   routeProfile: RouteProfileDto;
+  @ApiProperty({
+    type: UserProfileDto,
+    nullable: false,
+  })
+  author: UserProfileDto;
 }

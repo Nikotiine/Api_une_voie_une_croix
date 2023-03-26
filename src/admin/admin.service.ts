@@ -107,6 +107,13 @@ export class AdminService {
         },
         height: r.height,
         updatedAt: r.updatedAt,
+        author: {
+          id: r.author.id,
+          lastName: r.author.lastName,
+          firstName: r.author.firstName,
+          birthday: r.author.birthday,
+          email: r.author.email,
+        },
       };
     });
   }

@@ -8,7 +8,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('API Une Voie Une Croix')
     .setDescription('API nestJs , une voie une croix ')
-    .setVersion('0.0.3')
+    .setVersion('0.0.4')
     .addBearerAuth(
       {
         type: 'http',
