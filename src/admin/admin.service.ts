@@ -98,6 +98,7 @@ export class AdminService {
           label: r.exposition.label,
         },
         height: r.height,
+        updatedAt: r.updatedAt,
       };
     });
   }
