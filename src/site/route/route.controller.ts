@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
   ApiOperation,
   ApiParam,
+  ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 import { RouteService } from './route.service';
@@ -13,6 +23,7 @@ import { RouteListDto } from '../../dto/RouteList.dto';
 import { SiteService } from '../site/site.service';
 import { SiteDto } from '../../dto/Site.dto';
 import { RouteViewDto } from '../../dto/RouteView.dto';
+import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
 
 @Controller('api/route')
 @ApiTags('Route')
@@ -21,6 +32,13 @@ export class RouteController {
     private readonly routeService: RouteService,
     private readonly siteService: SiteService,
   ) {}
+  // ********** POST OPERATION *************
+
+  /**
+   * Ajout d'une nouvelle voie sur un site / JWT required
+   * @param req Json web token
+   * @param routeCreate RouteCreateDto
+   */
   @Post()
   @ApiOperation({
     summary: 'Create route resource',
@@ -36,12 +54,22 @@ export class RouteController {
     description:
       'The Description for the Post Body. Please look into the DTO RouteListDto',
   })
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
   public async createRoute(
+    @Request() req,
     @Body() routeCreate: RouteCreateDto,
   ): Promise<RouteListDto> {
     return this.routeService.create(routeCreate);
   }
 
+  // ********** PUT OPERATION *************
+  /**
+   * Editition d'une voie / JWT required
+   * @param req Json web token
+   * @param id de la voie
+   * @param route RouteCreateDto
+   */
   @Put(':id')
   @ApiParam({
     name: 'id',
@@ -62,12 +90,20 @@ export class RouteController {
     description:
       'The Description for the Post Body. Please look into the DTO RouteViewDto',
   })
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
   public async editRoute(
+    @Request() req,
     @Param('id') id: number,
     @Body() route: RouteCreateDto,
   ): Promise<RouteViewDto> {
     return this.routeService.update(id, route);
   }
+  // ********** PUT OPERATION *************
+
+  /**
+   * Methode publique / recupere la liste de toutes les voies actives
+   */
   @Get()
   @ApiOperation({
     summary: 'get all route resource',
@@ -82,6 +118,10 @@ export class RouteController {
     return this.routeService.findAll();
   }
 
+  /**
+   * Methode publique / renvoie les info de la voie
+   * @param id de la voie
+   */
   @Get(':id')
   @ApiParam({
     name: 'id',
@@ -101,6 +141,9 @@ export class RouteController {
     return this.routeService.findById(id);
   }
 
+  /**
+   * Methode publique , renvoie la liste des site actif pour la selection du site la de la creation d'une voie
+   */
   @Get('site/list')
   @ApiCreatedResponse({
     type: [SiteDto],

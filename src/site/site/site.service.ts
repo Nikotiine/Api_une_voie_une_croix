@@ -2,13 +2,12 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Site } from '../../orm/entity/Site.entity';
 import { SiteCreateDto } from '../../dto/SiteCreate.dto';
-
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
 import { SiteDto } from '../../dto/Site.dto';
@@ -24,6 +23,10 @@ export class SiteService {
     private readonly routeService: RouteService,
   ) {}
 
+  /**
+   * Methode publique / Retrouve tous les sites actifs
+   * Renvoie une liste de SiteListDto, Description dans dto/SiteListDto
+   */
   public async findAll(): Promise<SiteListDto[]> {
     const sites = await this.siteRepository.find({
       where: {
@@ -37,6 +40,7 @@ export class SiteService {
         region: true,
       },
     });
+    //Construction du SiteListDto[]
     return sites.map((site) => {
       return {
         id: site.id,
@@ -72,11 +76,6 @@ export class SiteService {
       };
     });
   }
-  public async findByName(name: string): Promise<Site | null> {
-    return this.siteRepository.findOneBy({
-      name: name,
-    });
-  }
 
   /**
    * Methode pour la creation d'un nouveau site
@@ -91,7 +90,6 @@ export class SiteService {
         cause: new Error(),
       });
     }
-
     const site = this.siteRepository.create({
       name: createSiteDto.name,
       approachTime: createSiteDto.approachTime,
@@ -130,6 +128,10 @@ export class SiteService {
     return this.siteRepository.save(site);
   }
 
+  /**
+   * Retrouve un site avec son id
+   * @param id du site
+   */
   public async findOneById(id: number): Promise<SiteViewDto> {
     const site = await this.siteRepository.findOne({
       where: {
@@ -153,10 +155,12 @@ export class SiteService {
       },
     });
 
+    // Si l'id du site est invalide renvoie une erreur 404
     if (!site) {
-      throw new UnauthorizedException();
+      throw new NotFoundException();
     }
 
+    //construction du SiteViewDto
     return {
       id: site.id,
       name: site.name,
@@ -226,6 +230,13 @@ export class SiteService {
       river: site.river,
     };
   }
+
+  /**
+   * Mise a jour du site / Methode reserve aux admin
+   * TODO : Permettre la modification a l'auteur du site
+   * @param id du site
+   * @param createSiteDto description dans dto => SiteCreateDto
+   */
   public async update(
     id: number,
     createSiteDto: SiteCreateDto,
@@ -257,17 +268,27 @@ export class SiteService {
       river: createSiteDto.river,
       updatedAt: new Date(),
     });
+    //Mets a jours les secteurs
     entity.secteurs.forEach((s) => {
       if (!s.id) {
         s.createdAt = new Date();
         s.isActive = true;
       }
     });
+    //TODO:Verfier le typage de retour
     return this.siteRepository.save(entity);
   }
 
+  /**
+   * Methode pout le RouteController / permet de retrouver la liste de tous les site
+   * Description du retour dans dto/SiteDto
+   */
   public async findAllForRoute(): Promise<SiteDto[]> {
-    const sites = await this.siteRepository.find();
+    const sites = await this.siteRepository.find({
+      where: {
+        isActive: true,
+      },
+    });
     return sites.map((site) => {
       return {
         id: site.id,
@@ -276,9 +297,14 @@ export class SiteService {
     });
   }
 
+  /**
+   * Trouve les routes associées au site
+   * @param id du site
+   */
   public async findRoutes(id: number): Promise<SiteRouteDto[]> {
     const routes = await this.routeService.findRouteBySite(id);
 
+    //Construit l'objet SiteRouteDto, description dans dto/SiteRouteDto
     return routes.map((r) => {
       return {
         id: r.id,
@@ -296,6 +322,10 @@ export class SiteService {
     });
   }
 
+  /**
+   * Methode reserver a l'adminController /
+   * Retrouve tous les sites actif ou non
+   */
   public async findAllSiteForAdmin(): Promise<Site[]> {
     return this.siteRepository.find({
       relations: {
@@ -304,12 +334,17 @@ export class SiteService {
         maxLevel: true,
         department: true,
         region: true,
-
         author: true,
       },
     });
   }
 
+  /**
+   * Methode reserver a l'adminController
+   * Permet d'activer ou desactiver un site
+   * Renvoie un boleen pour confirmer la mise a jour
+   * @param id du site
+   */
   public async toggleStatus(id: number): Promise<UpdateResponse> {
     const site = await this.siteRepository.findOne({
       where: {
@@ -329,8 +364,9 @@ export class SiteService {
         approachType: true,
       },
     });
+    //Si l'id du site est invalide renvoie une 404
     if (!site) {
-      throw new UnauthorizedException();
+      throw new NotFoundException();
     }
     site.isActive = !site.isActive;
     site.updatedAt = new Date();
@@ -338,5 +374,15 @@ export class SiteService {
     return {
       isUpdated: !!update,
     };
+  }
+  /**
+   * Retrouve un site avec son nom
+   * @param name nom du site
+   * @private
+   */
+  private async findByName(name: string): Promise<Site | null> {
+    return this.siteRepository.findOneBy({
+      name: name,
+    });
   }
 }
