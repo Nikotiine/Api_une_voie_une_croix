@@ -2,7 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../orm/entity/User.entity';
@@ -20,7 +20,7 @@ import { UserContributionDto } from '../dto/UserContribution.dto';
 @Injectable()
 export class UserService {
   private salt: number;
-  private mailIsUsed = ErrorMessage.USER;
+
   private invalidPassword = ErrorMessage.WRONG_PASSWORD;
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
@@ -28,36 +28,34 @@ export class UserService {
     this.salt = parseInt(process.env.BCRYPT_SALT);
   }
 
-  //TODO:Metttre set password dans entity
+  /**
+   * Creatiçn d'un nouveau profil utlisateur / Cryptage du mot de passe dans l'entity
+   * @param user UserRegisterDto
+   */
   public async create(user: UserRegisterDto): Promise<UserProfileDto> {
     const isExist = await this.findByEmail(user.email);
     if (isExist) {
-      throw new HttpException(this.mailIsUsed, HttpStatus.BAD_REQUEST, {
+      throw new HttpException(ErrorMessage.USER, HttpStatus.BAD_REQUEST, {
         cause: new Error(),
       });
     }
-    return bcrypt.hash(user.password, this.salt).then((hash) => {
-      const newUser = this.userRepository.create({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        password: hash,
-        birthday: user.birthday,
-        isActive: true,
-        createdAt: new Date(),
-      });
-      return this.userRepository.save(newUser).then((profile) => {
-        const userProfile: UserProfileDto = {
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          birthday: profile.birthday,
-          id: profile.id,
-          email: profile.email,
-          role: profile.role,
-        };
-        return userProfile;
-      });
+    const entity = await this.userRepository.create({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      birthday: user.birthday,
+      password: user.password,
+      isActive: true,
     });
+    const created = await this.userRepository.save(entity);
+    return {
+      firstName: created.firstName,
+      lastName: created.lastName,
+      birthday: created.birthday,
+      id: created.id,
+      email: created.email,
+      role: created.role,
+    };
   }
   public findByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOneBy({
@@ -66,6 +64,10 @@ export class UserService {
     });
   }
 
+  /**
+   * trouve le profile de l'utilisateur avec son id
+   * @param id de l'utilisateur
+   */
   public async findById(id: number): Promise<UserProfileDto> {
     const user = await this.userRepository.findOneBy({
       id: id,
@@ -109,7 +111,7 @@ export class UserService {
               });
           } else {
             throw new HttpException(
-              this.invalidPassword,
+              ErrorMessage.WRONG_PASSWORD,
               HttpStatus.UNAUTHORIZED,
               {
                 cause: new Error(),
@@ -181,7 +183,8 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new UnauthorizedException();
+      // Si l'id de l'utilisateur est invalide retourne une erreur 404
+      throw new NotFoundException();
     }
     user.isActive = !user.isActive;
     user.updatedAt = new Date();
@@ -207,15 +210,19 @@ export class UserService {
       },
     });
     if (!isExist) {
-      throw new UnauthorizedException();
+      // Si l'id de l'utilisateur est invalide retourne une erreur 404
+      throw new NotFoundException();
     }
-    user.updatedAt = new Date();
     const update = await this.userRepository.update(id, user);
     return {
       isUpdated: update.affected === 1,
     };
   }
 
+  /**
+   * Retrouve toute les contribution de l'utlisateur (voie/site/topo)
+   * @param id de l'utilisateur
+   */
   public async findContributions(id: number): Promise<UserContributionDto> {
     const user = await this.userRepository.findOne({
       where: {

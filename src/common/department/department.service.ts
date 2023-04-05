@@ -26,7 +26,12 @@ export class DepartmentService {
     }
     return this.departmentRepository.find({
       where: {
-        region: region,
+        region: {
+          id: regionId,
+        },
+      },
+      relations: {
+        region: true,
       },
     });
   }

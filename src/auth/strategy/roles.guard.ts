@@ -6,6 +6,13 @@ import { UserRole } from '../../enum/UserRole.enum';
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
+
+  /**
+   * Comparer le tableau de role requis par le decorateur @Roles() et le role du user
+   * @param roles les roles requis
+   * @param userRole le role de l'utlisateur
+   * @private
+   */
   private matchRoles(roles: UserRole[], userRole: UserRole): boolean {
     return roles.some((role) => role === userRole);
   }

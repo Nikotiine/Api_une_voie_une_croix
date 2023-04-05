@@ -31,7 +31,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   /**
-   * Creation d'un profil utilisateur
+   * Creation d'un nouvel utilisateur
    * @param userRegisterDto
    */
   @Post('register')
@@ -42,7 +42,8 @@ export class UserController {
   })
   @ApiOperation({
     summary: 'Register new user',
-    description: 'Mettre la description',
+    description:
+      'Create new user in database / by default the user have role USER',
   })
   @ApiBody({
     type: UserRegisterDto,
@@ -76,7 +77,7 @@ export class UserController {
   })
   @ApiOperation({
     summary: 'Edit user profile',
-    description: 'Mettre la description',
+    description: 'The user can edit his profile / JWT required',
   })
   @ApiBody({
     type: UserRegisterDto,
@@ -91,6 +92,7 @@ export class UserController {
     if (req.user.id === id) {
       return this.userService.edit(id, user);
     } else {
+      // Si le token est invalide retroune une erreur 403
       throw new UnauthorizedException();
     }
   }
@@ -109,8 +111,8 @@ export class UserController {
     type: UserProfileDto,
   })
   @ApiOperation({
-    summary: 'Get user resource',
-    description: 'Mettre la description',
+    summary: 'Get user resource by id',
+    description: 'The user can show his own profile',
   })
   @ApiParam({
     name: 'id',
@@ -128,6 +130,12 @@ export class UserController {
     }
   }
 
+  /**
+   * Renvoie toute les contribution de l'utlisateur
+   * Ajout de site / voies / topo
+   * @param req Json web token / required
+   * @param id de l'utilisateur
+   */
   @Get('contribution/:id')
   @ApiOperation({
     summary: 'Get user contributions',
@@ -155,7 +163,7 @@ export class UserController {
       throw new UnauthorizedException();
     }
   }
-
+  //TODO:Modifier cette route
   @Put('password/:id')
   @ApiParam({
     name: 'id',
