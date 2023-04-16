@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,7 +12,6 @@ import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 import { RouteListDto } from '../../dto/RouteList.dto';
 import { RouteViewDto } from '../../dto/RouteView.dto';
-import { raw } from 'express';
 import { UpdateResponse } from '../../dto/UpdateResponse.dto';
 
 @Injectable()
@@ -20,7 +20,12 @@ export class RouteService {
     @InjectRepository(Route) private routeRepository: Repository<Route>,
   ) {}
 
+  /**
+   * Creation d'une nouvelle voie
+   * @param routeCreate RouteCreateDto, descrption dans dto/RouteCreateDto
+   */
   public async create(routeCreate: RouteCreateDto): Promise<RouteListDto> {
+    //Verifie si le couple nom de voie / appartenance au secteur existe
     await this.verifyNameAndSector(routeCreate.name, routeCreate.secteur.id);
     const route = await this.routeRepository.create({
       name: routeCreate.name,
@@ -35,6 +40,7 @@ export class RouteService {
       exposition: routeCreate.exposition,
       routeProfile: routeCreate.routeProfile,
       rockType: routeCreate.rockType,
+      author: routeCreate.author,
     });
     return this.routeRepository.save(route);
   }
@@ -56,12 +62,16 @@ export class RouteService {
       },
     });
     if (isExist) {
+      //Si la voie existe deja renvoie une erreur / Liste des messages d'erreur enum/ErrorMessage
       throw new HttpException(ErrorMessage.ROUTE, HttpStatus.BAD_REQUEST, {
         cause: new Error(),
       });
     }
   }
 
+  /**
+   * Methode publique / renvoie la liste de toutes les voies actives
+   */
   public async findAll(): Promise<RouteListDto[]> {
     const routes = await this.routeRepository.find({
       where: {
@@ -106,6 +116,10 @@ export class RouteService {
     });
   }
 
+  /**
+   * Retrouve une voie avec son id
+   * @param id de la voie
+   */
   public async findById(id: number): Promise<RouteViewDto> {
     const route = await this.routeRepository.findOne({
       where: {
@@ -124,9 +138,11 @@ export class RouteService {
         level: true,
       },
     });
+    //Si l'id passer en parametre est invalide renvoie une erreur 404
     if (!route) {
-      throw new UnauthorizedException();
+      throw new NotFoundException();
     }
+    //Copnstruit l'objet RouteViewDto, descritpion dans dto/RouteViewDto
     return {
       id: route.id,
       name: route.name,
@@ -168,6 +184,12 @@ export class RouteService {
     };
   }
 
+  /**
+   * Mise a joue de la voie / Reserver aux admin
+   * TODO:Permettre a l'auteur d'acceder a cette methode
+   * @param id
+   * @param route
+   */
   public async update(
     id: number,
     route: RouteCreateDto,
@@ -194,6 +216,10 @@ export class RouteService {
     return this.findById(updated.id);
   }
 
+  /**
+   * Methode pour le siteController / renvoie la liste des voie pour le site passer en parametre
+   * @param id du site
+   */
   public async findRouteBySite(id: number): Promise<Route[]> {
     return this.routeRepository.find({
       where: {
@@ -211,6 +237,9 @@ export class RouteService {
     });
   }
 
+  /**
+   * Reserver a l'adminController / renvoie la liste de toules les voies active ou non
+   */
   public async findAllForAdmin(): Promise<Route[]> {
     return this.routeRepository.find({
       relations: {
@@ -219,18 +248,24 @@ export class RouteService {
           site: true,
         },
         exposition: true,
+        author: true,
       },
     });
   }
 
+  /**
+   * Reserver a l'adminController / Permet de changer le status de la voie (actif / inactif)
+   * @param id de la voie
+   */
   public async toggleStatus(id: number): Promise<UpdateResponse> {
     const route = await this.routeRepository.findOne({
       where: {
         id: id,
       },
     });
+    //Si l'id passer en parametre est invalide renvoie une erreur 404
     if (!route) {
-      throw new UnauthorizedException();
+      throw new NotFoundException();
     }
     route.isActive = !route.isActive;
     route.updatedAt = new Date();

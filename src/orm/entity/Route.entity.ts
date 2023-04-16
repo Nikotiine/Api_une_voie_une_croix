@@ -12,6 +12,7 @@ import { Engagement } from './Engagement.entity';
 import { Exposition } from './Exposition.entity';
 import { RockType } from './RockType.entity';
 import { RouteProfile } from './RouteProfile.entity';
+import { User } from './User.entity';
 
 @Entity()
 @Unique(['name', 'secteur'])
@@ -44,4 +45,6 @@ export class Route {
   createdAt: Date;
   @Column({ nullable: true })
   updatedAt: Date;
+  @ManyToOne(() => User, (user) => user.routes)
+  author: User;
 }

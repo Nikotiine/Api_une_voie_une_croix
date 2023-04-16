@@ -34,6 +34,7 @@ export class AdminService {
 
   public async findAllSites(): Promise<AdminSitesDto[]> {
     const sites = await this.siteService.findAllSiteForAdmin();
+    console.log(sites);
     return sites.map((s) => {
       return {
         id: s.id,
@@ -69,6 +70,13 @@ export class AdminService {
             label: e.label,
           };
         }),
+        author: {
+          id: s.author.id,
+          lastName: s.author.lastName,
+          firstName: s.author.firstName,
+          birthday: s.author.birthday,
+          email: s.author.email,
+        },
       };
     });
   }
@@ -99,6 +107,13 @@ export class AdminService {
         },
         height: r.height,
         updatedAt: r.updatedAt,
+        author: {
+          id: r.author.id,
+          lastName: r.author.lastName,
+          firstName: r.author.firstName,
+          birthday: r.author.birthday,
+          email: r.author.email,
+        },
       };
     });
   }

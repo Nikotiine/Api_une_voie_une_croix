@@ -20,7 +20,6 @@ import { AdminService } from './admin.service';
 import { AdminUsersDto } from '../dto/AdminUsers.dto';
 import { AdminSitesDto } from '../dto/AdminSites.dto';
 import { AdminRoutesDto } from '../dto/AdminRoutes.dto';
-import { isBoolean } from 'class-validator';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../enum/UserRole.enum';
 import { RolesGuard } from '../auth/strategy/roles.guard';

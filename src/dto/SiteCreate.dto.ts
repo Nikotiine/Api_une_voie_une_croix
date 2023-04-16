@@ -10,6 +10,7 @@ import { ExpositionDto } from './Exposition.dto';
 import { RouteProfileDto } from './RouteProfile.dto';
 import { RockTypeDto } from './RockType.dto';
 import { SecteurDto } from './Secteur.dto';
+import { UserProfileDto } from './UserProfile.dto';
 
 export class SiteCreateDto {
   @ApiProperty({
@@ -95,4 +96,9 @@ export class SiteCreateDto {
   water: boolean;
   @ApiProperty()
   secteurs: SecteurDto[];
+  @ApiProperty({
+    type: () => UserProfileDto,
+    nullable: false,
+  })
+  author: UserProfileDto;
 }

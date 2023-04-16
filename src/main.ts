@@ -7,8 +7,8 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('API Une Voie Une Croix')
-    .setDescription('API nestJs , une voie une croix ')
-    .setVersion('0.0.3')
+    .setDescription('API REST pour une voie une croix ')
+    .setVersion('0.0.4')
     .addBearerAuth(
       {
         type: 'http',
@@ -24,6 +24,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT_DEV);
+  await app.listen(process.env.PORT_DEV || 3000);
 }
 bootstrap();
