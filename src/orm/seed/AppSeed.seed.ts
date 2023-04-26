@@ -8,6 +8,7 @@ import { RouteProfile } from '../entity/RouteProfile.entity';
 import { RockType } from '../entity/RockType.entity';
 import { Region } from '../entity/Region.entity';
 import { Department } from '../entity/Department.entity';
+import { RouteFoot } from '../entity/RouteFoot.entity';
 
 export default class AppSeedSeed implements Seeder {
   public async run(factory: Factory): Promise<void> {
@@ -320,6 +321,15 @@ export default class AppSeedSeed implements Seeder {
           }
           r.departments = d;
           return r;
+        })
+        .create();
+    }
+    const routeFootTypes = ['Confortable', 'Accidente', 'Dangereux'];
+    for (const type of routeFootTypes) {
+      await factory(RouteFoot)()
+        .map(async (routeFoot) => {
+          routeFoot.label = type;
+          return routeFoot;
         })
         .create();
     }

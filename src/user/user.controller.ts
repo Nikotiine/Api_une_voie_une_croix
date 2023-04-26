@@ -24,6 +24,7 @@ import { UserRegisterDto } from '../dto/UserRegister.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
 import { UserEditPasswordDto } from '../dto/UserEditPassword.dto';
 import { UserContributionDto } from '../dto/UserContribution.dto';
+import { ApiMessage } from '../enum/ApiMessage.enum';
 
 @ApiTags('User')
 @Controller('api/user')
@@ -36,19 +37,17 @@ export class UserController {
    */
   @Post('register')
   @ApiCreatedResponse({
-    description:
-      'In case of success => return UserProfileDto, Please look into the DTO UserRegisterDto ',
     type: UserProfileDto,
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'UserProfileDto',
   })
   @ApiOperation({
     summary: 'Register new user',
     description:
-      'Create new user in database / by default the user have role USER',
+      'Entry point to post new user -> by default the role is UserRole.USER',
   })
   @ApiBody({
     type: UserRegisterDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO UserRegisterDto',
+    description: ApiMessage.BODY_DESCRIPTION + 'UserRegisterDto',
   })
   public async createUser(
     @Body() userRegisterDto: UserRegisterDto,
@@ -66,9 +65,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
   @ApiCreatedResponse({
-    description:
-      'In case of success => return updated UserProfileDto, Please look into the DTO UserRegisterDto',
     type: UserProfileDto,
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'UserProfileDto',
   })
   @ApiParam({
     name: 'id',
@@ -77,12 +75,11 @@ export class UserController {
   })
   @ApiOperation({
     summary: 'Edit user profile',
-    description: 'The user can edit his profile / JWT required',
+    description: 'Entry point to edit user profile',
   })
   @ApiBody({
     type: UserRegisterDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO UserRegisterDto',
+    description: ApiMessage.BODY_DESCRIPTION + 'UserRegisterDto',
   })
   public async editUser(
     @Request() req,
@@ -107,12 +104,12 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
   @ApiCreatedResponse({
-    description: 'Get user profile',
     type: UserProfileDto,
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'UserProfileDto',
   })
   @ApiOperation({
-    summary: 'Get user resource by id',
-    description: 'The user can show his own profile',
+    summary: 'Get user profile',
+    description: 'Return user profile find by id ',
   })
   @ApiParam({
     name: 'id',
@@ -144,7 +141,7 @@ export class UserController {
   @ApiCreatedResponse({
     type: UserContributionDto,
     description:
-      'Return all contribution of user, Please look into dto , UserContributionDto',
+      ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'UserContributionDto',
   })
   @ApiParam({
     name: 'id',
@@ -171,8 +168,8 @@ export class UserController {
     description: 'id of user',
   })
   @ApiCreatedResponse({
-    description: 'edit password',
     type: UserProfileDto,
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'UserProfileDto',
   })
   @ApiOperation({
     summary: 'Edit user password resource',
@@ -180,8 +177,7 @@ export class UserController {
   })
   @ApiBody({
     type: UserEditPasswordDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO UserRegisterDto',
+    description: ApiMessage.BODY_DESCRIPTION + 'UserEditPasswordDto',
   })
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')

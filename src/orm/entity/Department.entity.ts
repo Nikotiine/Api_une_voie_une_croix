@@ -1,18 +1,10 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Region } from './Region.entity';
 import { Site } from './Site.entity';
+import { BaseEntity } from './Base.entity';
 
 @Entity()
-export class Department {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
-
+export class Department extends BaseEntity {
   @ManyToOne(() => Region, (region) => region.departments)
   region: Region;
   @Column()
@@ -25,10 +17,6 @@ export class Department {
     type: 'double',
   })
   lng: number;
-  @Column({ default: true })
-  isActive: boolean;
-  @Column()
-  createdAt: Date;
   @OneToMany(() => Site, (site) => site.department)
   sites: Site[];
 }

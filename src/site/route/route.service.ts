@@ -25,30 +25,29 @@ export class RouteService {
    * @param routeCreate RouteCreateDto, descrption dans dto/RouteCreateDto
    */
   public async create(routeCreate: RouteCreateDto): Promise<RouteListDto> {
-    //Verifie si le couple nom de voie / appartenance au secteur existe
-    await this.verifyNameAndSector(routeCreate.name, routeCreate.secteur.id);
+    //Verifie si le couple nom de voie / appartenance au Sector existe
+    await this.verifyNameAndSector(routeCreate.name, routeCreate.sector.id);
     const route = await this.routeRepository.create({
       name: routeCreate.name,
       height: routeCreate.height,
       quickdraw: routeCreate.quickdraw,
-      isActive: true,
-      createdAt: new Date(),
       engagement: routeCreate.engagement,
       equipment: routeCreate.equipment,
-      secteur: routeCreate.secteur,
+      sector: routeCreate.sector,
       level: routeCreate.level,
       exposition: routeCreate.exposition,
       routeProfile: routeCreate.routeProfile,
       rockType: routeCreate.rockType,
       author: routeCreate.author,
+      commentary: routeCreate.commentary,
     });
     return this.routeRepository.save(route);
   }
 
   /**
-   * Verifie que le couple nom de la voie et son secteur ne soit pas deja utilisé
+   * Verifie que le couple nom de la voie et son Sector ne soit pas deja utilisé
    * @param name de la voie
-   * @param sector id du secteur
+   * @param sector id du Sector
    * @private
    */
   private async verifyNameAndSector(
@@ -57,7 +56,7 @@ export class RouteService {
   ): Promise<void> {
     const isExist = await this.routeRepository.findOneBy({
       name: name,
-      secteur: {
+      sector: {
         id: sector,
       },
     });
@@ -80,7 +79,7 @@ export class RouteService {
       relations: {
         equipment: true,
         engagement: true,
-        secteur: {
+        sector: {
           site: {
             department: true,
             region: true,
@@ -99,12 +98,12 @@ export class RouteService {
           id: r.level.id,
           label: r.level.label,
         },
-        secteur: {
-          id: r.secteur.id,
-          name: r.secteur.name,
+        sector: {
+          id: r.sector.id,
+          name: r.sector.name,
           site: {
-            id: r.secteur.site.id,
-            name: r.secteur.site.name,
+            id: r.sector.site.id,
+            name: r.sector.site.name,
           },
         },
         createdAt: r.createdAt,
@@ -132,7 +131,7 @@ export class RouteService {
         exposition: true,
         rockType: true,
         routeProfile: true,
-        secteur: {
+        sector: {
           site: true,
         },
         level: true,
@@ -148,6 +147,7 @@ export class RouteService {
       name: route.name,
       height: route.height,
       quickdraw: route.quickdraw,
+      commentary: route.commentary,
       createdAt: route.createdAt,
       level: {
         id: route.level.id,
@@ -169,12 +169,12 @@ export class RouteService {
         id: route.engagement.id,
         label: route.engagement.label,
       },
-      secteur: {
-        id: route.secteur.id,
-        name: route.secteur.name,
+      sector: {
+        id: route.sector.id,
+        name: route.sector.name,
         site: {
-          id: route.secteur.site.id,
-          name: route.secteur.site.name,
+          id: route.sector.site.id,
+          name: route.sector.site.name,
         },
       },
       routeProfile: {
@@ -194,16 +194,15 @@ export class RouteService {
     id: number,
     route: RouteCreateDto,
   ): Promise<RouteViewDto> {
-    await this.verifyNameAndSector(route.name, route.secteur.id);
+    await this.verifyNameAndSector(route.name, route.sector.id);
     const entity = await this.routeRepository.preload({
       id,
       name: route.name,
       height: route.height,
       quickdraw: route.quickdraw,
-      updatedAt: new Date(),
       engagement: route.engagement,
       equipment: route.equipment,
-      secteur: route.secteur,
+      sector: route.sector,
       level: route.level,
       exposition: route.exposition,
       routeProfile: route.routeProfile,
@@ -223,7 +222,7 @@ export class RouteService {
   public async findRouteBySite(id: number): Promise<Route[]> {
     return this.routeRepository.find({
       where: {
-        secteur: {
+        sector: {
           site: {
             id: id,
           },
@@ -232,7 +231,7 @@ export class RouteService {
       },
       relations: {
         level: true,
-        secteur: true,
+        sector: true,
       },
     });
   }
@@ -244,7 +243,7 @@ export class RouteService {
     return this.routeRepository.find({
       relations: {
         level: true,
-        secteur: {
+        sector: {
           site: true,
         },
         exposition: true,
@@ -268,10 +267,23 @@ export class RouteService {
       throw new NotFoundException();
     }
     route.isActive = !route.isActive;
-    route.updatedAt = new Date();
     const update = await this.routeRepository.update(id, route);
     return {
       isUpdated: update.affected === 1,
     };
+  }
+
+  public async findLastEntry(): Promise<Route> {
+    return this.routeRepository.findOne({
+      where: { isActive: true },
+      order: { id: 'ASC' },
+    });
+  }
+  public async countAll(): Promise<number> {
+    return this.routeRepository.count({
+      where: {
+        isActive: true,
+      },
+    });
   }
 }

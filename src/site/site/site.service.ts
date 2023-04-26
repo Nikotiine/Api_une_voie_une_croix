@@ -103,7 +103,7 @@ export class SiteService {
       engagement: createSiteDto.engagement,
       approachType: createSiteDto.approachType,
       rockType: createSiteDto.rockType,
-      secteurs: createSiteDto.secteurs,
+      sectors: createSiteDto.sectors,
       mainParkingLat: createSiteDto.mainParkingLat,
       mainParkingLng: createSiteDto.mainParkingLng,
       secondaryParkingLat: createSiteDto.secondaryParkingLat,
@@ -114,14 +114,13 @@ export class SiteService {
       network: createSiteDto.network,
       wc: createSiteDto.wc,
       river: createSiteDto.river,
-      isActive: true,
       author: createSiteDto.author,
-      createdAt: new Date(),
+      routeFoot: createSiteDto.routeFoot,
     });
-    //Ajout des secteurs du nouveau site
-    site.secteurs.forEach((secteur) => {
-      secteur.isActive = true;
-      secteur.createdAt = new Date();
+    //Ajout des Sectors du nouveau site
+    site.sectors.forEach((Sector) => {
+      Sector.isActive = true;
+      // Sector.createdAt = new Date();
     });
 
     //TODO:A verifer au retour si c'est bien typer
@@ -146,12 +145,13 @@ export class SiteService {
         engagement: true,
         equipment: true,
         rockType: true,
-        secteurs: {
+        sectors: {
           routes: true,
         },
         approachType: true,
         region: true,
         department: true,
+        routeFoot: true,
       },
     });
 
@@ -214,7 +214,7 @@ export class SiteService {
         id: site.rockType.id,
         label: site.rockType.label,
       },
-      secteurs: site.secteurs.map((s) => {
+      sectors: site.sectors.map((s) => {
         return {
           id: s.id,
           name: s.name,
@@ -228,6 +228,10 @@ export class SiteService {
       wc: site.wc,
       network: site.network,
       river: site.river,
+      routeFoot: {
+        id: site.routeFoot.id,
+        label: site.routeFoot.label,
+      },
     };
   }
 
@@ -255,7 +259,7 @@ export class SiteService {
       engagement: createSiteDto.engagement,
       approachType: createSiteDto.approachType,
       rockType: createSiteDto.rockType,
-      secteurs: createSiteDto.secteurs,
+      sectors: createSiteDto.sectors,
       mainParkingLat: createSiteDto.mainParkingLat,
       mainParkingLng: createSiteDto.mainParkingLng,
       secondaryParkingLat: createSiteDto.secondaryParkingLat,
@@ -268,10 +272,10 @@ export class SiteService {
       river: createSiteDto.river,
       updatedAt: new Date(),
     });
-    //Mets a jours les secteurs
-    entity.secteurs.forEach((s) => {
+    //Mets a jours les Sectors
+    entity.sectors.forEach((s) => {
       if (!s.id) {
-        s.createdAt = new Date();
+        //s.createdAt = new Date();
         s.isActive = true;
       }
     });
@@ -314,9 +318,9 @@ export class SiteService {
         },
         height: r.height,
         name: r.name,
-        secteur: {
-          id: r.secteur.id,
-          name: r.secteur.name,
+        Sector: {
+          id: r.sector.id,
+          name: r.sector.name,
         },
       };
     });
@@ -351,7 +355,7 @@ export class SiteService {
         id: id,
       },
       relations: {
-        secteurs: {
+        sectors: {
           site: true,
         },
         region: true,
@@ -369,7 +373,6 @@ export class SiteService {
       throw new NotFoundException();
     }
     site.isActive = !site.isActive;
-    site.updatedAt = new Date();
     const update = await this.siteRepository.save(site);
     return {
       isUpdated: !!update,
@@ -383,6 +386,24 @@ export class SiteService {
   private async findByName(name: string): Promise<Site | null> {
     return this.siteRepository.findOneBy({
       name: name,
+    });
+  }
+
+  public async countAll(): Promise<number> {
+    return this.siteRepository.count({
+      where: {
+        isActive: true,
+      },
+    });
+  }
+  public async findLastEntry(): Promise<Site> {
+    return this.siteRepository.findOne({
+      where: {
+        isActive: true,
+      },
+      order: {
+        id: 'ASC',
+      },
     });
   }
 }

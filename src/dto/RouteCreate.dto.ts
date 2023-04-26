@@ -3,11 +3,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { LevelDto } from './Level.dto';
 import { EquipmentDto } from './Equipment.dto';
 import { EngagementDto } from './Engagement.dto';
-import { SecteurDto } from './Secteur.dto';
+import { SectorDto } from './Sector.dto';
 import { ExpositionDto } from './Exposition.dto';
 import { RockTypeDto } from './RockType.dto';
 import { RouteProfileDto } from './RouteProfile.dto';
 import { UserProfileDto } from './UserProfile.dto';
+import { IsString } from 'class-validator';
 
 export class RouteCreateDto {
   @ApiProperty({
@@ -35,9 +36,9 @@ export class RouteCreateDto {
   })
   engagement: EngagementDto;
   @ApiProperty({
-    type: SecteurDto,
+    type: SectorDto,
   })
-  secteur: SecteurDto;
+  sector: SectorDto;
   @ApiProperty({
     type: ExpositionDto,
   })
@@ -55,4 +56,7 @@ export class RouteCreateDto {
     nullable: false,
   })
   author: UserProfileDto;
+  @ApiProperty()
+  @IsString()
+  commentary: string;
 }

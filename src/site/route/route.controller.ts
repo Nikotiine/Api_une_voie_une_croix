@@ -19,11 +19,11 @@ import {
 import { RouteService } from './route.service';
 import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { RouteListDto } from '../../dto/RouteList.dto';
-
 import { SiteService } from '../site/site.service';
 import { SiteDto } from '../../dto/Site.dto';
 import { RouteViewDto } from '../../dto/RouteView.dto';
 import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
+import { ApiMessage } from '../../enum/ApiMessage.enum';
 
 @Controller('api/route')
 @ApiTags('Route')
@@ -46,13 +46,11 @@ export class RouteController {
   })
   @ApiBody({
     type: RouteCreateDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO RouteCreateDto',
+    description: ApiMessage.BODY_DESCRIPTION + 'RouteCreateDto',
   })
   @ApiCreatedResponse({
     type: RouteListDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO RouteListDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RouteListDto',
   })
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
@@ -78,8 +76,7 @@ export class RouteController {
   })
   @ApiBody({
     type: RouteCreateDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO RouteCreateDto',
+    description: ApiMessage.BODY_DESCRIPTION + 'RouteCreateDto',
   })
   @ApiOperation({
     summary: 'Create route resource',
@@ -87,8 +84,7 @@ export class RouteController {
   })
   @ApiCreatedResponse({
     type: RouteViewDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO RouteViewDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RouteViewDto',
   })
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
@@ -111,8 +107,7 @@ export class RouteController {
   })
   @ApiCreatedResponse({
     type: [RouteListDto],
-    description:
-      'The Description for the Post Body. Please look into the DTO RouteListDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RouteListDto',
   })
   public async getAllRoutes(): Promise<RouteListDto[]> {
     return this.routeService.findAll();
@@ -130,8 +125,7 @@ export class RouteController {
   })
   @ApiCreatedResponse({
     type: RouteViewDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO RouteViewDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RouteViewDto',
   })
   @ApiOperation({
     summary: 'get route resource',
@@ -147,8 +141,7 @@ export class RouteController {
   @Get('site/list')
   @ApiCreatedResponse({
     type: [SiteDto],
-    description:
-      'Return array of site resource,Please look into the DTO SiteDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteDto',
   })
   @ApiOperation({
     summary: 'Entry point to get sites resource',

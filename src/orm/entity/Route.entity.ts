@@ -1,24 +1,18 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { Level } from './Level.entity';
-import { Secteur } from './Secteur.entity';
+import { Sector } from './Sector.entity';
 import { Equipment } from './Equipment.entity';
 import { Engagement } from './Engagement.entity';
 import { Exposition } from './Exposition.entity';
 import { RockType } from './RockType.entity';
 import { RouteProfile } from './RouteProfile.entity';
 import { User } from './User.entity';
+import { BaseEntity } from './Base.entity';
+import { Notebook } from './Notebook.entity';
 
 @Entity()
-@Unique(['name', 'secteur'])
-export class Route {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+@Unique(['name', 'sector'])
+export class Route extends BaseEntity {
   @Column()
   name: string;
   @Column()
@@ -27,8 +21,8 @@ export class Route {
   quickdraw: number;
   @ManyToOne(() => Level, (level) => level.routes)
   level: Level;
-  @ManyToOne(() => Secteur, (secteur) => secteur.routes)
-  secteur: Secteur;
+  @ManyToOne(() => Sector, (Sector) => Sector.routes)
+  sector: Sector;
   @ManyToOne(() => Equipment, (equipment) => equipment.routes)
   equipment: Equipment;
   @ManyToOne(() => Engagement, (engagement) => engagement.routes)
@@ -39,12 +33,12 @@ export class Route {
   rockType: RockType;
   @ManyToOne(() => RouteProfile, (routeProfile) => routeProfile.routes)
   routeProfile: RouteProfile;
-  @Column()
-  isActive: boolean;
-  @Column()
-  createdAt: Date;
-  @Column({ nullable: true })
-  updatedAt: Date;
   @ManyToOne(() => User, (user) => user.routes)
   author: User;
+  @Column({
+    type: 'text',
+  })
+  commentary: string;
+  @OneToMany(() => Notebook, (notebook) => notebook.route)
+  notebooks: Notebook[];
 }

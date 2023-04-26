@@ -29,6 +29,9 @@ import { DepartmentController } from './department/department.controller';
 import { RegionController } from './region/region.controller';
 import { CommonController } from './common.controller';
 import { CommonService } from './common.service';
+import { RouteFootController } from './route-foot/route-foot.controller';
+import { RouteFootService } from './route-foot/route-foot.service';
+import { RouteFoot } from '../orm/entity/RouteFoot.entity';
 
 @Module({
   controllers: [
@@ -42,6 +45,7 @@ import { CommonService } from './common.service';
     DepartmentController,
     RegionController,
     CommonController,
+    RouteFootController,
   ],
   providers: [
     RouteProfileService,
@@ -54,6 +58,7 @@ import { CommonService } from './common.service';
     DepartmentService,
     RegionService,
     CommonService,
+    RouteFootService,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -66,6 +71,7 @@ import { CommonService } from './common.service';
       RockType,
       Department,
       Region,
+      RouteFoot,
     ]),
   ],
   exports: [

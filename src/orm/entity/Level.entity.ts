@@ -1,24 +1,13 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { Route } from './Route.entity';
 import { Site } from './Site.entity';
+import { BaseEntity } from './Base.entity';
 
 @Entity()
 @Unique(['label'])
-export class Level {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+export class Level extends BaseEntity {
   @Column()
   label: string;
-  @Column({ default: true })
-  isActive: boolean;
-  @Column()
-  createdAt: Date;
   @OneToMany(() => Route, (route) => route.level)
   routes: Route[];
   @OneToMany(() => Site, (site) => site.minLevel)

@@ -10,6 +10,7 @@ import { RouteProfileService } from './route-profile/route-profile.service';
 import { DataSiteDto } from '../dto/DataSite.dto';
 import { EquipmentService } from './equipment/equipment.service';
 import { DataRouteDto } from '../dto/DataRoute.dto';
+import { RouteFootService } from './route-foot/route-foot.service';
 
 @Injectable()
 export class CommonService {
@@ -23,6 +24,7 @@ export class CommonService {
     private readonly rockTypeService: RockTypeService,
     private readonly routeProfileService: RouteProfileService,
     private readonly equipmentService: EquipmentService,
+    private readonly routeFootService: RouteFootService,
   ) {}
   public async findDataForSite(): Promise<DataSiteDto> {
     const data = await this.findDataForRoute();
@@ -31,6 +33,7 @@ export class CommonService {
       approachTypes: await this.approachTypeService.findAll(),
       rockTypes: await this.rockTypeService.findAll(),
       regions: await this.regionService.findAll(),
+      routeFoots: await this.routeFootService.findAll(),
     };
   }
   public async findDataForRoute(): Promise<DataRouteDto> {

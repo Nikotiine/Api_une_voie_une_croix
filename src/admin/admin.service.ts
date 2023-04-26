@@ -93,12 +93,12 @@ export class AdminService {
         },
         isActive: r.isActive,
         createdAt: r.createdAt,
-        secteur: {
-          id: r.secteur.id,
-          name: r.secteur.name,
+        sector: {
+          id: r.sector.id,
+          name: r.sector.name,
           site: {
-            id: r.secteur.site.id,
-            name: r.secteur.site.name,
+            id: r.sector.site.id,
+            name: r.sector.site.name,
           },
         },
         exposition: {

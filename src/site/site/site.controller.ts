@@ -22,6 +22,7 @@ import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
 import { SiteRouteDto } from '../../dto/SiteRoute.dto';
 import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
+import { ApiMessage } from '../../enum/ApiMessage.enum';
 
 @Controller('api/site')
 @ApiTags('Site')
@@ -37,16 +38,15 @@ export class SiteController {
   @Post()
   @ApiOperation({
     summary: 'Create site resource',
-    description: 'Entry point for create new site resource / JWT required',
+    description: 'Entry point for post new site ',
   })
   @ApiBody({
     type: SiteCreateDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO SiteCreateDto',
+    description: ApiMessage.BODY_DESCRIPTION + 'SiteCreateDto',
   })
   @ApiCreatedResponse({
     type: SiteListDto,
-    description: 'Return the new site resource',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteListDto',
   })
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
@@ -62,13 +62,12 @@ export class SiteController {
    */
   @Get()
   @ApiOperation({
-    summary: 'Get all sites resources',
-    description: 'Entry point for get all sites resources with many datas',
+    summary: 'Get all sites',
+    description: 'Return all actives site',
   })
   @ApiCreatedResponse({
     type: [SiteListDto],
-    description:
-      'Return collection of sites resource. Please look into the DTO SiteListDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteListDto',
   })
   public async getAllSites(): Promise<SiteListDto[]> {
     return this.siteService.findAll();
@@ -78,7 +77,7 @@ export class SiteController {
    * Recupere le detail d'un site / acces public
    * @param id du site
    */
-  @Get(':id')
+  @Get('site/:id')
   @ApiOperation({
     summary: 'Get one site resource',
     description: 'Entry point for get a site resource',
@@ -90,7 +89,7 @@ export class SiteController {
   })
   @ApiCreatedResponse({
     type: SiteViewDto,
-    description: 'Return site resource, please look in the dto SiteViewDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteViewDto',
   })
   public async getSite(@Param('id') id: number): Promise<SiteViewDto> {
     return this.siteService.findOneById(id);
@@ -112,8 +111,7 @@ export class SiteController {
   })
   @ApiCreatedResponse({
     type: [SiteRouteDto],
-    description:
-      'Return collection of routes, please look in the dto SiteRouteDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteRouteDto',
   })
   public async getRoutesOfSite(
     @Param('id') id: number,
@@ -135,16 +133,15 @@ export class SiteController {
   })
   @ApiBody({
     type: SiteCreateDto,
-    description:
-      'The Description for the Post Body. Please look into the DTO SiteCreateDto',
+    description: ApiMessage.BODY_DESCRIPTION + 'SiteCreateDto',
   })
   @ApiCreatedResponse({
     type: SiteViewDto,
-    description: 'Return the update data with SiteViewDto',
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteViewDto',
   })
   @ApiOperation({
-    summary: 'Edit site resource',
-    description: 'Entry point for edit site resource',
+    summary: 'Edit site',
+    description: 'Entry point for edit one site ',
   })
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')

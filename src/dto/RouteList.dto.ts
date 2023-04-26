@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { LevelDto } from './Level.dto';
 
 import { RouteDto } from './Route.dto';
-import { SecteurSiteDto } from './SecteurSite.dto';
+import { SectorSiteDto } from './SectorSite.dto';
 import { ExpositionDto } from './Exposition.dto';
 
 export class RouteListDto extends RouteDto {
@@ -17,9 +17,9 @@ export class RouteListDto extends RouteDto {
   level: LevelDto;
 
   @ApiProperty({
-    type: SecteurSiteDto,
+    type: SectorSiteDto,
   })
-  secteur: SecteurSiteDto;
+  sector: SectorSiteDto;
   @ApiProperty()
   createdAt: Date;
   @ApiProperty({

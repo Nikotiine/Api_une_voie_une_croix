@@ -1,23 +1,12 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { Route } from './Route.entity';
+import { BaseEntity } from './Base.entity';
 
 @Entity()
 @Unique(['label'])
-export class RouteProfile {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+export class RouteProfile extends BaseEntity {
   @Column()
   label: string;
-  @Column({ default: true })
-  isActive: boolean;
-  @Column()
-  createdAt: Date;
   @OneToMany(() => Route, (route) => route.routeProfile)
   routes: Route[];
 }

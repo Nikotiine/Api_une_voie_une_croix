@@ -9,8 +9,9 @@ import { ApproachTypeDto } from './ApproachType.dto';
 import { ExpositionDto } from './Exposition.dto';
 import { RouteProfileDto } from './RouteProfile.dto';
 import { RockTypeDto } from './RockType.dto';
-import { SecteurDto } from './Secteur.dto';
+import { SectorDto } from './Sector.dto';
 import { UserProfileDto } from './UserProfile.dto';
+import { RouteFootDto } from './RouteFoot.dto';
 
 export class SiteCreateDto {
   @ApiProperty({
@@ -95,10 +96,12 @@ export class SiteCreateDto {
   @IsBoolean()
   water: boolean;
   @ApiProperty()
-  secteurs: SecteurDto[];
+  sectors: SectorDto[];
   @ApiProperty({
     type: () => UserProfileDto,
     nullable: false,
   })
   author: UserProfileDto;
+  @ApiProperty()
+  routeFoot: RouteFootDto;
 }

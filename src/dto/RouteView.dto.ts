@@ -27,4 +27,6 @@ export class RouteViewDto extends RouteListDto {
     type: RouteProfileDto,
   })
   routeProfile: RouteProfileDto;
+  @ApiProperty()
+  commentary: string;
 }

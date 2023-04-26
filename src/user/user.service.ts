@@ -231,7 +231,7 @@ export class UserService {
       relations: {
         sites: true,
         routes: {
-          secteur: {
+          sector: {
             site: true,
           },
           level: true,
@@ -260,16 +260,22 @@ export class UserService {
             id: r.exposition.id,
             label: r.exposition.label,
           },
-          secteur: {
-            id: r.secteur.id,
-            name: r.secteur.name,
+          sector: {
+            id: r.sector.id,
+            name: r.sector.name,
             site: {
-              id: r.secteur.site.id,
-              name: r.secteur.site.name,
+              id: r.sector.site.id,
+              name: r.sector.site.name,
             },
           },
         };
       }),
     };
+  }
+
+  public async countAll(): Promise<number> {
+    return this.userRepository.countBy({
+      isActive: true,
+    });
   }
 }

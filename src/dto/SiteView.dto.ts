@@ -7,9 +7,10 @@ import { EquipmentDto } from './Equipment.dto';
 import { EngagementDto } from './Engagement.dto';
 import { ApproachTypeDto } from './ApproachType.dto';
 import { RockTypeDto } from './RockType.dto';
-import { SecteurDto } from './Secteur.dto';
+import { SectorDto } from './Sector.dto';
 
 import { SiteListDto } from './SiteList.dto';
+import { RouteFootDto } from './RouteFoot.dto';
 
 export class SiteViewDto extends SiteListDto {
   @ApiProperty({ type: [RouteProfileDto] })
@@ -22,8 +23,8 @@ export class SiteViewDto extends SiteListDto {
   approachType: ApproachTypeDto;
   @ApiProperty()
   rockType: RockTypeDto;
-  @ApiProperty({ type: [SecteurDto] })
-  secteurs: SecteurDto[];
+  @ApiProperty({ type: [SectorDto] })
+  sectors: SectorDto[];
   @ApiProperty()
   @IsNumber()
   mainParkingLat: number;
@@ -48,4 +49,6 @@ export class SiteViewDto extends SiteListDto {
   @ApiProperty()
   @IsBoolean()
   network: boolean;
+  @ApiProperty()
+  routeFoot: RouteFootDto;
 }

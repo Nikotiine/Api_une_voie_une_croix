@@ -3,7 +3,6 @@ import {
   Entity,
   ManyToMany,
   JoinTable,
-  PrimaryGeneratedColumn,
   Unique,
   ManyToOne,
   OneToMany,
@@ -16,18 +15,18 @@ import { Equipment } from './Equipment.entity';
 import { Engagement } from './Engagement.entity';
 
 import { RockType } from './RockType.entity';
-import { Secteur } from './Secteur.entity';
+import { Sector } from './Sector.entity';
 import { Geometry, Point } from 'geojson';
 import { Department } from './Department.entity';
 import { Region } from './Region.entity';
 import { ApproachType } from './ApproachType.entity';
 import { User } from './User.entity';
+import { BaseEntity } from './Base.entity';
+import { RouteFoot } from './RouteFoot.entity';
 
 @Entity()
 @Unique(['name'])
-export class Site {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+export class Site extends BaseEntity {
   @Column()
   name: string;
   @Column()
@@ -63,17 +62,14 @@ export class Site {
   approachType: ApproachType;
   @ManyToOne(() => RockType, (rockType) => rockType.sites)
   rockType: RockType;
-  @OneToMany(() => Secteur, (secteur) => secteur.site, {
+  @OneToMany(() => Sector, (Sector) => Sector.site, {
     cascade: ['insert', 'update'],
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     eager: true,
   })
   @JoinColumn()
-  secteurs: Secteur[];
-  @Column({ default: true })
-  isActive: boolean;
-
+  sectors: Sector[];
   @Column({ type: 'double' })
   mainParkingLat: number;
   @Column({ type: 'double' })
@@ -100,10 +96,8 @@ export class Site {
   river: boolean;
   @Column({ default: false })
   network: boolean;
-  @Column()
-  createdAt: Date;
-  @Column({ nullable: true })
-  updatedAt: Date;
   @ManyToOne(() => User, (user) => user.sites)
   author: User;
+  @ManyToOne(() => RouteFoot, (routeFoot) => routeFoot.sites)
+  routeFoot: RouteFoot;
 }
