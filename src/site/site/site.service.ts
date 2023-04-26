@@ -12,7 +12,6 @@ import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
 import { SiteDto } from '../../dto/Site.dto';
 import { RouteService } from '../route/route.service';
-import { SiteRouteDto } from '../../dto/SiteRoute.dto';
 import { UpdateResponse } from '../../dto/UpdateResponse.dto';
 import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 
@@ -23,11 +22,8 @@ export class SiteService {
     private readonly routeService: RouteService,
   ) {}
 
-  /**
-   * Methode publique / Retrouve tous les sites actifs
-   * Renvoie une liste de SiteListDto, Description dans dto/SiteListDto
-   */
-  public async findAll(): Promise<SiteListDto[]> {
+  // Retroune tout les sites actifs
+  public async findAllActive(): Promise<SiteListDto[]> {
     const sites = await this.siteRepository.find({
       where: {
         isActive: true,
@@ -160,6 +156,7 @@ export class SiteService {
       throw new NotFoundException();
     }
 
+    const route = await this.routeService.findRouteBySite(site.id);
     //construction du SiteViewDto
     return {
       id: site.id,
@@ -232,6 +229,7 @@ export class SiteService {
         id: site.routeFoot.id,
         label: site.routeFoot.label,
       },
+      routes: route,
     };
   }
 
@@ -280,7 +278,12 @@ export class SiteService {
       }
     });
     //TODO:Verfier le typage de retour
-    return this.siteRepository.save(entity);
+    const updated = await this.siteRepository.save(entity);
+    const routes = await this.routeService.findRouteBySite(updated.id);
+    return {
+      ...updated,
+      routes: routes,
+    };
   }
 
   /**
@@ -297,31 +300,6 @@ export class SiteService {
       return {
         id: site.id,
         name: site.name,
-      };
-    });
-  }
-
-  /**
-   * Trouve les routes associées au site
-   * @param id du site
-   */
-  public async findRoutes(id: number): Promise<SiteRouteDto[]> {
-    const routes = await this.routeService.findRouteBySite(id);
-
-    //Construit l'objet SiteRouteDto, description dans dto/SiteRouteDto
-    return routes.map((r) => {
-      return {
-        id: r.id,
-        level: {
-          id: r.level.id,
-          label: r.level.label,
-        },
-        height: r.height,
-        name: r.name,
-        Sector: {
-          id: r.sector.id,
-          name: r.sector.name,
-        },
       };
     });
   }

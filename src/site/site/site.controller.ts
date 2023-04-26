@@ -20,7 +20,6 @@ import { SiteCreateDto } from '../../dto/SiteCreate.dto';
 import { SiteService } from './site.service';
 import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
-import { SiteRouteDto } from '../../dto/SiteRoute.dto';
 import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
 import { ApiMessage } from '../../enum/ApiMessage.enum';
 
@@ -29,10 +28,10 @@ import { ApiMessage } from '../../enum/ApiMessage.enum';
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
 
-  // ********** POST OPERATION *************
+  //**************************************************** POST OPERATIONS ***********************************************
   /**
    * Creation d'un nouveau site
-   * @param req Json web token
+   * @param req JWT
    * @param siteCreateDto description dans dto => SiteCreateDto
    */
   @Post()
@@ -56,7 +55,8 @@ export class SiteController {
   ): Promise<SiteListDto> {
     return this.siteService.create(siteCreateDto);
   }
-  // ********** GET OPERATIONS *************
+
+  // **************************************************** GET OPERATIONS ***********************************************
   /**
    * Recupere la liste complete des sites / acces public
    */
@@ -70,14 +70,14 @@ export class SiteController {
     description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteListDto',
   })
   public async getAllSites(): Promise<SiteListDto[]> {
-    return this.siteService.findAll();
+    return this.siteService.findAllActive();
   }
 
   /**
    * Recupere le detail d'un site / acces public
    * @param id du site
    */
-  @Get('site/:id')
+  @Get(':id')
   @ApiOperation({
     summary: 'Get one site resource',
     description: 'Entry point for get a site resource',
@@ -95,29 +95,6 @@ export class SiteController {
     return this.siteService.findOneById(id);
   }
 
-  /**
-   * Recupere toutes les routes associées a un site
-   * @param id du site
-   */
-  @Get('route/:id')
-  @ApiParam({
-    name: 'id',
-    allowEmptyValue: false,
-    description: 'id of site resource',
-  })
-  @ApiOperation({
-    summary: 'Get collection route for one site',
-    description: 'Entry point for get a site resource',
-  })
-  @ApiCreatedResponse({
-    type: [SiteRouteDto],
-    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'SiteRouteDto',
-  })
-  public async getRoutesOfSite(
-    @Param('id') id: number,
-  ): Promise<SiteRouteDto[]> {
-    return this.siteService.findRoutes(id);
-  }
   // ********** PUT OPERATION *************
   /**
    * Edition d'un site / JWT required

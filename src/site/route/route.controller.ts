@@ -79,8 +79,8 @@ export class RouteController {
     description: ApiMessage.BODY_DESCRIPTION + 'RouteCreateDto',
   })
   @ApiOperation({
-    summary: 'Create route resource',
-    description: 'Add new route for a site',
+    summary: 'Edit route',
+    description: 'Edit route with id',
   })
   @ApiCreatedResponse({
     type: RouteViewDto,
@@ -102,15 +102,15 @@ export class RouteController {
    */
   @Get()
   @ApiOperation({
-    summary: 'get all route resource',
-    description: 'Find all routes in all sites',
+    summary: 'Fet all route resource',
+    description: 'Return all actives routes in all actives sites',
   })
   @ApiCreatedResponse({
     type: [RouteListDto],
     description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RouteListDto',
   })
   public async getAllRoutes(): Promise<RouteListDto[]> {
-    return this.routeService.findAll();
+    return this.routeService.findAllActive();
   }
 
   /**

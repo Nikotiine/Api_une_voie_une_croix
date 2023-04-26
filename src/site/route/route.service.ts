@@ -71,7 +71,7 @@ export class RouteService {
   /**
    * Methode publique / renvoie la liste de toutes les voies actives
    */
-  public async findAll(): Promise<RouteListDto[]> {
+  public async findAllActive(): Promise<RouteListDto[]> {
     const routes = await this.routeRepository.find({
       where: {
         isActive: true,

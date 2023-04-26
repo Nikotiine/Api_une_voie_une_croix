@@ -15,6 +15,6 @@ import { SectorService } from './sector/sector.service';
   imports: [TypeOrmModule.forFeature([Site, Sector, Route])],
   controllers: [SiteController, SectorController, RouteController],
   providers: [SiteService, SectorService, RouteService],
-  exports: [SiteService, RouteService],
+  exports: [SiteService, RouteService, SectorService],
 })
 export class SiteModule {}
