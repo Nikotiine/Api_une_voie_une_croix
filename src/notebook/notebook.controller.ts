@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { NotebookService } from './notebook.service';
@@ -31,6 +32,26 @@ export class NotebookController {
   public async createNewNotebook(
     @Body() notebook: NotebookCreateDto,
   ): Promise<NotebookViewDto> {
+    console.log(notebook);
     return this.notebookService.create(notebook);
+  }
+
+  @Get(':id')
+  @ApiOperation({
+    summary: 'Get notebooks',
+    description: 'Return all active notebook filtered by user.id',
+  })
+  @ApiCreatedResponse({
+    type: [NotebookViewDto],
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'NotebookViewDto',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'id of user',
+  })
+  public async getNotebooks(
+    @Param('id') userId: number,
+  ): Promise<NotebookViewDto[]> {
+    return this.notebookService.findAllActiveByUser(userId);
   }
 }

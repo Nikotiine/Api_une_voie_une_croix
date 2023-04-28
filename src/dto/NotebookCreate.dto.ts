@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserProfileDto } from './UserProfile.dto';
-import { RouteDto } from './Route.dto';
 import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import { AchievementType } from '../enum/AchievementType.enum';
+import { RouteDto } from './Route.dto';
 
 export class NotebookCreateDto {
   @ApiProperty({
@@ -24,4 +25,8 @@ export class NotebookCreateDto {
   @ApiProperty()
   @IsString()
   commentary: string;
+  @ApiProperty({
+    enum: AchievementType,
+  })
+  achievementType: AchievementType;
 }
