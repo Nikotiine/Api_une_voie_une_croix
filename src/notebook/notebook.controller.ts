@@ -36,7 +36,7 @@ export class NotebookController {
     return this.notebookService.create(notebook);
   }
 
-  @Get(':id')
+  @Get('user/:id')
   @ApiOperation({
     summary: 'Get notebooks',
     description: 'Return all active notebook filtered by user.id',
@@ -53,5 +53,21 @@ export class NotebookController {
     @Param('id') userId: number,
   ): Promise<NotebookViewDto[]> {
     return this.notebookService.findAllActiveByUser(userId);
+  }
+  @Get('view/:id')
+  @ApiOperation({
+    summary: 'Get notebooks',
+    description: 'Return  notebook filtered by .id',
+  })
+  @ApiCreatedResponse({
+    type: NotebookViewDto,
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'NotebookViewDto',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'id of user',
+  })
+  public async getNotebook(@Param('id') id: number): Promise<NotebookViewDto> {
+    return this.notebookService.findById(id);
   }
 }

@@ -83,4 +83,22 @@ export class NotebookService {
       },
     });
   }
+
+  public async findById(id: number): Promise<NotebookViewDto> {
+    return this.notebookRepository.findOne({
+      where: {
+        id: id,
+        isActive: true,
+      },
+      relations: {
+        route: {
+          sector: {
+            site: true,
+          },
+          level: true,
+          engagement: true,
+        },
+      },
+    });
+  }
 }
