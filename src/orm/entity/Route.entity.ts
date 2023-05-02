@@ -9,6 +9,7 @@ import { RouteProfile } from './RouteProfile.entity';
 import { User } from './User.entity';
 import { BaseEntity } from './Base.entity';
 import { Notebook } from './Notebook.entity';
+import { EffortType } from '../../enum/EffortType.enum';
 
 @Entity()
 @Unique(['name', 'sector'])
@@ -41,4 +42,6 @@ export class Route extends BaseEntity {
   commentary: string;
   @OneToMany(() => Notebook, (notebook) => notebook.route)
   notebooks: Notebook[];
+  @Column({ type: 'enum', enum: EffortType, nullable: true })
+  effortType: EffortType;
 }

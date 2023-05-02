@@ -19,4 +19,6 @@ export class Notebook extends BaseEntity {
   commentary: string;
   @Column({ type: 'enum', enum: AchievementType })
   achievementType: AchievementType;
+  @Column({ type: 'int', nullable: true })
+  ranking: number;
 }

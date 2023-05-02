@@ -5,6 +5,7 @@ import { EngagementDto } from './Engagement.dto';
 import { RockTypeDto } from './RockType.dto';
 
 import { RouteProfileDto } from './RouteProfile.dto';
+import { EffortType } from '../enum/EffortType.enum';
 
 export class RouteViewDto extends RouteListDto {
   @ApiProperty({
@@ -29,4 +30,9 @@ export class RouteViewDto extends RouteListDto {
   routeProfile: RouteProfileDto;
   @ApiProperty()
   commentary: string;
+  @ApiProperty({
+    nullable: true,
+    enum: EffortType,
+  })
+  effortType: EffortType;
 }

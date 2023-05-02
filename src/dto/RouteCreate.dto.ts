@@ -9,6 +9,7 @@ import { RockTypeDto } from './RockType.dto';
 import { RouteProfileDto } from './RouteProfile.dto';
 import { UserProfileDto } from './UserProfile.dto';
 import { IsString } from 'class-validator';
+import { EffortType } from '../enum/EffortType.enum';
 
 export class RouteCreateDto {
   @ApiProperty({
@@ -59,4 +60,9 @@ export class RouteCreateDto {
   @ApiProperty()
   @IsString()
   commentary: string;
+  @ApiProperty({
+    nullable: true,
+    enum: EffortType,
+  })
+  effortType: EffortType;
 }

@@ -40,6 +40,7 @@ export class RouteService {
       rockType: routeCreate.rockType,
       author: routeCreate.author,
       commentary: routeCreate.commentary,
+      effortType: routeCreate.effortType,
     });
     return this.routeRepository.save(route);
   }
@@ -181,6 +182,7 @@ export class RouteService {
         id: route.routeProfile.id,
         label: route.routeProfile.label,
       },
+      effortType: route.effortType,
     };
   }
 

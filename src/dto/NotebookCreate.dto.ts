@@ -29,4 +29,8 @@ export class NotebookCreateDto {
     enum: AchievementType,
   })
   achievementType: AchievementType;
+  @ApiProperty({
+    nullable: true,
+  })
+  ranking: number;
 }

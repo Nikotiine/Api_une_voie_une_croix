@@ -1,16 +1,9 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notebook } from '../orm/entity/Notebook.entity';
 import { Repository } from 'typeorm';
 import { NotebookCreateDto } from '../dto/NotebookCreate.dto';
 import { NotebookViewDto } from '../dto/NotebookView.dto';
-import { UserProfileDto } from '../dto/UserProfile.dto';
-import { RouteViewDto } from '../dto/RouteView.dto';
 import { ErrorMessage } from '../enum/ErrorMessage.enum';
 
 @Injectable()
@@ -51,6 +44,7 @@ export class NotebookService {
       route: notebook.route,
       trials: notebook.trials,
       achievementType: notebook.achievementType,
+      ranking: notebook.ranking,
     });
     const created = await this.notebookRepository.save(entity);
     return {
@@ -61,6 +55,7 @@ export class NotebookService {
       route: created.route,
       commentary: created.commentary,
       succeedAt: created.succeedAt,
+      ranking: created.ranking,
     };
   }
 
