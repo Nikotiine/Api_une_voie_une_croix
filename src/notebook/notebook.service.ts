@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notebook } from '../orm/entity/Notebook.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { NotebookCreateDto } from '../dto/NotebookCreate.dto';
 import { NotebookViewDto } from '../dto/NotebookView.dto';
 import { ErrorMessage } from '../enum/ErrorMessage.enum';
+import { RatingRouteDto } from '../dto/RatingRoute.dto';
 
 @Injectable()
 export class NotebookService {
@@ -94,6 +95,74 @@ export class NotebookService {
           engagement: true,
         },
       },
+    });
+  }
+
+  public async getAllRatingRoute(): Promise<RatingRouteDto[]> {
+    const ratings = await this.notebookRepository.find({
+      where: {
+        isActive: true,
+        ranking: Not(IsNull()),
+      },
+      relations: {
+        route: true,
+      },
+    });
+    return ratings.map((notebook) => {
+      return {
+        id: notebook.route.id,
+        rating: notebook.ranking,
+      };
+    });
+  }
+
+  public async getAllRatingRouteBySite(id: number): Promise<RatingRouteDto[]> {
+    const ratings = await this.notebookRepository.find({
+      where: {
+        isActive: true,
+        route: {
+          sector: {
+            site: {
+              id: id,
+            },
+          },
+        },
+        ranking: Not(IsNull()),
+      },
+      relations: {
+        route: {
+          sector: {
+            site: true,
+          },
+        },
+      },
+    });
+    return ratings.map((notebook) => {
+      return {
+        id: notebook.route.id,
+        rating: notebook.ranking,
+      };
+    });
+  }
+
+  public async getAllRatingRouteByRoute(id: number) {
+    const ratings = await this.notebookRepository.find({
+      where: {
+        isActive: true,
+        route: {
+          id: id,
+        },
+        ranking: Not(IsNull()),
+      },
+      relations: {
+        route: true,
+      },
+    });
+    return ratings.map((notebook) => {
+      return {
+        id: notebook.route.id,
+        rating: notebook.ranking,
+      };
     });
   }
 }

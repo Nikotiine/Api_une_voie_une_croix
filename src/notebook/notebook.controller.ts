@@ -10,6 +10,7 @@ import { NotebookService } from './notebook.service';
 import { NotebookCreateDto } from '../dto/NotebookCreate.dto';
 import { NotebookViewDto } from '../dto/NotebookView.dto';
 import { ApiMessage } from '../enum/ApiMessage.enum';
+import { RatingRouteDto } from '../dto/RatingRoute.dto';
 
 @Controller('api/notebook')
 @ApiTags('Notebook')
@@ -69,5 +70,54 @@ export class NotebookController {
   })
   public async getNotebook(@Param('id') id: number): Promise<NotebookViewDto> {
     return this.notebookService.findById(id);
+  }
+
+  @Get('rating/all')
+  @ApiOperation({
+    summary: 'Get rating all route',
+    description: 'Return  all rating of notebook ',
+  })
+  @ApiCreatedResponse({
+    type: [RatingRouteDto],
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RatingRouteDto',
+  })
+  public async getAllRatingsRoutes(): Promise<RatingRouteDto[]> {
+    return this.notebookService.getAllRatingRoute();
+  }
+  @Get('rating/site/:id')
+  @ApiOperation({
+    summary: 'Get rating all route',
+    description: 'Return  all rating of notebook ',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'id of the site',
+  })
+  @ApiCreatedResponse({
+    type: [RatingRouteDto],
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RatingRouteDto',
+  })
+  public async getAllRatingsRoutesBySite(
+    @Param('id') id: number,
+  ): Promise<RatingRouteDto[]> {
+    return this.notebookService.getAllRatingRouteBySite(id);
+  }
+  @Get('rating/route/:id')
+  @ApiOperation({
+    summary: 'Get rating by route',
+    description: 'Return  all rating of notebook ',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'id of the route',
+  })
+  @ApiCreatedResponse({
+    type: [RatingRouteDto],
+    description: ApiMessage.CREATED_RESPONSE_DESCRIPTION + 'RatingRouteDto',
+  })
+  public async getAllRatingsByRoute(
+    @Param('id') id: number,
+  ): Promise<RatingRouteDto[]> {
+    return this.notebookService.getAllRatingRouteByRoute(id);
   }
 }
