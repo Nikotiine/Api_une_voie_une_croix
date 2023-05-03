@@ -137,6 +137,7 @@ export class NotebookService {
         },
       },
     });
+
     return ratings.map((notebook) => {
       return {
         id: notebook.route.id,
