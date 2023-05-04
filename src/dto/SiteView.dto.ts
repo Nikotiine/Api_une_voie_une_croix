@@ -12,6 +12,7 @@ import { SectorDto } from './Sector.dto';
 import { SiteListDto } from './SiteList.dto';
 import { RouteFootDto } from './RouteFoot.dto';
 import { RouteViewDto } from './RouteView.dto';
+import { RouteListDto } from './RouteList.dto';
 
 export class SiteViewDto extends SiteListDto {
   @ApiProperty({ type: [RouteProfileDto] })
@@ -53,7 +54,7 @@ export class SiteViewDto extends SiteListDto {
   @ApiProperty()
   routeFoot: RouteFootDto;
   @ApiProperty({
-    type: [RouteViewDto],
+    type: [RouteListDto],
   })
-  routes: RouteViewDto[];
+  routes: RouteListDto[];
 }

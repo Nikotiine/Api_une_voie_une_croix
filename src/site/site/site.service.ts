@@ -143,6 +143,7 @@ export class SiteService {
         rockType: true,
         sectors: {
           routes: true,
+          site: true,
         },
         approachType: true,
         region: true,

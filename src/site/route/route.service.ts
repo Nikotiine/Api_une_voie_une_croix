@@ -233,7 +233,10 @@ export class RouteService {
       },
       relations: {
         level: true,
-        sector: true,
+        sector: {
+          site: true,
+        },
+        exposition: true,
       },
     });
   }
