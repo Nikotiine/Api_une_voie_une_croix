@@ -20,12 +20,15 @@ export class PublicService {
     const totalRoutes = await this.routeService.countAll();
     const lastFiveRoutes = await this.routeService.findLastFiveEntry();
     const totalUsers = await this.userService.countAll();
+    const lastFiveCheckedRoutes =
+      await this.notebookService.getLastFiveCheckedRoutes();
     return {
       totalRoutes: totalRoutes,
       totalSites: totalSites,
       totalUsers: totalUsers,
       lastFiveRoute: lastFiveRoutes,
       lastFiveSite: lastFiveSites,
+      lastFiveCheckedRoutes: lastFiveCheckedRoutes,
     };
   }
 }

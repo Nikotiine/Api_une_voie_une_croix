@@ -384,6 +384,13 @@ export class SiteService {
         id: 'ASC',
       },
       take: 5,
+      relations: {
+        expositions: true,
+        minLevel: true,
+        maxLevel: true,
+        department: true,
+        region: true,
+      },
     });
   }
 }

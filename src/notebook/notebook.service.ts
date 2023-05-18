@@ -6,6 +6,7 @@ import { NotebookCreateDto } from '../dto/NotebookCreate.dto';
 import { NotebookViewDto } from '../dto/NotebookView.dto';
 import { ErrorMessage } from '../enum/ErrorMessage.enum';
 import { RatingRouteDto } from '../dto/RatingRoute.dto';
+import { RouteListDto } from '../dto/RouteList.dto';
 
 @Injectable()
 export class NotebookService {
@@ -163,6 +164,39 @@ export class NotebookService {
       return {
         id: notebook.route.id,
         rating: notebook.ranking,
+      };
+    });
+  }
+
+  public async getLastFiveCheckedRoutes(): Promise<RouteListDto[]> {
+    const notebooks = await this.notebookRepository.find({
+      where: {
+        isActive: true,
+      },
+      order: {
+        id: 'ASC',
+      },
+      take: 5,
+      relations: {
+        user: true,
+        route: {
+          sector: {
+            site: true,
+          },
+          level: true,
+          exposition: true,
+        },
+      },
+    });
+    return notebooks.map((notebook) => {
+      return {
+        id: notebook.route.id,
+        sector: notebook.route.sector,
+        exposition: notebook.route.exposition,
+        level: notebook.route.level,
+        height: notebook.route.height,
+        createdAt: notebook.route.createdAt,
+        name: notebook.route.name,
       };
     });
   }

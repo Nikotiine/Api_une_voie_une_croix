@@ -34,7 +34,6 @@ export class AdminService {
 
   public async findAllSites(): Promise<AdminSitesDto[]> {
     const sites = await this.siteService.findAllSiteForAdmin();
-    console.log(sites);
     return sites.map((s) => {
       return {
         id: s.id,

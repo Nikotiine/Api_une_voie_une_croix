@@ -18,4 +18,8 @@ export class PublicDataDto {
     type: [RouteListDto],
   })
   lastFiveRoute: RouteListDto[];
+  @ApiProperty({
+    type: [RouteListDto],
+  })
+  lastFiveCheckedRoutes: RouteListDto[];
 }
