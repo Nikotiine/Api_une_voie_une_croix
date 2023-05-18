@@ -278,10 +278,22 @@ export class RouteService {
     };
   }
 
-  public async findLastEntry(): Promise<Route> {
-    return this.routeRepository.findOne({
-      where: { isActive: true },
-      order: { id: 'ASC' },
+  public async findLastFiveEntry(): Promise<Route[]> {
+    return this.routeRepository.find({
+      where: {
+        isActive: true,
+      },
+      order: {
+        id: 'ASC',
+      },
+      relations: {
+        sector: {
+          site: true,
+        },
+        level: true,
+        exposition: true,
+      },
+      take: 5,
     });
   }
   public async countAll(): Promise<number> {

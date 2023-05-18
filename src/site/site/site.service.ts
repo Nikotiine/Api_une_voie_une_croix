@@ -375,14 +375,15 @@ export class SiteService {
       },
     });
   }
-  public async findLastEntry(): Promise<Site> {
-    return this.siteRepository.findOne({
+  public async findLastFiveEntry(): Promise<Site[]> {
+    return this.siteRepository.find({
       where: {
         isActive: true,
       },
       order: {
         id: 'ASC',
       },
+      take: 5,
     });
   }
 }

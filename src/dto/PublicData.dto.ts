@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SiteDto } from './Site.dto';
-import { RouteDto } from './Route.dto';
+
+import { RouteListDto } from './RouteList.dto';
+import { SiteListDto } from './SiteList.dto';
 
 export class PublicDataDto {
   @ApiProperty()
@@ -10,11 +11,11 @@ export class PublicDataDto {
   @ApiProperty()
   totalSites: number;
   @ApiProperty({
-    type: SiteDto,
+    type: [SiteListDto],
   })
-  lastSite: SiteDto;
+  lastFiveSite: SiteListDto[];
   @ApiProperty({
-    type: RouteDto,
+    type: [RouteListDto],
   })
-  lastRoute: RouteDto;
+  lastFiveRoute: RouteListDto[];
 }

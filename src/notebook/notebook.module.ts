@@ -8,5 +8,6 @@ import { Notebook } from '../orm/entity/Notebook.entity';
   controllers: [NotebookController],
   providers: [NotebookService],
   imports: [TypeOrmModule.forFeature([Notebook])],
+  exports: [NotebookService],
 })
 export class NotebookModule {}

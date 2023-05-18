@@ -3,6 +3,7 @@ import { RouteService } from '../site/route/route.service';
 import { SiteService } from '../site/site/site.service';
 import { UserService } from '../user/user.service';
 import { PublicDataDto } from '../dto/PublicData.dto';
+import { NotebookService } from '../notebook/notebook.service';
 
 @Injectable()
 export class PublicService {
@@ -10,20 +11,21 @@ export class PublicService {
     private readonly routeService: RouteService,
     private readonly siteService: SiteService,
     private readonly userService: UserService,
+    private readonly notebookService: NotebookService,
   ) {}
 
   public async findDataForPublicHomePage(): Promise<PublicDataDto> {
     const totalSites = await this.siteService.countAll();
-    const lastSite = await this.siteService.findLastEntry();
+    const lastFiveSites = await this.siteService.findLastFiveEntry();
     const totalRoutes = await this.routeService.countAll();
-    const lastRoute = await this.routeService.findLastEntry();
+    const lastFiveRoutes = await this.routeService.findLastFiveEntry();
     const totalUsers = await this.userService.countAll();
     return {
       totalRoutes: totalRoutes,
       totalSites: totalSites,
       totalUsers: totalUsers,
-      lastRoute: lastRoute,
-      lastSite: lastSite,
+      lastFiveRoute: lastFiveRoutes,
+      lastFiveSite: lastFiveSites,
     };
   }
 }
