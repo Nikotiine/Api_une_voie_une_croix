@@ -12,7 +12,7 @@ import { SiteListDto } from '../../dto/SiteList.dto';
 import { SiteViewDto } from '../../dto/SiteView.dto';
 import { SiteDto } from '../../dto/Site.dto';
 import { RouteService } from '../route/route.service';
-import { UpdateResponse } from '../../dto/UpdateResponse.dto';
+import { UpdateResponse } from '../../dto/ApiResponse.dto';
 import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 
 @Injectable()

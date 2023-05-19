@@ -24,7 +24,7 @@ import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../enum/UserRole.enum';
 import { RolesGuard } from '../auth/strategy/roles.guard';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
-import { UpdateResponse } from '../dto/UpdateResponse.dto';
+import { UpdateResponse } from '../dto/ApiResponse.dto';
 
 @Controller('api/admin')
 @ApiTags('Admin')

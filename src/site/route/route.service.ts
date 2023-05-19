@@ -12,7 +12,7 @@ import { RouteCreateDto } from '../../dto/RouteCreate.dto';
 import { ErrorMessage } from '../../enum/ErrorMessage.enum';
 import { RouteListDto } from '../../dto/RouteList.dto';
 import { RouteViewDto } from '../../dto/RouteView.dto';
-import { UpdateResponse } from '../../dto/UpdateResponse.dto';
+import { UpdateResponse } from '../../dto/ApiResponse.dto';
 
 @Injectable()
 export class RouteService {

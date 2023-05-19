@@ -13,7 +13,7 @@ import { UserProfileDto } from '../dto/UserProfile.dto';
 import * as process from 'process';
 import { UserEditPasswordDto } from '../dto/UserEditPassword.dto';
 import { ErrorMessage } from '../enum/ErrorMessage.enum';
-import { UpdateResponse } from '../dto/UpdateResponse.dto';
+import { UpdateResponse } from '../dto/ApiResponse.dto';
 import { AdminUsersDto } from '../dto/AdminUsers.dto';
 import { UserContributionDto } from '../dto/UserContribution.dto';
 

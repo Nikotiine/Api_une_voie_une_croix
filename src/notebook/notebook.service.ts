@@ -7,6 +7,7 @@ import { NotebookViewDto } from '../dto/NotebookView.dto';
 import { ErrorMessage } from '../enum/ErrorMessage.enum';
 import { RatingRouteDto } from '../dto/RatingRoute.dto';
 import { RouteListDto } from '../dto/RouteList.dto';
+import { DeleteResponse } from '../dto/ApiResponse.dto';
 
 @Injectable()
 export class NotebookService {
@@ -199,5 +200,18 @@ export class NotebookService {
         name: notebook.route.name,
       };
     });
+  }
+
+  /**
+   * Fonction de suppression d'une voie dans le carnet de croix
+   * @param id
+   */
+  public async remove(id: number): Promise<DeleteResponse> {
+    const response = await this.notebookRepository.delete({
+      id: id,
+    });
+    return {
+      isDeleted: response.affected > 0,
+    };
   }
 }

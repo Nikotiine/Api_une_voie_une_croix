@@ -5,7 +5,7 @@ import { SiteService } from '../site/site/site.service';
 import { RouteService } from '../site/route/route.service';
 import { AdminSitesDto } from '../dto/AdminSites.dto';
 import { AdminRoutesDto } from '../dto/AdminRoutes.dto';
-import { UpdateResponse } from '../dto/UpdateResponse.dto';
+import { UpdateResponse } from '../dto/ApiResponse.dto';
 
 @Injectable()
 export class AdminService {

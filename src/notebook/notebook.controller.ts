@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -11,6 +11,7 @@ import { NotebookCreateDto } from '../dto/NotebookCreate.dto';
 import { NotebookViewDto } from '../dto/NotebookView.dto';
 import { ApiMessage } from '../enum/ApiMessage.enum';
 import { RatingRouteDto } from '../dto/RatingRoute.dto';
+import { DeleteResponse } from '../dto/ApiResponse.dto';
 
 @Controller('api/notebook')
 @ApiTags('Notebook')
@@ -119,5 +120,24 @@ export class NotebookController {
     @Param('id') id: number,
   ): Promise<RatingRouteDto[]> {
     return this.notebookService.getAllRatingRouteByRoute(id);
+  }
+
+  @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of user notebook',
+  })
+  @ApiOperation({
+    summary: 'Delete notebook',
+    description: 'Entry point to delete a notebook by id',
+  })
+  @ApiCreatedResponse({
+    type: DeleteResponse,
+    description: 'Boolean to confirm delete',
+  })
+  public async deleteNotebook(
+    @Param('id') id: number,
+  ): Promise<DeleteResponse> {
+    return this.notebookService.remove(id);
   }
 }
